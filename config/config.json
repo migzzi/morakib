@@ -1,0 +1,29 @@
+{
+  "development": {
+    "username": "maged",
+    "password": "123456",
+    "database": "todo_db",
+    "host": "127.0.0.1",
+    "dialect": "postgres",
+    "salt_rounds_count": 10,
+    "token_secret": "thisismytkoensecret99itshouldbemuchstronger"
+  },
+  "test": {
+    "username": "root",
+    "password": null,
+    "database": "database_test",
+    "host": "127.0.0.1",
+    "dialect": "postgres",
+    "salt_rounds_count": 10,
+    "token_secret": "thisismytkoensecret99itshouldbemuchstronger"
+  },
+  "production": {
+    "username": "root",
+    "password": null,
+    "database": "database_production",
+    "host": "127.0.0.1",
+    "dialect": "postgres",
+    "salt_rounds_count": 10,
+    "token_secret": "thisismytkoensecret99itshouldbemuchstronger"
+  }
+}

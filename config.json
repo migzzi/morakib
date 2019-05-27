@@ -1,0 +1,10 @@
+{
+    "database": {
+        "name": "todo_db",
+        "user": "root",
+        "password": "Maged0502344773",
+        "host": "localhost",
+        "port": 3306,
+        "dialect": "mysql"
+    }
+}
