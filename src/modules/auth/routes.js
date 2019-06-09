@@ -38,17 +38,20 @@ authRouter.post("/login", (req, res) => {
   .then(user => {
     if(!user) 
       return res.json({error: true, msg: "incorrect username or password"});
-    return bcrypt.compare(req.body.password, user.password);
+    return bcrypt.compare(req.body.password, user.password, (err, same) => {
+      if(err) return res.json({error: true, msg: "Something went wrong"});
+      if(!same) 
+        return res.json({error: true, msg: "incorrect username or password"});
+      let token = jwt.sign({username: username, role: user.getRole()}, tokenSecret, {expiresIn: 3000});
+      return res.json({
+        success: true,
+        msg: "Autheticated successfully!",
+        token: token
+      });
+
+    });
   })
   .then(valid => {
-    if(!valid) 
-      return res.json({error: true, msg: "incorrect username or password"});
-    let token = jwt.sign({username: username}, tokenSecret, {expiresIn: 3000});
-    return res.json({
-      success: true,
-      msg: "Autheticated successfully!",
-      token: token
-    });
   })
   .catch((err)=>{
     console.log(err);

@@ -33,7 +33,14 @@ const User = db.define("user", {
         type: Sequelize.STRING(100),
         allowNull: false
     },
+    avatar: {
+        type: Sequelize.STRING(50),
+        allowNull: true
+    }
 
+}, {
+    underscored: true,
+    sequelize: db
 });
 
 const Role = db.define("role", {
@@ -46,7 +53,13 @@ const Role = db.define("role", {
         type: Sequelize.TEXT,
         allowNull: true
     }
+}, {
+    underscored: true,
+    sequelize: db
 });
+
+User.belongsTo(Role);
+Role.hasMany(User);
 
 exports.User = User;
 exports.Role = Role;

@@ -2,7 +2,7 @@ const config = require("../../config/config.json"),
       Sequelize = require("sequelize")
 
 //Selecting the active environment database configs.
-const env = process.env.APP_ENV || "development";
+const env = process.env.APP_ENV || "development"; //default environment
 const dbConf = config[env];
 
 const db = new Sequelize(
