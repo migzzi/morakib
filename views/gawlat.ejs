@@ -1,15 +1,4 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-	<title>نظام المخالفات</title>
-	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
-	<link rel="stylesheet" href="assets/css/bootstrap.min.css">
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
-	<link rel="stylesheet" href="assets/css/ready.css">
-	<link rel="stylesheet" href="assets/css/demo.css">
-	<link href="https://fonts.googleapis.com/css?family=Cairo&display=swap" rel="stylesheet">
-
+<%- include('./includes/head.ejs')%>
     <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.14.2/dist/bootstrap-table.min.css">
     <script src="https://unpkg.com/bootstrap-table@1.14.2/dist/bootstrap-table.min.js"></script>
 </head>
@@ -127,7 +116,7 @@
 			<div class="main-panel">
 				<div class="content">
 					<div class="container-fluid">
-						<h4 class="page-title">المراقبين</h4>
+						<h4 class="page-title">الجولات</h4>
 				
 
 						<div class="row">
@@ -136,7 +125,36 @@
 
 							<div class="col-md-12">
 								<div class="card card-tasks">
-               
+                                    
+									<div class="card-header ">
+                                        <h4 class="card-title">فلترة الجولات</h4>
+                                        <div class="row align-items-center justify-content-center">
+                                                <div class="col-md-2">
+                                                   <div class="form-group ">
+                                                      <select id="inputState " class="form-control">
+                                                        <option selected>نوع المخالفة</option>
+                                                        <option>صحية</option>
+                                                        <option>مهلبية</option>
+
+                                                      </select>
+                                                   </div>
+                                                </div>
+                                                <div class="col-md-2">
+                                                   <div class="form-group">
+                                                      <select id="inputState" class="form-control">
+                                                        <option selected>المراقب</option>
+                                                        <option>احمد محمد</option>
+                                                        <option>محمود رجب</option>
+
+                                                      </select>
+                                                   </div>
+                                                </div>
+     
+                                                <div class="col-md-2">
+                                                   <button type="button" class="btn btn-primary btn-block">بحث</button>
+                                                </div>
+                                            </div>
+									</div>
                                     <div class="card-body">
                                            <table id="table" 
 			 data-toggle="table"
@@ -148,59 +166,46 @@
                                                 <thead>
                                                     <tr>
                                                         <th scope="col">الإسم</th>
-                                                        <th scope="col">عدد الجولات</th>
-                                                        <th scope="col">الفئــة</th>
+                                                        <th scope="col">العنوان</th>
+                                                        <th scope="col">نوع المخالفة</th>
+                                                        <th scope="col">المراقب</th>
                                                         <th scope="col" >إدارة</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                         <tr>
-                                                                <td>
-                                                                    <img id="superav" src="assets/img/profile.jpg">
-                                                                    <span>فهد المطيري</span>
-                                                                </td>
-                                                                <td ><h6>43</h6></td>
+                                                                <td>فهد المطيري</td>
+                                                                <td>22 شارع الملك فهد</td>
                                                                 <td>صحية</td>
+                                                                <td>أحمد محمد</td>
                                                                 <td><button class="btn btn-success"><i class="la la-info"></i> التفاصيل</button>
-                                                                <button class="btn btn-primary"><i class="la la-edit"></i> تعديل</button>
-                                                                <button class="btn btn-danger"><i class="la la-trash"></i> حذف</button>
-                                                            </td>
+                                                                <button class="btn btn-danger"><i class="la la-trash"></i> حذف</button></td>
                                                             </tr>
                                                             <tr>
-                                                                    <td>
-                                                                        <img id="superav" src="assets/img/profile.jpg">
-                                                                        <span>فهد المطيري</span>
-                                                                    </td>
-                                                                    <td ><h6>43</h6></td>
+                                                                    <td>فهد المطيري</td>
+                                                                    <td>22 شارع الملك فهد</td>
                                                                     <td>صحية</td>
+                                                                    <td>أحمد محمد</td>
                                                                     <td><button class="btn btn-success"><i class="la la-info"></i> التفاصيل</button>
-                                                                    <button class="btn btn-primary"><i class="la la-edit"></i> تعديل</button>
-                                                                    <button class="btn btn-danger"><i class="la la-trash"></i> حذف</button>
-                                                                </td>
-                                                                </tr><tr>
-                                                                        <td>
-                                                                            <img id="superav" src="assets/img/profile.jpg">
-                                                                            <span>فهد المطيري</span>
-                                                                        </td>
-                                                                        <td ><h6>43</h6></td>
+                                                                    <button class="btn btn-danger"><i class="la la-trash"></i> حذف</button></td>
+                                                                </tr>
+                                                                <tr>
+                                                                        <td>فهد المطيري</td>
+                                                                        <td>22 شارع الملك فهد</td>
                                                                         <td>صحية</td>
+                                                                        <td>أحمد محمد</td>
                                                                         <td><button class="btn btn-success"><i class="la la-info"></i> التفاصيل</button>
-                                                                        <button class="btn btn-primary"><i class="la la-edit"></i> تعديل</button>
-                                                                        <button class="btn btn-danger"><i class="la la-trash"></i> حذف</button>
-                                                                    </td>
-                                                                    </tr><tr>
-                                                                            <td>
-                                                                                <img id="superav" src="assets/img/profile.jpg">
-                                                                                <span>فهد المطيري</span>
-                                                                            </td>
-                                                                            <td ><h6>43</h6></td>
+                                                                        <button class="btn btn-danger"><i class="la la-trash"></i> حذف</button></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                            <td>فهد المطيري</td>
+                                                                            <td>22 شارع الملك فهد</td>
                                                                             <td>صحية</td>
+                                                                            <td>أحمد محمد</td>
                                                                             <td><button class="btn btn-success"><i class="la la-info"></i> التفاصيل</button>
-                                                                            <button class="btn btn-primary"><i class="la la-edit"></i> تعديل</button>
-                                                                            <button class="btn btn-danger"><i class="la la-trash"></i> حذف</button>
-                                                                        </td>
+                                                                            <button class="btn btn-danger"><i class="la la-trash"></i> حذف</button></td>
                                                                         </tr>
-                                                               
+                                                         
                                                 </tbody>
                                             </table>
                                         </div>
@@ -222,18 +227,4 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/bootstrap-table@1.14.2/dist/bootstrap-table.min.js"></script>
 </body>
-<script src="assets/js/core/jquery.3.2.1.min.js"></script>
-<script src="assets/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
-<script src="assets/js/core/popper.min.js"></script>
-<script src="assets/js/core/bootstrap.min.js"></script>
-<script src="assets/js/plugin/chartist/chartist.min.js"></script>
-<script src="assets/js/plugin/chartist/plugin/chartist-plugin-tooltip.min.js"></script>
-<script src="assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
-<script src="assets/js/plugin/bootstrap-toggle/bootstrap-toggle.min.js"></script>
-<script src="assets/js/plugin/jquery-mapael/jquery.mapael.min.js"></script>
-<script src="assets/js/plugin/jquery-mapael/maps/world_countries.min.js"></script>
-<script src="assets/js/plugin/chart-circle/circles.min.js"></script>
-<script src="assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
-<script src="assets/js/ready.min.js"></script>
-<!-- <script src="assets/js/demo.js"></script> -->
-</html>
+<%- include('./includes/footer.ejs')%>

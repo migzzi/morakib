@@ -4,6 +4,7 @@ const express = require("express"),
       morgan = require("morgan"),
       authRouter = require("./src/modules/auth/routes"),
       authMiddlewares = require("./src/modules/auth/middleware"),
+      gawlaRouter = require('./src/modules/gawla/routes');
       path = require("path"),
       routers = require("./config/routers").routers,
       db = require("./src/database/connection");
@@ -19,6 +20,9 @@ app.use(cors());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(morgan("short"));
+
+
+app.use(gawlaRouter);
 
 //custom middlewares.
 const forceJSON = (req, res, next)=>{
