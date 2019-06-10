@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<title>نظام المخالفات</title>
+	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
+	<link rel="stylesheet" href="assets/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
+	<link rel="stylesheet" href="assets/css/ready.css">
+	<link rel="stylesheet" href="assets/css/demo.css">
+	<link href="https://fonts.googleapis.com/css?family=Cairo&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.14.2/dist/bootstrap-table.min.css">
+    <script src="https://unpkg.com/bootstrap-table@1.14.2/dist/bootstrap-table.min.js"></script>
+</head>
+<body >
+	<div class="wrapper">
+		<div class="main-header">
+			<div class="logo-header">
+				<a href="index.html" class="logo">
+					نظـــام المخالفـــات  
+				</a>	<i class="la la-2x la-map-marker"></i>
+				<button class="navbar-toggler sidenav-toggler ml-auto" type="button" data-toggle="collapse" data-target="collapse" aria-controls="sidebar" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<button class="topbar-toggler more"><i class="la la-ellipsis-v"></i></button>
+			</div>
+			<nav class="navbar navbar-header navbar-expand-lg">
+				<div class="container-fluid">
+					
+
+
+						<li class="nav-item dropdown">
+							<a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#" aria-expanded="false"> <img src="assets/img/profile.jpg" alt="user-img" width="36" class="img-circle"><span >أهلا بك ، أحمد محمد</span></span> </a>
+							<ul class="dropdown-menu dropdown-user">
+								<li>
+									<div class="user-box">
+										<div class="u-img"><img src="assets/img/profile.jpg" alt="user"></div>
+										<div class="u-text">
+											<h4>أحمد محمد</h4>
+											<p class="text-muted">hello@test.com</p><a href="profile.html" class="btn btn-rounded btn-danger btn-sm">البيانات الشخصية</a></div>
+										</div>
+									</li>
+									<div class="dropdown-divider"></div>
+									<a class="dropdown-item" href="#"><i class="fa fa-power-off"></i> تسجيل خروج</a>
+								</ul>
+								<!-- /.dropdown-user -->
+							</li>
+						</ul>
+					</div>
+				</nav>
+			</div>
+			<div class="sidebar">
+				<div class="scrollbar-inner sidebar-wrapper">
+					<div class="user">
+						<div class="photo">
+							<img src="assets/img/profile.jpg">
+						</div>
+						<div class="info">
+							<a class="" data-toggle="collapse" href="#collapseExample" aria-expanded="true">
+								<span>
+									أحمد محمد
+									<span class="user-level"><strong>مديــر</strong></span>
+									<span class="caret"></span>
+									<br/>
+									<br/>
+									<a class="btn btn-danger">	<i class="la  la-sign-out"></i>خــروج</a>
+								</span>
+							</a>
+							<div class="clearfix"></div>
+
+							<div class="collapse in" id="collapseExample" aria-expanded="true" style="">
+								<ul class="nav">
+
+									<li>
+										<a href="#info">
+											<span class="link-collapse">البيانات الشخصية</span>
+										</a>
+									</li>
+									<li>
+										<a href="#logout">
+											<span class="link-collapse">تسجيل خروج</span>
+										</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<ul class="nav">
+						<li class="nav-item active">
+							<a href="index.html">
+								<i class="la la-home"></i>
+								<p>الرئيسية</p>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="gawlat.html">
+								<i class="la la-street-view"></i>
+								<p>الجولات</p>
+								<span class="badge badge-count badge-success">14</span>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="mokhlfat.html">
+								<i class="la la-hourglass-start"></i>
+								<p>مخالفات قيد الإنتظار</p>
+								<span class="badge badge-count badge-warning">50</span>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="supers.html">
+								<i class="la la-users"></i>
+								<p>المراقبين</p>
+								<span class="badge badge-count">602</span>
+							</a>
+						</li>
+						
+						<li class="nav-item update-pro">
+							<a href="add-gawla.html" class="btn btn-default">
+								<i class="la la-street-view"></i>
+								<p>إضافة جولة</p>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div class="main-panel">
+				<div class="content">
+					<div class="container-fluid">
+						<h4 class="page-title">الجولات</h4>
+				
+
+						<div class="row">
+
+							
+
+							<div class="col-md-12">
+								<div class="card card-tasks">
+                                    
+									<div class="card-header ">
+                                        <h4 class="card-title">فلترة الجولات</h4>
+                                        <div class="row align-items-center justify-content-center">
+                                                <div class="col-md-2">
+                                                   <div class="form-group ">
+                                                      <select id="inputState " class="form-control">
+                                                        <option selected>نوع المخالفة</option>
+                                                        <option>صحية</option>
+                                                        <option>مهلبية</option>
+
+                                                      </select>
+                                                   </div>
+                                                </div>
+                                                <div class="col-md-2">
+                                                   <div class="form-group">
+                                                      <select id="inputState" class="form-control">
+                                                        <option selected>المراقب</option>
+                                                        <option>احمد محمد</option>
+                                                        <option>محمود رجب</option>
+
+                                                      </select>
+                                                   </div>
+                                                </div>
+     
+                                                <div class="col-md-2">
+                                                   <button type="button" class="btn btn-primary btn-block">بحث</button>
+                                                </div>
+                                            </div>
+									</div>
+                                    <div class="card-body">
+                                           <table id="table" 
+			 data-toggle="table"
+			 data-search="true"
+			 data-filter-control="true" 
+			 data-show-export="true"
+			 data-click-to-select="true"
+			 data-toolbar="#toolbar">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">الإسم</th>
+                                                        <th scope="col">العنوان</th>
+                                                        <th scope="col">نوع المخالفة</th>
+                                                        <th scope="col">المراقب</th>
+                                                        <th scope="col" >إدارة</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                        <tr>
+                                                                <td>فهد المطيري</td>
+                                                                <td>22 شارع الملك فهد</td>
+                                                                <td>صحية</td>
+                                                                <td>أحمد محمد</td>
+                                                                <td><button class="btn btn-success"><i class="la la-info"></i> التفاصيل</button>
+                                                                <button class="btn btn-danger"><i class="la la-trash"></i> حذف</button></td>
+                                                            </tr>
+                                                            <tr>
+                                                                    <td>فهد المطيري</td>
+                                                                    <td>22 شارع الملك فهد</td>
+                                                                    <td>صحية</td>
+                                                                    <td>أحمد محمد</td>
+                                                                    <td><button class="btn btn-success"><i class="la la-info"></i> التفاصيل</button>
+                                                                    <button class="btn btn-danger"><i class="la la-trash"></i> حذف</button></td>
+                                                                </tr>
+                                                                <tr>
+                                                                        <td>فهد المطيري</td>
+                                                                        <td>22 شارع الملك فهد</td>
+                                                                        <td>صحية</td>
+                                                                        <td>أحمد محمد</td>
+                                                                        <td><button class="btn btn-success"><i class="la la-info"></i> التفاصيل</button>
+                                                                        <button class="btn btn-danger"><i class="la la-trash"></i> حذف</button></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                            <td>فهد المطيري</td>
+                                                                            <td>22 شارع الملك فهد</td>
+                                                                            <td>صحية</td>
+                                                                            <td>أحمد محمد</td>
+                                                                            <td><button class="btn btn-success"><i class="la la-info"></i> التفاصيل</button>
+                                                                            <button class="btn btn-danger"><i class="la la-trash"></i> حذف</button></td>
+                                                                        </tr>
+                                                         
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="card-action">
+
+                                            </div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+			</div>
+		</div>
+	</div>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/bootstrap-table@1.14.2/dist/bootstrap-table.min.js"></script>
+</body>
+<script src="assets/js/core/jquery.3.2.1.min.js"></script>
+<script src="assets/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
+<script src="assets/js/core/popper.min.js"></script>
+<script src="assets/js/core/bootstrap.min.js"></script>
+<script src="assets/js/plugin/chartist/chartist.min.js"></script>
+<script src="assets/js/plugin/chartist/plugin/chartist-plugin-tooltip.min.js"></script>
+<script src="assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
+<script src="assets/js/plugin/bootstrap-toggle/bootstrap-toggle.min.js"></script>
+<script src="assets/js/plugin/jquery-mapael/jquery.mapael.min.js"></script>
+<script src="assets/js/plugin/jquery-mapael/maps/world_countries.min.js"></script>
+<script src="assets/js/plugin/chart-circle/circles.min.js"></script>
+<script src="assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+<script src="assets/js/ready.min.js"></script>
+<!-- <script src="assets/js/demo.js"></script> -->
+</html>

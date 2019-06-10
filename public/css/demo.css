@@ -1,0 +1,203 @@
+
+.main-header .logo-header a.logo .main-panel {
+	font-family: 'Cairo', sans-serif;
+  
+   }
+h1,h2,h3,h4,h5,h6{
+	font-family: 'Cairo', sans-serif;
+  
+   }
+body {
+	font-family: 'Cairo', sans-serif;
+	text-align: right;
+   }
+p , a ,h5 {
+	font-family: 'Cairo', sans-serif;
+	text-align: right;
+	direction: rtl;
+}
+.badge{
+	margin-right: auto;
+	margin-left:0;
+
+
+}
+.sidebar .user .info .caret {
+    position: absolute;
+    top: 17px;
+    right: 135px;
+    border-top-color: #777;
+}
+.sidebar .user .photo {
+    width: 70px;
+	height: 71px;
+}
+.update-pro{
+	margin: 15px 25px;}
+
+.update-pro button {
+		padding: 13px 25px;
+	background: #4d7cfe;
+	color: #fff;
+	border-radius: 3px;
+	justify-content: center;
+	width: 100%;
+	border: 0;
+	cursor: pointer;
+}
+.card .card-body {
+    padding: 15px 15px 10px 15px;
+    direction: rtl;
+}
+.card-tasks .card-body .table td {
+    font-size: 14px;
+    line-height: 1.8;
+    font-family: 'cairo',tahoma;
+}
+.update-pro button:hover {
+	background: #4d7cfe !important;
+	color: #fff;
+	transform: translateY(-2px);
+	transition: all .2s linear;
+}
+
+.update-pro:hover button:before{
+	display: none;
+}
+
+.update-pro button p, .update-pro button i{
+	color: #fff !important;
+	margin-bottom: 0px;
+}
+
+.update-pro button i{
+	margin-right: 5px !important;
+	font-size: 23px;
+	color: #C3C5CA;
+	margin-right: 15px;
+	width: 25px;
+	text-align: center;
+	vertical-align: middle;
+	float: left;
+}
+
+.demo .btn, .demo .progress{
+	margin-bottom: 15px !important;
+}
+
+.demo .form-check-label, .demo .form-radio-label{
+	margin-right: 15px;
+}
+
+.demo #slider{
+	margin-bottom: 15px;
+}
+
+.table-typo tbody > tr > td{
+	border-color: #fafafa;
+}
+
+.table-typo tbody > tr > td:first-child{
+	min-width: 200px;
+	vertical-align: bottom;
+}
+
+.table-typo tbody > tr > td:first-child p{
+	font-size: 14px;
+	color: #333;
+}
+
+.demo-icon {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	margin-bottom: 20px;
+	padding: 10px;
+	transition: all .2s;
+}
+
+.demo-icon:hover{
+	background-color: #f4f5f8;
+	border-radius: 3px;
+}
+
+.demo-icon .icon-preview{
+	font-size: 1.8rem;
+	margin-right: 10px;
+	line-height: 1;
+	color: #333439;
+}
+
+.demo-icon .icon-class{
+	font-weight: 300;
+	font-size: 13px;
+	color: #777;
+}
+
+.from-show-notify .form-control{
+	margin-bottom: 15px;
+}
+
+.from-show-notify label{
+	padding-top: 0.65rem;
+}
+.table {
+    color: #555 !important;
+    font-family: 'Cairo';
+}
+.table > tbody > tr > td, .table > tbody > tr > th {
+    padding: 8px;
+    font-family: 'Cairo';
+}
+.card .card-action {
+
+    direction: rtl;
+}
+.filterable {
+    margin-top: 15px;
+}
+.filterable .panel-heading .pull-right {
+    margin-top: -20px;
+}
+.filterable .filters input[disabled] {
+    background-color: transparent;
+    border: none;
+    cursor: auto;
+    box-shadow: none;
+    padding: 0;
+    height: auto;
+}
+.filterable .filters input[disabled]::-webkit-input-placeholder {
+    color: #333;
+}
+.filterable .filters input[disabled]::-moz-placeholder {
+    color: #333;
+}
+.filterable .filters input[disabled]:-ms-input-placeholder {
+    color: #333;
+}
+.bootstrap-table .fixed-table-toolbar .bs-bars, .bootstrap-table .fixed-table-toolbar .search, .bootstrap-table .fixed-table-toolbar .columns {
+
+    width: 100%;
+}
+.card .card-header {
+
+    direction: rtl;
+}
+#superav
+	{
+		border-radius: 75px;
+		width: 74px;
+	}
+	.modal-content {
+
+		direction: rtl;
+		text-align: right;
+	}
+.close{
+	float: left !important;
+}	
+
+.table-sortable tbody tr {
+    cursor: move;
+}
