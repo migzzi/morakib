@@ -1,5 +1,5 @@
 
-const { User } = require("../TodoList/models"),
+const { User } = require("./models"),
       authRouter = require("express").Router(),
       bcrypt = require("bcrypt"),
       config = require("../../../config/config.json")[process.env.APP_ENV || "development"],

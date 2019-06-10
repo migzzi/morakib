@@ -2,10 +2,11 @@ const express = require("express"),
       cors = require("cors"),
       bodyParser = require("body-parser"),
       morgan = require("morgan"),
-      db = require("./src/database/connection"),
       authRouter = require("./src/modules/auth/routes"),
       authMiddlewares = require("./src/modules/auth/middleware"),
-      path = require("path");
+      path = require("path"),
+      routers = require("./config/routers").routers,
+      db = require("./src/database/connection");
 
 const app = express();
 
@@ -29,7 +30,7 @@ const forceJSON = (req, res, next)=>{
 //register routers.
 //commit
 
-
+//Object.entries(routers).map(router => app.use(router[0], router[1]));
 
 //handle 404 not found routes.
 app.use((req, res, next)=>{
@@ -45,3 +46,11 @@ app.listen(process.env.PORT || 8888, (err)=>{
     if(err) console.log("Error happended! Server can't run.");
     else console.log("Listening....");
 })
+
+//Testing if the connection is established.
+db.authenticate()
+    .then(()=> {
+        console.log("Connection to the database has been established successfully.");
+        return db.sync();
+    })
+    .catch((err)=> console.log("ERROR! Connection couldn't be established. Check you DB service or your configurations.", err));

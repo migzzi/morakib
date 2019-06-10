@@ -1,7 +1,7 @@
 
 const jwt = require("jsonwebtoken"),
       secret = process.env.APP_TOKEN_SECRET || require("../../../config/config.json")[process.env.APP_ENV || "development"].token_secret,
-      { User } = require("../TodoList/models");
+      { User } = require("./models");
 
 
 function authenticateTokenFor(target){

@@ -20,10 +20,6 @@ const db = new Sequelize(
     }
 });
 
-//Testing if the connection is established.
-db.authenticate()
-    .then(()=> console.log("Connection to the database has been established successfully."))
-    .catch((err)=> console.log("ERROR! Connection couldn't be established. Check you DB service or your configurations.", err));
 
 //Export the db object.
 module.exports = db;
