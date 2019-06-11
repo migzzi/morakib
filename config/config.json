@@ -1,10 +1,10 @@
 {
   "development": {
-    "username": "maged",
-    "password": "123456",
+    "username": "ahmed",
+    "password": "1117",
     "database": "morakib",
     "host": "127.0.0.1",
-    "dialect": "postgres",
+    "dialect": "mysql",
     "salt_rounds_count": 10,
     "token_secret": "thisismytkoensecret99itshouldbemuchstronger"
   },

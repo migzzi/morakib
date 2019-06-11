@@ -4,6 +4,7 @@ const express = require("express"),
       morgan = require("morgan"),
       authRouter = require("./src/modules/auth/routes"),
       authMiddlewares = require("./src/modules/auth/middleware"),
+      gawlaRouter = require('./src/modules/gawla/routes');
       path = require("path"),
       routers = require("./config/routers").routers,
       gawlaModels = require("./src/modules/gawla/models"),
@@ -11,11 +12,18 @@ const express = require("express"),
 
 const app = express();
 
+app.set('view engine', 'ejs');
+app.set('views', 'views');
+app.use(express.static(path.join(__dirname, 'public')));
+
 //Third-party middlewares.
 app.use(cors());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(morgan("short"));
+
+
+app.use(gawlaRouter);
 
 //custom middlewares.
 const forceJSON = (req, res, next)=>{
@@ -25,6 +33,7 @@ const forceJSON = (req, res, next)=>{
     next();
 }
 //register routers.
+//commit
 
 //Object.entries(routers).map(router => app.use(router[0], router[1]));
 
