@@ -29,8 +29,8 @@ function authenticateTokenFor(target){
                         code: 0,
                         msg: "Invalid username."
                     });
-                req.user = user;
-                req.token = token;
+                req.user = res.locals.user = user;
+                req.token = res.locals.decodedToken = decodedToken;
                 next();
                 });
             });

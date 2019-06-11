@@ -34,11 +34,11 @@ const Gawla = db.define("gawla", {
         allowNull: false
     },
     long: {
-        type: Sequelize.NUMBER,
+        type: Sequelize.DECIMAL,
         allowNull: true
     },
     lat: {
-        type: Sequelize.NUMBER,
+        type: Sequelize.DECIMAL,
         allowNull: true
     }
 
@@ -71,7 +71,7 @@ const penalty_attrs = {
     }
 };
 
-const PenaltyClass = db.sefine("penalty_class", penalty_attrs, {sequelize: db});
+const PenaltyClass = db.define("penalty_class", penalty_attrs, {sequelize: db});
 
 const PenaltyType = db.define("penalty_type", penalty_attrs, {sequelize: db});
 
@@ -86,7 +86,7 @@ PenaltyTerm.belongsTo(PenaltyType);
 const Penalty = db.define("penalty", {
     id: IDType,
     value: {
-        type: Sequelize.NUMBER,
+        type: Sequelize.INTEGER,
         allowNull: false
     },
     comment: {
@@ -117,4 +117,4 @@ module.exports.Penalty = Penalty;
 module.exports.Gawla = Gawla;
 module.exports.PenaltyClass = PenaltyClass;
 module.exports.PenaltyTerm = PenaltyTerm;
-module.exports.PenaltyType = PenaltyType
+module.exports.PenaltyType = PenaltyType;

@@ -6,6 +6,7 @@ const express = require("express"),
       authMiddlewares = require("./src/modules/auth/middleware"),
       path = require("path"),
       routers = require("./config/routers").routers,
+      gawlaModels = require("./src/modules/gawla/models"),
       db = require("./src/database/connection");
 
 const app = express();
@@ -46,6 +47,6 @@ app.listen(process.env.PORT || 8888, (err)=>{
 db.authenticate()
     .then(()=> {
         console.log("Connection to the database has been established successfully.");
-        return db.sync();
+        return db.sync({force: true});
     })
     .catch((err)=> console.log("ERROR! Connection couldn't be established. Check you DB service or your configurations.", err));
