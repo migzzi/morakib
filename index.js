@@ -7,7 +7,7 @@ const express = require("express"),
       gawlaRouter = require('./src/modules/gawla/routes');
       path = require("path"),
       routers = require("./config/routers").routers,
-      gawlaMoels = require("./src/modules/gawla/models"),
+      gawlaModels = require("./src/modules/gawla/models"),
       db = require("./src/database/connection");
 
 const app = express();
@@ -34,6 +34,10 @@ const forceJSON = (req, res, next)=>{
 }
 //register routers.
 //commit
+app.get("/", (req, res) => res.render("index"));
+app.get("/1", (req, res) => res.render("supers"));
+app.get("/2", (req, res) => res.render("gawlat"));
+app.get("/3", (req, res) => res.render("add-gawla"));
 
 //Object.entries(routers).map(router => app.use(router[0], router[1]));
 
@@ -56,6 +60,6 @@ app.listen(process.env.PORT || 8888, (err)=>{
 db.authenticate()
     .then(()=> {
         console.log("Connection to the database has been established successfully.");
-        return db.sync();
+        return db.sync({force: true});
     })
     .catch((err)=> console.log("ERROR! Connection couldn't be established. Check you DB service or your configurations.", err));

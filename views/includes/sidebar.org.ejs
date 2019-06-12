@@ -1,0 +1,97 @@
+<div class="sidebar">
+        <div class="scrollbar-inner sidebar-wrapper">
+            <div class="user">
+                <div class="photo">
+                    <img src="assets/img/profile.jpg">
+                </div>
+                <div class="info">
+                    <a class="" data-toggle="collapse" href="#collapseExample" aria-expanded="true">
+                        <span>
+                            أحمد محمد
+                            <span class="user-level"><strong>
+                                <% if(decodedToken.role == 'manager'){ %>
+                                    مديــر
+                                <% } else if(decodedToken.role == 'admin'){ %>
+                                    أدمن
+                                <% } else if(decodedToken.role == 'inspector'){ %>
+                                    مراقب
+                                <% } %>
+                            </strong></span>
+                            <span class="caret"></span>
+                            <br/>
+                            <br/>
+                            <a class="btn btn-danger">	<i class="la  la-sign-out"></i>خــروج</a>
+                        </span>
+                    </a>
+                    <div class="clearfix"></div>
+    
+                    <div class="collapse in" id="collapseExample" aria-expanded="true" style="">
+                        <ul class="nav">
+    
+                            <li>
+                                <a href="#info">
+                                    <span class="link-collapse">البيانات الشخصية</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#logout">
+                                    <span class="link-collapse">تسجيل خروج</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <ul class="nav">
+                <li class="nav-item active">
+                    <% if(decodedToken.role === 'admin'){ %>
+                        <a href="/admin">
+                    <% } else if(decodedTokem === 'manager'){ %>
+                        <a href="/manager">
+                    <% } else if(decodedTokem === 'inspector'){ %>
+                        <a href="/inspector">
+                    <% } %>
+                        <i class="la la-home"></i>
+                        <p>الرئيسية</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/gawlat">
+                        <i class="la la-street-view"></i>
+                        <p>الجولات</p>
+                        <span class="badge badge-count badge-success"><%= gawlatCount %></span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="mokhlfat.html">
+                        <i class="la la-hourglass-start"></i>
+                        <% if(decodedToken.role !== 'inspector'){ %>
+                            <p>مخالفات قيد الإنتظار</p>
+                            <span class="badge badge-count badge-warning"><%= pendingPenCount %></span>
+                        <% } %>
+    
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="supers.html">
+                        <i class="la la-users"></i>
+                        <% if(decodedToken.role !== 'inspector'){ %>
+                            <p>المراقبين</p>
+                            <span class="badge badge-count"><%= inspectorsCount %></span>
+                        <% } %>
+                    </a>
+                </li>
+                    <li class="nav-item update-pro">
+                        <a href="add-gawla.html" class="btn btn-default">
+                            <i class="la la-street-view"></i>
+                            <% if(decodedToken.role == 'manager'){ %>
+                                <p>اضافة جولة</p>
+                            <% } else if(decodedToken.role == 'admin'){ %>
+                                <p>اضافة موظف</p>
+                            <% } %>  
+                        </a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
