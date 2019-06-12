@@ -30,7 +30,7 @@ function authenticateTokenFor(target){
                         msg: "Invalid username."
                     });
                 req.user = res.locals.user = user;
-                req.token = res.locals.decodedToken = decodedToken;
+                req.decodedToken = res.locals.decodedToken = decodedToken;
                 next();
                 });
             });
@@ -51,7 +51,6 @@ function checkRole(role){
         });
     }
 }
-
 
 module.exports = {
     authenticateTokenFor,

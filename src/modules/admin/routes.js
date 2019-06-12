@@ -46,7 +46,7 @@ adminRouter.post("/morakib", (req, res) => {
 });
 
 adminRouter.get("/morakib", (req, res) => {
-
+    
 });
 
 adminRouter.delete("/morakib/:id", (req, res) => {

@@ -39,80 +39,7 @@
 					</div>
 				</nav>
 			</div>
-			<div class="sidebar">
-				<div class="scrollbar-inner sidebar-wrapper">
-					<div class="user">
-						<div class="photo">
-							<img src="assets/img/profile.jpg">
-						</div>
-						<div class="info">
-							<a class="" data-toggle="collapse" href="#collapseExample" aria-expanded="true">
-								<span>
-									أحمد محمد
-									<span class="user-level"><strong>مديــر</strong></span>
-									<span class="caret"></span>
-									<br/>
-									<br/>
-									<a class="btn btn-danger">	<i class="la  la-sign-out"></i>خــروج</a>
-								</span>
-							</a>
-							<div class="clearfix"></div>
-
-							<div class="collapse in" id="collapseExample" aria-expanded="true" style="">
-								<ul class="nav">
-
-									<li>
-										<a href="#info">
-											<span class="link-collapse">البيانات الشخصية</span>
-										</a>
-									</li>
-									<li>
-										<a href="#logout">
-											<span class="link-collapse">تسجيل خروج</span>
-										</a>
-									</li>
-								</ul>
-							</div>
-						</div>
-					</div>
-					<ul class="nav">
-						<li class="nav-item active">
-							<a href="index.html">
-								<i class="la la-home"></i>
-								<p>الرئيسية</p>
-							</a>
-						</li>
-						<li class="nav-item">
-							<a href="gawlat.html">
-								<i class="la la-street-view"></i>
-								<p>الجولات</p>
-								<span class="badge badge-count badge-success">14</span>
-							</a>
-						</li>
-						<li class="nav-item">
-							<a href="mokhlfat.html">
-								<i class="la la-hourglass-start"></i>
-								<p>مخالفات قيد الإنتظار</p>
-								<span class="badge badge-count badge-warning">50</span>
-							</a>
-						</li>
-						<li class="nav-item">
-							<a href="supers.html">
-								<i class="la la-users"></i>
-								<p>المراقبين</p>
-								<span class="badge badge-count">602</span>
-							</a>
-						</li>
-						
-						<li class="nav-item update-pro">
-							<a href="add-gawla.html" class="btn btn-default">
-								<i class="la la-street-view"></i>
-								<p>إضافة جولة</p>
-							</a>
-						</li>
-					</ul>
-				</div>
-			</div>
+			<%- include("./includes/sidebar") %>
 			<div class="main-panel">
 				<div class="content">
 					<div class="container-fluid">
@@ -156,58 +83,7 @@
                                             </div>
 									</div>
                                     <div class="card-body">
-                                           <table id="table" 
-			 data-toggle="table"
-			 data-search="true"
-			 data-filter-control="true" 
-			 data-show-export="true"
-			 data-click-to-select="true"
-			 data-toolbar="#toolbar">
-                                                <thead>
-                                                    <tr>
-                                                        <th scope="col">الإسم</th>
-                                                        <th scope="col">العنوان</th>
-                                                        <th scope="col">نوع المخالفة</th>
-                                                        <th scope="col">المراقب</th>
-                                                        <th scope="col" >إدارة</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                        <tr>
-                                                                <td>فهد المطيري</td>
-                                                                <td>22 شارع الملك فهد</td>
-                                                                <td>صحية</td>
-                                                                <td>أحمد محمد</td>
-                                                                <td><button class="btn btn-success"><i class="la la-info"></i> التفاصيل</button>
-                                                                <button class="btn btn-danger"><i class="la la-trash"></i> حذف</button></td>
-                                                            </tr>
-                                                            <tr>
-                                                                    <td>فهد المطيري</td>
-                                                                    <td>22 شارع الملك فهد</td>
-                                                                    <td>صحية</td>
-                                                                    <td>أحمد محمد</td>
-                                                                    <td><button class="btn btn-success"><i class="la la-info"></i> التفاصيل</button>
-                                                                    <button class="btn btn-danger"><i class="la la-trash"></i> حذف</button></td>
-                                                                </tr>
-                                                                <tr>
-                                                                        <td>فهد المطيري</td>
-                                                                        <td>22 شارع الملك فهد</td>
-                                                                        <td>صحية</td>
-                                                                        <td>أحمد محمد</td>
-                                                                        <td><button class="btn btn-success"><i class="la la-info"></i> التفاصيل</button>
-                                                                        <button class="btn btn-danger"><i class="la la-trash"></i> حذف</button></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                            <td>فهد المطيري</td>
-                                                                            <td>22 شارع الملك فهد</td>
-                                                                            <td>صحية</td>
-                                                                            <td>أحمد محمد</td>
-                                                                            <td><button class="btn btn-success"><i class="la la-info"></i> التفاصيل</button>
-                                                                            <button class="btn btn-danger"><i class="la la-trash"></i> حذف</button></td>
-                                                                        </tr>
-                                                         
-                                                </tbody>
-                                            </table>
+                                        <%- include("./includes/gawlat_table.ejs") %>
                                         </div>
                                         <div class="card-action">
 

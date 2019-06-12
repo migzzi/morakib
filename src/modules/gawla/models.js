@@ -112,6 +112,11 @@ User.hasMany(Penalty);
 PenaltyClass.hasMany(Penalty);
 PenaltyType.hasMany(Penalty);
 PenaltyTerm.hasMany(Penalty);
+Gawla.belongsTo(User, {foreignKey: "inspector_id"});
+Gawla.belongsTo(User, {foreignKey: "manager_id"});
+User.hasMany(Gawla, {foreignKey: "inspector_id"});
+User.hasMany(Gawla, {foreignKey: "manager_id"});
+
 
 module.exports.Penalty = Penalty;
 module.exports.Gawla = Gawla;

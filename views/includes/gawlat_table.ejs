@@ -1,0 +1,30 @@
+<table id="table" 
+    data-toggle="table"
+    data-search="true"
+    data-filter-control="true" 
+    data-show-export="true"
+    data-click-to-select="true"
+    data-toolbar="#toolbar">
+    <thead>
+        <tr>
+            <th scope="col">الإسم</th>
+            <th scope="col">العنوان</th>
+            <th scope="col">نوع المخالفة</th>
+            <th scope="col">المراقب</th>
+            <th scope="col" >إدارة</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- iterate over gawlat -->
+            <tr>
+                    <td>فهد المطيري</td>
+                    <td>22 شارع الملك فهد</td>
+                    <td>صحية</td>
+                    <td>أحمد محمد</td>
+                    <td><button class="btn btn-success"><i class="la la-info"></i> التفاصيل</button>
+                    <!-- check if role is manager to show this button-->
+                    <button class="btn btn-danger"><i class="la la-trash"></i> حذف</button></td>
+                </tr>
+                
+    </tbody>
+</table>
