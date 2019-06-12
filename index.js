@@ -7,6 +7,7 @@ const express = require("express"),
       gawlaRouter = require('./src/modules/gawla/routes');
       path = require("path"),
       routers = require("./config/routers").routers,
+      gawlaMoels = require("./src/modules/gawla/models"),
       db = require("./src/database/connection");
 
 const app = express();
