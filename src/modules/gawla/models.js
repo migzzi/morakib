@@ -3,15 +3,8 @@ const Sequelize = require("sequelize"),
       User = require("../auth/models").User;
 
 
-const IDType = {
-    type: Sequelize.INTEGER(11),
-    allowNull:false,
-    autoIncreemnt: true,
-    primaryKey: true
-};
 
 const Gawla = db.define("gawla", {
-    id: IDType,
     name: {
         type: Sequelize.TEXT,
         allowNull: false
@@ -59,7 +52,6 @@ const Gawla = db.define("gawla", {
 });
 
 const penalty_attrs = {
-    id: IDType,
     name: {
         type: Sequelize.STRING(50),
         allowNull: false,
@@ -84,7 +76,6 @@ PenaltyType.hasMany(PenaltyTerm);
 PenaltyTerm.belongsTo(PenaltyType);
 
 const Penalty = db.define("penalty", {
-    id: IDType,
     value: {
         type: Sequelize.INTEGER,
         allowNull: false
@@ -114,6 +105,12 @@ PenaltyType.hasMany(Penalty);
 PenaltyTerm.hasMany(Penalty);
 Gawla.belongsTo(User, {foreignKey: "inspector_id"});
 Gawla.belongsTo(User, {foreignKey: "manager_id"});
+Gawla.belongsTo(PenaltyClass);
+Gawla.belongsTo(PenaltyType);
+Gawla.belongsTo(PenaltyTerm);
+PenaltyClass.hasMany(Gawla);
+PenaltyType.hasMany(Gawla);
+PenaltyTerm.hasMany(Gawla);
 User.hasMany(Gawla, {foreignKey: "inspector_id"});
 User.hasMany(Gawla, {foreignKey: "manager_id"});
 

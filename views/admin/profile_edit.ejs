@@ -1,0 +1,59 @@
+<%- include('../includes/head.ejs')%>
+<body >
+	<div class="wrapper">
+
+			<%- include("../includes/header.ejs") %>
+			<%- include("../includes/sidebar.ejs") %>
+			<div class="main-panel">
+				<div class="content">
+					<div class="container-fluid">
+						<form>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <img class="avatar_profile" src="/public/img/avatars/<%= user.avatar %>">
+                                    <input type="file" required value="<%= user.avatar %>">
+                                </div>
+                                <div class="mb-4 col-md-8 profile_data">
+                                    <label>اسم المستخدم</label>
+                                    <input class="form-control head_name mb-4" type="text" required value="<%= user.username %>">
+                                    <label>الرتبة</label>
+                                    <select class="form-control">
+                                        <% for(role of roles){  %>
+                                            <% if(user.role.id == role.id){ %>
+                                                <option selected value="<%= role.id %>"><%= role.role %></option>
+                                            <% } else {%>
+                                                <option value="<%= role.id %>"><%= role.role %></option>
+                                            <% } %>
+                                        <% } %>
+                                    </select>
+                                    <hr>
+                                    <div class="row mb-4">
+                                        <div class="col-md-6">
+                                            <label>أسم الأول </label> 
+                                            <input class="form-control" type="text" required value="<%= user.first_name %>">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label>أسم العائلة </label> 
+                                            <input class="form-control" type="text" required value="<%= user.last_name %>">
+                                        </div>
+                                    </div>
+                                    <div class="mb-4 row">
+                                        <div class="col-md-6">
+                                            <label>البريد الاليكترونى: </label> 
+                                            <input class="form-control" type="email" required value="<%= user.email %>">
+                                        </div>
+                                    </div>
+                                    <input class="form-control btn btn-success" type="submit" value="حفظ" id="edit_submit">
+                                </div>
+                            </div>
+                        </form>
+					</div>
+				</div>
+
+
+			</div>
+		</div>
+	</div>
+
+</body>
+<%- include('../includes/footer.ejs')%>

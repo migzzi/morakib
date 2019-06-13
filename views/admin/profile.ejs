@@ -1,0 +1,43 @@
+<%- include('../includes/head.ejs')%>
+<body >
+	<div class="wrapper">
+
+			<%- include("../includes/header.ejs") %>
+			<%- include("../includes/sidebar.ejs") %>
+			<div class="main-panel">
+				<div class="content">
+					<div class="container-fluid">
+						
+                        <div class="row">
+                            <div class="col-md-4">
+                                <img class="avatar_profile" src="/public/img/avatars/<%= user.avatar %>">
+                            </div>
+                            <div class="mb-4 col-md-8 profile_data">
+                                <h3 class="head_name"><%= user.username %></h3>
+                                <h6 class="sub_role"><%= user.role.role %></h6>
+                                <hr>
+                                <div class="row mb-4">
+                                    <div class="col-md-6">
+                                        الأسم الأول: <%= user.first_name %>
+                                    </div>
+                                    <div class="col-md-6">
+                                        أسم العائلة: <%= user.last_name %>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        البريد الاليكترونى: <%= user.email %>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+					</div>
+				</div>
+
+
+			</div>
+		</div>
+	</div>
+
+</body>
+<%- include('../includes/footer.ejs')%>

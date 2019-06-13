@@ -1,43 +1,10 @@
 <%- include('./includes/head.ejs')%>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
 
 
-</head>
 <body >
 	<div class="wrapper">
-		<div class="main-header">
-			<div class="logo-header">
-				<a href="index.html" class="logo">
-					نظـــام المخالفـــات  
-				</a>	<i class="la la-2x la-map-marker"></i>
-				<button class="navbar-toggler sidenav-toggler ml-auto" type="button" data-toggle="collapse" data-target="collapse" aria-controls="sidebar" aria-expanded="false" aria-label="Toggle navigation">
-					<span class="navbar-toggler-icon"></span>
-				</button>
-				<button class="topbar-toggler more"><i class="la la-ellipsis-v"></i></button>
-			</div>
-			<nav class="navbar navbar-header navbar-expand-lg">
-				<div class="container-fluid">			
-						<li class="nav-item dropdown">
-							<a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#" aria-expanded="false"> <img src="assets/img/profile.jpg" alt="user-img" width="36" class="img-circle"><span >أهلا بك ، أحمد محمد</span></span> </a>
-							<ul class="dropdown-menu dropdown-user">
-								<li>
-									<div class="user-box">
-										<div class="u-img"><img src="assets/img/profile.jpg" alt="user"></div>
-										<div class="u-text">
-											<h4>أحمد محمد</h4>
-											<p class="text-muted">hello@test.com</p><a href="profile.html" class="btn btn-rounded btn-danger btn-sm">البيانات الشخصية</a></div>
-										</div>
-									</li>
-									<div class="dropdown-divider"></div>
-									<a class="dropdown-item" href="#"><i class="fa fa-power-off"></i> تسجيل خروج</a>
-								</ul>
-								<!-- /.dropdown-user -->
-							</li>
-						</ul>
-					</div>
-				</nav>
-			</div>
+			<%- include("./includes/header") %>
+
 			<%- include("./includes/sidebar") %>
 			<div class="main-panel">
 				<div class="content">
@@ -191,6 +158,8 @@
 	  </div>
 	</div>
   </div>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
 <script>
 $(document).ready(function() {
     $("#add_row").on("click", function() {

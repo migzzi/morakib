@@ -8,14 +8,15 @@ const express = require("express"),
       path = require("path"),
       routers = require("./config/routers").routers,
       gawlaModels = require("./src/modules/gawla/models"),
-      db = require("./src/database/connection");
+      db = require("./src/database/connection"),
+      adminRouter = require("./src/modules/admin/routes").adminRouter;
 
+const {User, Role} = require("./src/modules/auth/models");
 const app = express();
 
 app.set('view engine', 'ejs');
 app.set('views', 'views');
 app.use(express.static(path.join(__dirname, 'public')));
-
 //Third-party middlewares.
 app.use(cors());
 app.use(bodyParser.urlencoded({extended: true}));
@@ -39,19 +40,20 @@ app.get("/1", (req, res) => res.render("supers"));
 app.get("/2", (req, res) => res.render("gawlat"));
 app.get("/3", (req, res) => res.render("add-gawla"));
 
+app.use("/admin", adminRouter);
 //Object.entries(routers).map(router => app.use(router[0], router[1]));
 
 //handle 404 not found routes.
-app.use((req, res, next)=>{
+app.use((req, res, next) => {
     return res.status(404).json({error: true, msg: "Resource not found."});
 })
 //Handle 500 server errors.
-app.use((err, req, res, next)=>{
+app.use((err, req, res, next) => {
     console.log(err);
     return res.status(500).json({error: true, msg: "Something went wrong!"});
 });
 
-app.listen(process.env.PORT || 8888, (err)=>{
+app.listen(process.env.PORT || 8888, (err) => {
     if(err) console.log("Error happended! Server can't run.");
     else console.log("Listening....");
 })
@@ -61,5 +63,17 @@ db.authenticate()
     .then(()=> {
         console.log("Connection to the database has been established successfully.");
         return db.sync({force: true});
+    })
+    .then(() => {
+        return Role.bulkCreate([
+            {role: "admin", desc: "the big boss"},
+            {role: "manager", desc: "the big boss"},
+            {role: "inspector", desc: "the big boss"},
+        ]);
+    })
+    .then(() => {
+        return User.bulkCreate([
+            {first_name: "maged", last_name: "magdy", username: "mego", password: "34234", email: "magedmagdy105@gmail.com", avatar: "default.png", role_id: 2}
+        ])
     })
     .catch((err)=> console.log("ERROR! Connection couldn't be established. Check you DB service or your configurations.", err));
