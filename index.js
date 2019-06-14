@@ -34,12 +34,7 @@ const forceJSON = (req, res, next)=>{
 }
 //register routers.
 //commit
-app.get("/", (req, res) => res.render("index"));
-app.get("/1", (req, res) => res.render("supers"));
-app.get("/2", (req, res) => res.render("gawlat"));
-app.get("/3", (req, res) => res.render("add-gawla"));
-
-//Object.entries(routers).map(router => app.use(router[0], router[1]));
+// 
 
 //handle 404 not found routes.
 app.use((req, res, next)=>{

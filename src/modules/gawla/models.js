@@ -11,7 +11,7 @@ const IDType = {
 };
 
 const Gawla = db.define("gawla", {
-    id: IDType,
+    
     name: {
         type: Sequelize.TEXT,
         allowNull: false

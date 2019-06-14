@@ -62,33 +62,34 @@
 										<h4 class="card-title">تفاصيل الجولة</h4>
 									</div>
                                     <div class="card-body">
+										<form action="/gawla/add" method="POST">
 											<div class="form-group">
 												<label for="squareInput">اسم الشخص / الشركة</label>
-												<input type="text" class="form-control input-square" id="squareInput" >
+												<input type="text" class="form-control input-square" id="squareInput" name="name"" >
                                             </div>
                                             <div class="form-group">
                                                     <label for="squareInput">جهة الإتصال</label>
-                                                    <input type="text" class="form-control input-square" id="squareInput" >
+                                                    <input type="text" class="form-control input-square" id="squareInput" name="phone">
                                                 </div>
 											<div class="form-group">
 												<label for="squareSelect">نوع الجولة</label>
-												<select class="form-control input-square" id="squareSelect">
-													<option>صحية</option>
-													<option>مهلبية</option>
+												<select class="form-control input-square" id="squareSelect" name="type">
+													<option value="صحية" >صحية</option>
+													<option value="مهلبية" >مهلبية</option>
 
 												</select>
                                             </div>
                                             <div class="form-group">
                                                     <label for="squareInput">العنوان</label>
-                                                    <input type="text" class="form-control input-square" id="squareInput" >
+                                                    <input type="text" class="form-control input-square" id="squareInput" name="address" >
                                                 </div>
                                                 <div class="form-group">
                                                         <label for="squareInput">رقم الرخصة</label>
-                                                        <input type="number" class="form-control input-square" id="squareInput" >
+                                                        <input type="number" class="form-control input-square" id="squareInput" name="liscene_num" >
                                                     </div>
                                                     <div class="form-group">
-                                                            <label for="squareInput">رقم الهوية</label>
-                                                            <input type="number" class="form-control input-square" id="squareInput" >
+															<input type="radio" name="target" value="organizaiton" style="position:static"> المنظمة
+															<input type="radio" name="target" value="individual" style="position:static"> افراد
                                                         </div>
 
 											<div class="form-group">
@@ -101,8 +102,9 @@
 											</div>
 														
 										</div>
+										<button type="submit" class="btn btn-primary">إنهاء</button>
+									</form>
                                         <div class="card-action">
-                                                <button class="btn btn-primary">إنهاء</button>
                                                 <button class="btn btn-default" data-toggle="modal" data-target="#myModal">تحرير مخالفة</button>
                                                 <span>|</span>
                                                 <button class="btn btn-success">حفظ </button>
