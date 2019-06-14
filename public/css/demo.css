@@ -201,3 +201,23 @@ p , a ,h5 {
 .table-sortable tbody tr {
     cursor: move;
 }
+
+.head_name{
+	color: #333;
+	font-weight: bold;
+	font-size: 30;
+}
+.sub_role{
+	color: #555;
+	font-weight: 400;
+	font-size: 20;
+}
+.avatar_profile{
+	width: 400px;
+	height: 600px;
+	border-radius: 5px;
+}
+
+.profile_data {
+	text-align: left;
+}

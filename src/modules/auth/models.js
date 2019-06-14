@@ -10,7 +10,6 @@ const IDType = {
 };
 
 const User = db.define("user", {
-    id: IDType,
     first_name: {
         type: Sequelize.STRING(50),
         allowNull: false
@@ -27,7 +26,10 @@ const User = db.define("user", {
     email: {
         type: Sequelize.STRING(50),
         allowNull: false,
-        unique: true
+        unique: true,
+        validate: {
+            isEmail: true
+        }
     },
     password: {
         type: Sequelize.STRING(100),
@@ -44,9 +46,8 @@ const User = db.define("user", {
 });
 
 const Role = db.define("role", {
-    id: IDType,
     role: {
-        type: Sequelize.ENUM(["admin", "manager", "inspector"]),
+        type: Sequelize.STRING(20),
         allowNull: false
     },
     desc: {
