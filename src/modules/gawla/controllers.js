@@ -1,22 +1,35 @@
 
 const Gawla = require("./models").Gawla,
         Class = require('./models').PenaltyClass,
-        User = require('../auth/models').User;
+        User = require('../auth/models').User,
+        Role = require('../auth/models').Role;
 
 exports.getHome = (req,res)=>{
     res.render('index')
 };
 
 exports.getAddGawla = (req,res)=>{
-    Class.findAll().then((classes)=>{
-        User.findAll({where:{id:3}}).then((inspectors)=>{
-            console.log(inspectors);
-            res.render('gawla/add-gawla',{'classes' : classes, inspectors: inspectors}); 
+    Role.findOne({where: {role: 'inspector'}})
+    .then(role =>{
+        User.findAll({where: {roleId: role.id}})
+        .then(users=>{
+            Class.findAll()
+            .then(classes=>{
+                res.render('gawla/add-gawla',{users: users, classes: classes, msg: ""});
+            })
         })
-        }).catch((err)=>{
-            console.log("classes"+err);
+    }).catch(err =>{
+        console.log(err);
+    })
+    // Class.findAll().then((classes)=>{
+    //     User.findAll({where:{id:3}}).then((inspectors)=>{
+    //         console.log(inspectors);
+    //         res.render('gawla/add-gawla',{'classes' : classes, inspectors: inspectors}); 
+    //     })
+    //     }).catch((err)=>{
+    //         console.log("classes"+err);
 
-        })
+    //     })
 };
 
 exports.postAddGawla = (req,res)=>{
@@ -48,7 +61,7 @@ exports.postAddGawla = (req,res)=>{
         // console.log(result);
         res.redirect("/gawlat");
     }).catch((err)=>{
-        console.log(err);
+        res.render('gawla/add-gawla',{msg: 'Please enter the mising fields....'})
     })
 
 };
@@ -74,8 +87,19 @@ exports.getGawlat = (req, res)=>{
 
 exports.getEditGawla = (req,res)=>{
     const id = req.params.id;
-    Gawla.find({wher: {id: id}}).then((gawla)=>{
-        res.render('gawla/edit-gawla',{gawla: gawla});
+    console.log(id);
+    Gawla.findOne({where: {id: id}}).then((gawla)=>{
+        console.log(gawla)
+        Role.findOne({where: {role: 'inspector'}})
+        .then((role)=>{
+            return User.findAll({where:{roleId: role.id}})
+        })
+        .then(users => {
+             Class.findAll()
+            .then(classes=> {
+                 res.render('gawla/edit-gawla', {users: users, gawla: gawla, classes: classes});
+            })
+        })
     }).catch((err)=>{
         console.log(err);
         res.render('error',{err: err});

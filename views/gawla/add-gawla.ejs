@@ -32,11 +32,11 @@
 										<form action="/gawla/add" method="POST">
 											<div class="form-group">
 												<label for="squareInput">اسم الشخص / الشركة</label>
-												<input type="text" class="form-control input-square" id="squareInput" name="name"" >
+												<input type="text" class="form-control input-square" id="squareInput" name="name" required >
                                             </div>
                                             <div class="form-group">
                                                     <label for="squareInput">جهة الإتصال</label>
-                                                    <input type="text" class="form-control input-square" id="squareInput" name="phone">
+                                                    <input type="number" class="form-control input-square" id="squareInput" name="phone" required>
                                                 </div>
 											<div class="form-group">
 												<label for="squareSelect">نوع الجولة</label>
@@ -54,7 +54,7 @@
                                                 </div>
                                                 <div class="form-group">
                                                         <label for="squareInput">رقم الرخصة</label>
-                                                        <input type="number" class="form-control input-square" id="squareInput" name="liscene_num" >
+                                                        <input type="number" class="form-control input-square" id="squareInput" name="liscene_num" required >
                                                     </div>
                                                     <div class="form-group">
 															<input type="radio" name="target" value="organizaiton" style="position:static"> المنظمة
@@ -64,8 +64,8 @@
 											<div class="form-group">
 												<label for="pillSelect">تعيين مراقب</label>
 												<select class="form-control input-pill" id="pillSelect" name="inspector">
-													<% for (let obj of inspectors){ %>
-														<option value="<%=obj.id%>" > <%= obj.username%> </option>
+													<% for (let obj of users){ %>
+														<option value="<%=obj.id%>" > <%= obj.first_name%> <%= obj.last_name%> </option>
 														<% }%>
 												</select>
 											</div>
@@ -78,7 +78,10 @@
                                                 <span>|</span>
                                                 <button class="btn btn-success">حفظ </button>
                                                 <button class="btn btn-danger">رجوع</button>
-                                            </div>
+											</div>
+										<% if(msg){%>
+											<p class="alert alert-danger"> <%= msg%> </p>
+											<%}%>
 								</div>
 							</div>
 						</div>

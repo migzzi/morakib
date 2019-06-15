@@ -107,14 +107,12 @@ User.hasMany(Penalty);
 PenaltyClass.hasMany(Penalty);
 PenaltyType.hasMany(Penalty);
 PenaltyTerm.hasMany(Penalty);
-Gawla.belongsTo(User, {foreignKey: "inspector_id"});
-Gawla.belongsTo(User, {foreignKey: "manager_id"});
+Gawla.belongsTo(User, {foreignKey: "inspector_id", as: "inspector"});
+Gawla.belongsTo(User, {foreignKey: "manager_id", as: "manager"});
 Gawla.belongsTo(PenaltyClass, {foreignKey: "class_id"});
-// Gawla.belongsTo(PenaltyType);
-// Gawla.belongsTo(PenaltyTerm);
+
 PenaltyClass.hasMany(Gawla ,{foreignKey: "class_id"});
-// PenaltyType.hasMany(Gawla);
-// PenaltyTerm.hasMany(Gawla);
+
 User.hasMany(Gawla, {foreignKey: "inspector_id"});
 User.hasMany(Gawla, {foreignKey: "manager_id"});
 

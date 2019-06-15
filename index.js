@@ -68,9 +68,9 @@ db.authenticate()
     // })
     // .then(() => {
     //     return User.bulkCreate([
-    //         {first_name: "maged", last_name: "magdy", username: "mego", password: "34234", email: "magedmagdy105@gmail.com", avatar: "default.png", role_id: 2},
-    //         {first_name: "ahmed", last_name: "wafik", username: "wafik", password: "1117", email: "wafik105@gmail.com", avatar: "default.png", role_id: 2},
-    //         {first_name: "ahmed", last_name: "nagieb", username: "nagieb", password: "1117", email: "nagieb105@gmail.com", avatar: "default.png", role_id: 3}
+    //         {first_name: "maged", last_name: "magdy", username: "mego", password: "34234", email: "magedmagdy105@gmail.com", avatar: "default.png", roleId: 2},
+    //         {first_name: "ahmed", last_name: "wafik", username: "wafik", password: "1117", email: "wafik105@gmail.com", avatar: "default.png", roleId: 2},
+    //         {first_name: "ahmed", last_name: "nagieb", username: "nagieb", password: "1117", email: "nagieb105@gmail.com", avatar: "default.png", roleId: 3}
 
     //     ])
     // })
