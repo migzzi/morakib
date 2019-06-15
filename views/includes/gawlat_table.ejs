@@ -16,15 +16,16 @@
     </thead>
     <tbody>
         <!-- iterate over gawlat -->
+        <%gawlat.forEach((gawla)=>{%>
             <tr>
-                    <td>فهد المطيري</td>
-                    <td>22 شارع الملك فهد</td>
-                    <td>صحية</td>
+                    <td> <%= gawla.name%> </td>
+                    <td> <%= gawla.Address%> </td>
+                    <td>  </td>
                     <td>أحمد محمد</td>
-                    <td><button class="btn btn-success"><i class="la la-info"></i> التفاصيل</button>
+                    <td><a href="/gawla/edit/<%= gawla.id%>" class="btn btn-success"><i class="la la-info"></i>  التفاصيل</a>
                     <!-- check if role is manager to show this button-->
                     <button class="btn btn-danger"><i class="la la-trash"></i> حذف</button></td>
                 </tr>
-                
+             <%})%>   
     </tbody>
 </table>

@@ -12,6 +12,7 @@ const express = require("express"),
       adminRouter = require("./src/modules/admin/routes").adminRouter;
 
 const {User, Role} = require("./src/modules/auth/models");
+const Penalty_class = require ('./src/modules/gawla/models').PenaltyClass;
 const app = express();
 
 app.set('view engine', 'ejs');
@@ -35,13 +36,7 @@ const forceJSON = (req, res, next)=>{
 }
 //register routers.
 //commit
-app.get("/", (req, res) => res.render("index"));
-app.get("/1", (req, res) => res.render("supers"));
-app.get("/2", (req, res) => res.render("gawlat"));
-app.get("/3", (req, res) => res.render("add-gawla"));
-
-app.use("/admin", adminRouter);
-//Object.entries(routers).map(router => app.use(router[0], router[1]));
+// 
 
 //handle 404 not found routes.
 app.use((req, res, next) => {
@@ -62,31 +57,28 @@ app.listen(process.env.PORT || 8888, (err) => {
 db.authenticate()
     .then(()=> {
         console.log("Connection to the database has been established successfully.");
-        return db.sync({force: true});
+        // return db.sync({force: true});
     })
-    .then(() => {
-        return Role.bulkCreate([
-            {role: "admin", desc: "the big boss"},
-            {role: "manager", desc: "the big boss"},
-            {role: "inspector", desc: "the big boss"},
-        ]);
-    })
-    .then(() => {
-        return User.bulkCreate([
-            {first_name: "maged", last_name: "magdy", username: "mego", password: "34234", email: "magedmagdy105@gmail.com", avatar: "default.png", roleId: 2},
-            {first_name: "ahmed", last_name: "magdy", username: "ahmedm", password: "34234", email: "ahmed@gmail.com", avatar: "default.png", roleId: 3},
-            {first_name: "marwa", last_name: "magdy", username: "mero", password: "34234", email: "marwa@gmail.com", avatar: "default.png", roleId: 3}
-        ])
-    })
-    .then(() => {
-        return User.findOne({where: {id: 2}}).then((user) => {
-            user.setManager(1).then((user) => {
-                
-                return User.findAll({where: {manager_id: 1}})
-                .then(users => {
-                    users.forEach(u => console.log(u.username));
-                })
-            })
-        })
-    })
+    // .then(() => {
+    //     return Role.bulkCreate([
+    //         {role: "admin", desc: "the big boss"},
+    //         {role: "manager", desc: "the big boss"},
+    //         {role: "inspector", desc: "the big boss"},
+    //     ]);
+    // })
+    // .then(() => {
+    //     return User.bulkCreate([
+    //         {first_name: "maged", last_name: "magdy", username: "mego", password: "34234", email: "magedmagdy105@gmail.com", avatar: "default.png", role_id: 2},
+    //         {first_name: "ahmed", last_name: "wafik", username: "wafik", password: "1117", email: "wafik105@gmail.com", avatar: "default.png", role_id: 2},
+    //         {first_name: "ahmed", last_name: "nagieb", username: "nagieb", password: "1117", email: "nagieb105@gmail.com", avatar: "default.png", role_id: 3}
+
+    //     ])
+    // })
+    // .then(() => {
+    //     return Penalty_class.bulkCreate([
+    //         {name: 'صحية' , descrition: 'لجولات الخاصة بالصحية'},
+    //         {name: 'بناء' , descrition: 'لجولات الخاصةبالبناء'}
+
+    //     ])
+    // })
     .catch((err)=> console.log("ERROR! Connection couldn't be established. Check you DB service or your configurations.", err));
