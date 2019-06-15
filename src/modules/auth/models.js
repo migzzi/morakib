@@ -36,7 +36,7 @@ const User = db.define("user", {
         allowNull: false
     },
     avatar: {
-        type: Sequelize.STRING(50),
+        type: Sequelize.STRING(150),
         allowNull: true
     }
 
@@ -58,6 +58,8 @@ const Role = db.define("role", {
     underscored: true,
     sequelize: db
 });
+
+User.belongsTo(User, {as: "manager"});
 
 User.belongsTo(Role);
 Role.hasMany(User);

@@ -1,6 +1,6 @@
 <%- include('../includes/head.ejs')%>
 <body >
-	<div class="wrapper">
+    <div class="wrapper">
         <%- include("../includes/header.ejs") %>
         <%- include("../includes/sidebar.ejs") %>
         <div class="main-panel mt-5">
@@ -15,21 +15,30 @@
 <%- include('../includes/footer.ejs')%>
 <script>
     $(document).ready(function(){
-        submitForm("PUT", "/admin/employee/<%= targetUser.id %>", $("#profile_form"), {
+
+        submitForm("POST", "/admin/employees", $("#profile_form"), {
             success: (data) => {
                 let resFlash = $("#result_flash");
                 resFlash.empty();
                 let context = data.success ? "success" : "danger";
-                resFlash.append($("<div class='alert alert-" + context + "'>" + data.msg + "</div>"));
+                resFlash.append($("<div class='alert alert-" + context + "' role='alert'>" + data.msg + "</div>"));
+                if(data.success){
+                    $("#profile_form").find("input[type!=submit]").each(function(){$(this).val("");});
+                    $("#profile_form").find("img").each(function(){$(this).attr("src", "/img/avatars/default.png");});
+                }
+
             },
             error: (err) => {
                 let resFlash = $("#result_flash");
                 resFlash.empty();
-                resFlash.append("<div class='alert alert-danger'>Couldn't perform your action, Please try again.</div>")
+                resFlash.append("<div class='alert alert-danger' role='alert'>Couldn't perform your action, Please try again.</div>")
             }
         });
+
         readImgURL($("#avatar_input"), $("#avatar_pic"));
+
         initForm();
+
 
     })
 
