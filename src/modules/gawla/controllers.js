@@ -1,11 +1,19 @@
 
 const Gawla = require("./models").Gawla;
+const penaltyClass = require("./models").PenaltyClass;
+const penalty = require("./models").Penalty;
+
 
 exports.getHome = (req,res)=>{
     res.render('index')
 };
 
 exports.getAddGawla = (req,res)=>{
+    
+    penaltyClass.findAll()
+    .then(result => {
+        console.log(result[0]);
+    }).catch(err => console.log(error));
     res.render('add-gawla')
 };
 

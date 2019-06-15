@@ -62,7 +62,7 @@ app.listen(process.env.PORT || 8888, (err) => {
 db.authenticate()
     .then(()=> {
         console.log("Connection to the database has been established successfully.");
-        return db.sync({force: true});
+        return db.sync();
     })
     .then(() => {
         return Role.bulkCreate([
@@ -71,9 +71,9 @@ db.authenticate()
             {role: "inspector", desc: "the big boss"},
         ]);
     })
-    .then(() => {
-        return User.bulkCreate([
-            {first_name: "maged", last_name: "magdy", username: "mego", password: "34234", email: "magedmagdy105@gmail.com", avatar: "default.png", role_id: 2}
-        ])
-    })
+    // .then(() => {
+    //     return User.bulkCreate([
+    //         {first_name: "maged", last_name: "magdy", username: "mego", password: "34234", email: "magedmagdy105@gmail.com", avatar: "default.png", role_id: 2}
+    //     ])
+    // })
     .catch((err)=> console.log("ERROR! Connection couldn't be established. Check you DB service or your configurations.", err));

@@ -1,6 +1,6 @@
 {
     "database": {
-        "name": "morakib_db",
+        "name": "morakib",
         "user": "root",
         "password": "",
         "host": "localhost",
