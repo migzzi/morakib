@@ -6027,7 +6027,7 @@ body {
 }
 
 /*     Alert    */
-.alert {
+/* .alert {
   border: 0px;
   color: #ffffff;
   position: relative;
@@ -6075,7 +6075,7 @@ body {
 
 .alert-danger {
   background-color: #ff646d;
-}
+} */
 
 /*    Button    */
 .btn {

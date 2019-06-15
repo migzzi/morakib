@@ -1,0 +1,45 @@
+<div id="result_flash"></div>
+<form id="profile_form">
+        <div class="row">
+            <div class="col-md-4">
+                <img class="avatar_profile mb-3" id="avatar_pic" src="/img/avatars/<%= targetUser.avatar %>">
+                <input type="file" class="btn btn-success form-control" name="avatar" value="اختر صورة" id="avatar_input" required value="<%= targetUser.avatar %>">
+            </div>
+            <div class="mb-4 col-md-8 profile_data">
+                <label>اسم المستخدم</label>
+                <input class="form-control head_name mb-4" name="username" type="text" required value="<%= targetUser.username %>">
+                <% if(!edit) { %>
+                    <label>كلمة المرور</label>
+                    <input class="form-control head_name mb-4" name="password" type="password" required value="">
+                <% } %>
+                <label>الرتبة</label>
+                <select class="form-control mb-4" name="role" id="role_selector" required>
+                    <% for(role of roles){  %>
+                        <% if(targetUser.role && targetUser.role.id == role.id){ %>
+                            <option selected value="<%= role.id %>" data-value="<%= role.role %>"><%= role.role %></option>
+                        <% } else {%>
+                            <option value="<%= role.id %>" data-value="<%= role.role %>"><%= role.role %></option>
+                        <% } %>
+                    <% } %>
+                </select>
+                <hr>
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <label>أسم الأول </label> 
+                        <input class="form-control" name="first_name" type="text" required value="<%= targetUser.first_name %>">
+                    </div>
+                    <div class="col-md-6">
+                        <label>أسم العائلة </label> 
+                        <input class="form-control" name="last_name" type="text" required value="<%= targetUser.last_name %>">
+                    </div>
+                </div>
+                <div class="mb-4 row">
+                    <div class="col-md-6">
+                        <label>البريد الاليكترونى: </label> 
+                        <input class="form-control" name="email" type="email" required value="<%= targetUser.email %>">
+                    </div>
+                </div>
+                <input class="form-control btn btn-success" type="submit" value="حفظ" id="form_submit">
+            </div>
+        </div>
+    </form>
