@@ -7,7 +7,7 @@ const jwt = require("jsonwebtoken"),
 function authenticateTokenFor(target){
 
     return function (req, res, next){
-        let token = req.headers["x-access-token"] || req.headers["authorization"];
+        let token = req.headers["x-access-token"] || req.headers["authorization"] || (req.cookies && req.cookies["auth_token"]) || req.headers["cookie"]["auth_token"];
         if(!token)
             return res.status(400).json({
                 error: true,

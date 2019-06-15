@@ -73,7 +73,20 @@ db.authenticate()
     })
     .then(() => {
         return User.bulkCreate([
-            {first_name: "maged", last_name: "magdy", username: "mego", password: "34234", email: "magedmagdy105@gmail.com", avatar: "default.png", role_id: 2}
+            {first_name: "maged", last_name: "magdy", username: "mego", password: "34234", email: "magedmagdy105@gmail.com", avatar: "default.png", roleId: 2},
+            {first_name: "ahmed", last_name: "magdy", username: "ahmedm", password: "34234", email: "ahmed@gmail.com", avatar: "default.png", roleId: 3},
+            {first_name: "marwa", last_name: "magdy", username: "mero", password: "34234", email: "marwa@gmail.com", avatar: "default.png", roleId: 3}
         ])
+    })
+    .then(() => {
+        return User.findOne({where: {id: 2}}).then((user) => {
+            user.setManager(1).then((user) => {
+                
+                return User.findAll({where: {manager_id: 1}})
+                .then(users => {
+                    users.forEach(u => console.log(u.username));
+                })
+            })
+        })
     })
     .catch((err)=> console.log("ERROR! Connection couldn't be established. Check you DB service or your configurations.", err));
