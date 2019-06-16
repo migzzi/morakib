@@ -6,7 +6,6 @@ const express = require("express"),
       authMiddlewares = require("./src/modules/auth/middleware"),
       gawlaRouter = require('./src/modules/gawla/routes');
       path = require("path"),
-      routers = require("./config/routers").routers,
       gawlaModels = require("./src/modules/gawla/models"),
       db = require("./src/database/connection"),
       adminRouter = require("./src/modules/admin/routes").adminRouter;
@@ -66,11 +65,21 @@ db.authenticate()
     //         {role: "inspector", desc: "the big boss"},
     //     ]);
     // })
-    // g)
+  
     // .then(() => {
     //     return Penalty_class.bulkCreate([
     //         {name: 'صحية' , descrition: 'لجولات الخاصة بالصحية'},
     //         {name: 'بناء' , descrition: 'لجولات الخاصةبالبناء'}
+
+    //     ])
+    // })
+    // .then(() => {
+    //     return User.bulkCreate([
+    //         {first_name: "احمد",last_name:"وفيق",username:'وفيق',email: 'eng@gmail.com',manager_id:'',role_id:2},
+    //         {first_name: "احمد",last_name:"وفيق",username:'نجيب',email: 'eng3@gmail.com',manager_id:1,role_id:3},
+    //         {first_name: "محمد",last_name:"وفيق",username:'ماجد',email: 'eng56@gmail.com',manager_id: 1,role_id:3}
+
+
 
     //     ])
     // })

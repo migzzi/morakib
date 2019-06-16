@@ -4,6 +4,9 @@ const Gawla = require("./models").Gawla,
         User = require('../auth/models').User,
         Role = require('../auth/models').Role;
 
+const NodeGeocoder = require('node-geocoder');
+
+
 exports.getHome = (req,res)=>{
     res.render('index')
 };
@@ -33,15 +36,17 @@ exports.getAddGawla = (req,res)=>{
 };
 
 exports.postAddGawla = (req,res)=>{
-    // console.log(req.body);
+    // console.log("++++++",req.body);
     const name_ = req.body.name;
     const phone = req.body.phone;
-    const class_id = parseInt(req.body.type);
+    const class_id = req.body.class_id;
     const address = req.body.address;
     const liscene_num = req.body.liscene_num;
     const target_ = req.body.target;
-    const inspector_id = parseInt(req.body.inspector);
-    // console.log(parseInt(class_id));
+    const inspector_id = req.body.inspector_id;
+    // console.log("class",class_id);
+    // console.log("inspector",inspector_id);
+
 
 
   Gawla.create({
@@ -53,15 +58,22 @@ exports.postAddGawla = (req,res)=>{
       phone_no : phone,
       long : 44.5,
       lat : 55.7,
-      manager_id: 2,
+      manager_id: 1,
       inspector_id: inspector_id,
       class_id: class_id,
 
     }).then((result)=>{
         // console.log(result);
-        res.redirect("/gawlat");
+        res.json({
+            success: true,
+            
+        })
     }).catch((err)=>{
-        res.render('gawla/add-gawla',{msg: 'Please enter the mising fields....'})
+        console.log(err);
+        res.json({
+            error: true,
+            msg: "من فضلك ادخل البيانات الناقصة",
+        })
     })
 
 };
@@ -77,12 +89,42 @@ exports.getGawlat = (req, res)=>{
     //     console.log(err);
     //     res.render("error", {error: err});
     // })
-    Gawla.findAll().then((gawlat)=>{
+    Gawla.findAll({include: [{model: Class, as: "penalty_class"},{model: User,as:'inspector'}]}).then((gawlat)=>{
         console.log(gawlat);
         res.render('gawla/gawlat',{gawlat : gawlat});
     }).catch((err)=>{
         console.log("gawlat"+err);
     })
+};
+
+
+exports.getGawla = (req,res)=>{
+    Gawla.findOne({where: {id: req.params.id}, include: [{model: Class, as: "penalty_class"},
+    {model: User,as:'inspector'}]}).then((gawla)=>{
+        res.render('gawla/gawla',{gawla: gawla});
+    }).catch((err)=>{
+        console.log("gawla"+err);
+        res.render('admin/error');
+    })
+};
+
+exports.getlocationApi = (req,res)=>{
+    let options = {
+        provider: 'google',
+       
+        // Optional depending on the providers
+        httpAdapter: 'https', // Default
+        apiKey: 'AIzaSyCzVBN5Lp5-Ge7FpX22nEd7ClKFkjN87Xs', // for Mapquest, OpenCage, Google Premier
+        formatter: null         // 'gpx', 'string', ...
+      };
+      var geocoder = NodeGeocoder(options);
+      geocoder.geocode('29 القاهرة مصر' )
+     .then(function(result) {
+      console.log(result);
+     })
+     .catch(function(err) {
+        console.log(err);
+     });
 };
 
 exports.getEditGawla = (req,res)=>{
@@ -107,9 +149,45 @@ exports.getEditGawla = (req,res)=>{
 };
 
 exports.postEditGawla = (req,res)=>{
-    
+   
+    let editedGawla = {
+        name : req.body.name,
+      Address : req.body.address,
+      done : false,
+      target : req.body.target,
+      licesnce_no: req.body.liscene_num,
+      phone_no : req.body.phone,
+      long : 44.5,
+      lat : 55.7,
+      manager_id: 1,
+      inspector_id: req.body.inspector,
+      class_id: req.body.type,
+    }
+    Gawla.update(editedGawla,{where: {id: req.params.id}})
+    .then(result =>{
+        res.redirect('/gawlat');
+    })
 };
 
-exports.getSupers = (req,res)=>{
-    res.render('supers')
-};
+exports.postDeleteGawla = (req,res)=>{
+    Gawla.destroy({where: {id: req.params.id}})
+    .then(affectedRows => {
+        if(affectedRows > 0)
+            return res.json({
+                success: true,
+                msg: "تم مسح الجولة بنجاح"
+            });
+        return res.json({
+            error: true,
+            msg: "لايوجد جولة بهذه المواصفات"
+        });
+    })
+    .catch(err => {
+        console.log(err);
+        return res.json({
+            error: true,
+            msg: "something went wrong"
+        });
+    });
+}
+
