@@ -6,10 +6,11 @@ const express = require("express"),
       authMiddlewares = require("./src/modules/auth/middleware"),
       gawlaRouter = require('./src/modules/gawla/routes');
       path = require("path"),
-      routers = require("./config/routers").routers,
+    //   routers = require("./config/routers").routers,
       gawlaModels = require("./src/modules/gawla/models"),
       db = require("./src/database/connection"),
-      adminRouter = require("./src/modules/admin/routes").adminRouter;
+      adminRouter = require("./src/modules/admin/routes").adminRouter,
+      penaltyRouter = require("./src/modules/penalty/penaltyRoutes");
 
 const {User, Role} = require("./src/modules/auth/models");
 const Penalty_class = require ('./src/modules/gawla/models').PenaltyClass;
@@ -39,6 +40,7 @@ const forceJSON = (req, res, next)=>{
 // 
 
 //handle 404 not found routes.
+app.use("/penalty",penaltyRouter);
 app.use((req, res, next) => {
     return res.status(404).json({error: true, msg: "Resource not found."});
 })
