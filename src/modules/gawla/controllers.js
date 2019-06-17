@@ -9,7 +9,17 @@ const NodeGeocoder = require('node-geocoder');
 
 
 exports.getHome = (req,res)=>{
-    res.render('index')
+    User.findAll()
+    .then(users => {
+        Penalty.findAll()
+        .then(penalties =>{
+            Gawla.findAll()
+            .then(gawlat=>{
+
+                res.render('index',{users: users,penalties: penalties,gawlat: gawlat});
+            });
+        })
+    }).catch(err => console.log(err));
 };
 
 exports.getAddGawla = (req,res)=>{

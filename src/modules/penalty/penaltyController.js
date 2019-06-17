@@ -53,12 +53,12 @@ exports.getPostPenalty = (request,response) => {
                         comment: penaltyDesc,
                         state: "pending",
                         inspector_id: request.user.id,
-                        gawla_id: 1,
+                        gawla_id: request.params.id,
                         pen_class_id: PClass.id,
                         pen_type_id: PType.id,
                         pen_term_id: PTerm.id
                     });
-                    response.redirect("/penalty/test");
+                    response.redirect("/penalty/penalties");
                 }else{
                     console.log("yarb")
                 }
@@ -68,9 +68,7 @@ exports.getPostPenalty = (request,response) => {
 }
 
 
-exports.test = (request,response) => {
-    response.redirect("/penalty/penalties");
-}
+
 
 exports.getPenalties = (request,response) => {
     penaltyModel.findAll({where:{state:"pending"},include: [
@@ -110,30 +108,36 @@ exports.getPenaltyApproved = (request,response) => {
 
 
 exports.postDeletePenalty = (request,response)=>{
+    
     penaltyModel.destroy({where: {id: request.params.id}})
-    .then(affectedRows => {
+    .then(affectedRows =>{
         if(affectedRows > 0)
             return response.json({
                 success: true,
                 msg: "تم مسح الجولة بنجاح"
             });
+     
         return response.json({
             error: true,
             msg: "لايوجد جولة بهذه المواصفات"
         });
-    })
-    .catch(err => {
-        console.log(err);
-        return response.json({
-            error: true,
-            msg: "حدث خطأ ما "
-        });
+    
+    
+    
+}).catch(err => {
+    console.log(err);
+    return response.json({
+        error: true,
+        msg: "حدث خطأ ما "
     });
+});
+    
 }
 
 
 exports.getPenaltyUpdate = (request,response) => {
     let penaltyId = request.params.id;
+    console.log(request.decodedToken.role);
     penaltyModel.update({state:"approved"},{where:{id:penaltyId}})
     .then(result => {
         if(affectedRows > 0)
@@ -141,6 +145,7 @@ exports.getPenaltyUpdate = (request,response) => {
                 success: true,
                 msg: "تم تحديث الجولة بنجاح"
             });
+
         return response.json({
             error: true,
             msg: "لايوجد جولة بهذه المواصفات"

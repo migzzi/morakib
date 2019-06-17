@@ -10,7 +10,8 @@ const express = require("express"),
       db = require("./src/database/connection"),
       adminRouter = require("./src/modules/admin/routes").adminRouter,
       inspectorRouter = require('./src/modules/gawla/inspectorRoute'),
-      penaltyRouter = require("./src/modules/penalty/penaltyRoutes");
+      penaltyRouter = require("./src/modules/penalty/penaltyRoutes"),
+      homeController = require('./src/modules/gawla/controllers').getHome;
 
 const {User, Role} = require("./src/modules/auth/models");
 const {Gawla, Penalty, PenaltyClass, PenaltyType, PenaltyTerm} = require("./src/modules/gawla/models");
@@ -34,12 +35,13 @@ app.use(authRouter);
 
 app.use(authMiddlewares.loginRequired());
 //commit
-// app.get("/", (req, res) => res.render("index"));
+app.get("/",homeController);
 
 const {displayUser, updateUser, getUsers, deleteUser} = require("./src/modules/admin/helpers");
 
 app.use(gawlaRouter);
 app.use(inspectorRouter);
+app.use('/penalty',penaltyRouter);
 app.use("/admin", authMiddlewares.checkRole("admin"),adminRouter);
 app.get("/profile/:username", displayUser(null, false, "username"));
 app.get("/profile/:username/edit", displayUser(null, true, "username"));

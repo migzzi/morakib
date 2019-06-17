@@ -8,7 +8,7 @@ const router = express.Router();
 
 
 
-// router.use(checkRole('manager'));
+
 
 
 router.get('/gawla/edit/:id',checkRole('manager'),gawlaController.getEditGawla);

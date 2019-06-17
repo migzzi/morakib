@@ -74,7 +74,8 @@
 										<a href="/gawla/edit/<%= gawla.id%>" class="btn btn-outline-info">تعديل</a>   
 										<%}%>
 										<%if(decodedToken.role.role == 'inspector'){%>
-										<a href="/gawla/edit/<%= gawla.id%>" class="btn btn-outline-danger">تحرير مخالفة </a>        
+											<%- include('../includes/penalty.ejs')%>
+										<!-- <a href="/gawla/edit/<%= gawla.id%>" class="btn btn-outline-danger">تحرير مخالفة </a>         -->
 										<%}%>
 								</div>
 							</div>

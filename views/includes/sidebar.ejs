@@ -58,27 +58,20 @@
                     </a>
                 </li>
                 <%}%>
+                
                 <% if(decodedToken.role.role !== 'admin'){ %>
                 <li class="nav-item">
-                    <a href="gawlat/list?done=false">  <!-- content depends on the role-->
+                    <a href="/penalty/penalties/"> <!-- content depends on the role-->
                         <i class="la la-hourglass-start"></i>
-                            <p>جولات قيد الإنتظار</p>
+                            <p>مخالفات قيد الانتظار</p>
                         </a>
                     </li>
                 <% } %>
                 <% if(decodedToken.role.role !== 'admin'){ %>
                 <li class="nav-item">
-                    <a href="penalties/list"> <!-- content depends on the role-->
+                    <a href="/penalty/approvedPenalty"> <!-- content depends on the role-->
                         <i class="la la-hourglass-start"></i>
-                            <p>المخالفات</p>
-                        </a>
-                    </li>
-                <% } %>
-                <% if(decodedToken.role.role !== 'admin'){ %>
-                <li class="nav-item">
-                    <a href="penalties/list"> <!-- content depends on the role-->
-                        <i class="la la-hourglass-start"></i>
-                            <p>مخالفات قيد الإنتظار</p>
+                            <p>مخالفات منتهية</p>
                         </a>
                     </li>
                 <% } %>

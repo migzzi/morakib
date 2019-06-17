@@ -43,8 +43,11 @@
                                                         <th scope="col">الفئه</th>
                                                         <th scope="col">قيمه المخالفه</th>
                                                         <th scope="col" >المراقب</th>
+                                                        <% if (decodedToken.role.role == 'manager'){%>
+
                                                         <th scope="col" >قبول المخالفه</th>
                                                         <th scope="col" >رفض المخالفه</th>
+                                                        <%}%>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -54,9 +57,12 @@
                                                             <td class="penaltyClass2"><%= penalty.pen_class.name%></td>
                                                             <td><%= penalty.pen_term.value%></td>
                                                             <td class="penaltyUser"><%= penalty.inspector.username%></td>
+                                                            <% if (decodedToken.role.role == 'manager'){%>
                                                             <td><button class="btn btn-primary" name="penaltyApproved" value="<%=penalty.id%>"><i class="la la-edit"></i>قبول</button></td>
                                                             <td><button class="btn btn-danger" name="penaltyDeleted" value="<%=penalty.id%>"><i class="la la-trash"></i>رفض</button></td>
+                                                            <%}%>
                                                         </tr>
+
                                                     <% })%>
                                                 </tbody>
                                             </table>
