@@ -6,7 +6,6 @@ const express = require("express"),
       authMiddlewares = require("./src/modules/auth/middleware"),
       gawlaRouter = require('./src/modules/gawla/routes'),
       path = require("path"),
-      routers = require("./config/routers").routers,
       gawlaModels = require("./src/modules/gawla/models"),
       db = require("./src/database/connection"),
       adminRouter = require("./src/modules/admin/routes").adminRouter;
@@ -34,10 +33,7 @@ app.use(authRouter);
 
 app.use(authMiddlewares.loginRequired());
 //commit
-app.get("/home", (req, res) => res.render("index"));
-app.get("/1", (req, res) => res.render("supers"));
-app.get("/2", (req, res) => res.render("gawlat"));
-app.get("/3", (req, res) => res.render("add-gawla"));
+app.get("/", (req, res) => res.render("index"));
 
 const {displayUser, updateUser, getUsers} = require("./src/modules/admin/helpers");
 app.get("/profile/:username", displayUser(null, false, "username"));
@@ -141,4 +137,29 @@ db.authenticate()
             })
         }).catch(err => console.log(err))
     })
+    // .then(() => {
+    //     return Role.bulkCreate([
+    //         {role: "admin", desc: "the big boss"},
+    //         {role: "manager", desc: "the big boss"},
+    //         {role: "inspector", desc: "the big boss"},
+    //     ]);
+    // })
+  
+    // .then(() => {
+    //     return Penalty_class.bulkCreate([
+    //         {name: 'صحية' , descrition: 'لجولات الخاصة بالصحية'},
+    //         {name: 'بناء' , descrition: 'لجولات الخاصةبالبناء'}
+
+    //     ])
+    // })
+    // .then(() => {
+    //     return User.bulkCreate([
+    //         {first_name: "احمد",last_name:"وفيق",username:'وفيق',email: 'eng@gmail.com',manager_id:'',role_id:2},
+    //         {first_name: "احمد",last_name:"وفيق",username:'نجيب',email: 'eng3@gmail.com',manager_id:1,role_id:3},
+    //         {first_name: "محمد",last_name:"وفيق",username:'ماجد',email: 'eng56@gmail.com',manager_id: 1,role_id:3}
+
+
+
+    //     ])
+    // })
     .catch((err)=> console.log("ERROR! Connection couldn't be established. Check you DB service or your configurations.", err));

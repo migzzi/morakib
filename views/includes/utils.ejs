@@ -9,6 +9,7 @@
         form.on("submit", function(e){
             e.preventDefault();
             let fd = new FormData(this);
+            console.log("===", fd.get("name"))
             // $(this).serializeArray().forEach(e => {
             //     fd.append(e.name, e.value);
             // });

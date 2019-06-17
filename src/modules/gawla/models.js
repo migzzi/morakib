@@ -9,6 +9,10 @@ const Gawla = db.define("gawla", {
         type: Sequelize.TEXT,
         allowNull: false
     },
+    Address: {
+        type: Sequelize.TEXT,
+        allowNull: false
+    },
     done: {
         type: Sequelize.BOOLEAN,
         allowNull: false

@@ -6682,3 +6682,12 @@ body {
 .ml-md-auto, .mx-md-auto {
   margin-right: auto!important;
 }
+/* Show red borders when filled, but invalid */
+input[data-state="invalid"] {
+  border-color: hsl(0, 76%, 50%);;
+}
+
+/* Show green borders when valid */
+input[data-state="valid"] {
+  border-color: hsl(120, 76%, 50%);
+}
