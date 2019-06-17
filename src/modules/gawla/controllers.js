@@ -24,15 +24,7 @@ exports.getAddGawla = (req,res)=>{
     }).catch(err =>{
         console.log(err);
     })
-    // Class.findAll().then((classes)=>{
-    //     User.findAll({where:{id:3}}).then((inspectors)=>{
-    //         console.log(inspectors);
-    //         res.render('gawla/add-gawla',{'classes' : classes, inspectors: inspectors}); 
-    //     })
-    //     }).catch((err)=>{
-    //         console.log("classes"+err);
-
-    //     })
+   
 };
 
 exports.postAddGawla = (req,res)=>{
@@ -58,9 +50,9 @@ exports.postAddGawla = (req,res)=>{
       phone_no : phone,
       long : 44.5,
       lat : 55.7,
-      manager_id: 1,
+      manager_id: req.user.id,
       inspector_id: inspector_id,
-      class_id: class_id,
+      pen_class_id: class_id,
 
     }).then((result)=>{
         // console.log(result);
@@ -89,7 +81,7 @@ exports.getGawlat = (req, res)=>{
     //     console.log(err);
     //     res.render("error", {error: err});
     // })
-    Gawla.findAll({include: [{model: Class, as: "penalty_class"},{model: User,as:'inspector'}]}).then((gawlat)=>{
+    Gawla.findAll({include: [{model: Class, as: "pen_class"},{model: User,as:'inspector'}]}).then((gawlat)=>{
         console.log(gawlat);
         res.render('gawla/gawlat',{gawlat : gawlat});
     }).catch((err)=>{
@@ -99,12 +91,12 @@ exports.getGawlat = (req, res)=>{
 
 
 exports.getGawla = (req,res)=>{
-    Gawla.findOne({where: {id: req.params.id}, include: [{model: Class, as: "penalty_class"},
+    Gawla.findOne({where: {id: req.params.id}, include: [{model: Class, as: "pen_class"},
     {model: User,as:'inspector'}]}).then((gawla)=>{
         res.render('gawla/gawla',{gawla: gawla});
     }).catch((err)=>{
         console.log("gawla"+err);
-        res.render('admin/error');
+        res.render('error');
     })
 };
 
@@ -159,7 +151,7 @@ exports.postEditGawla = (req,res)=>{
       phone_no : req.body.phone,
       long : 44.5,
       lat : 55.7,
-      manager_id: 1,
+      manager_id: req.user.id,
       inspector_id: req.body.inspector,
       class_id: req.body.type,
     }
@@ -186,7 +178,7 @@ exports.postDeleteGawla = (req,res)=>{
         console.log(err);
         return res.json({
             error: true,
-            msg: "something went wrong"
+            msg: "حدث خطأ ما "
         });
     });
 }
