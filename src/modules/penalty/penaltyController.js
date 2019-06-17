@@ -55,11 +55,11 @@ exports.getPostPenalty = (request,response) => {
                         state: "pending",
                         penaltyUserIdId: 1,
                         gawlaId: 1,
-                        penaltyClassIdId: 1,
-                        penaltyTypeIdId: 1,
-                        penaltyTermIdId: 1
+                        penaltyClassIdId: PClass.id,
+                        penaltyTypeIdId: PType.id,
+                        penaltyTermIdId: PTerm.id
                     });
-                    response.redirect("/penalty/penalties");
+                    response.redirect("/penalty/test");
                 }else{
                     console.log("yarb")
                 }
@@ -68,13 +68,24 @@ exports.getPostPenalty = (request,response) => {
     }).catch(error => console.log("penaltyClassID : ",error));
 }
 
+
+exports.test = (request,response) => {
+    response.redirect("/penalty/penalties");
+}
+
 exports.getPenalties = (request,response) => {
-    penaltyModel.findAll({include: [
+    penaltyModel.findAll({where:{state:"pending"},include: [
         {model: penaltyClassModel ,as: 'penaltyClassId'},
         {model: userModel ,as: 'penaltyUserId'},
     ]})
     .then(penalties => {
         console.log(penalties);
-        response.render("supers",{"penalties": penalties});   
+        penaltyClassModel.findAll()
+        .then(penaltyClasses => {
+            userModel.findAll()
+            .then(users => {
+            response.render("supers",{"penalties": penalties,"classes":penaltyClasses,"users":users});   
+            })
+        })
     }).catch(error => console.log(error));
 }

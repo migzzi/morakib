@@ -17,11 +17,22 @@
 						<div class="row">
 
 							<div class="col-md-12">
-                                <select name="" id="filterClass" class="form-control">
-                                    <option value="">الفئه</option>
-                                    <option value="medical">medical</option>
-                                    <option value="electrical">electrical</option>
-                                </select>
+                                <div class="row pl-3">
+                                    <select name="" id="filterClass" class="form-control col-sm-3">
+                                        <option value="all">كل الفئات</option>
+                                        <%classes.forEach(penaltyClass => {%>
+                                            <option value="<%= penaltyClass.name%>"><%= penaltyClass.name%></option>
+                                        <% }) %>
+                                    </select>
+    
+                                    <select name="" id="filterUser" class="form-control col-sm-3">
+                                        <option value="all">كل المراقبين</option>
+                                        <%users.forEach(user => {%>
+                                            <option value="<%= user.username%>"><%= user.username%></option>
+                                        <% }) %>
+                                    </select> 
+                                </div>
+
 								<div class="card card-tasks">
                
                                     <div class="card-body">
@@ -42,7 +53,7 @@
                                                             <td><%= penalty.comment%></td>
                                                             <td class="penaltyClass2"><%= penalty.penaltyClassId.name%></td>
                                                             <td><%= penalty.value%></td>
-                                                            <td><%= penalty.penaltyUserId.username%></td>
+                                                            <td class="penaltyUser"><%= penalty.penaltyUserId.username%></td>
                                                             <td><button class="btn btn-primary"><i class="la la-edit"></i> قبول</button></td>
                                                             <td><button class="btn btn-danger"><i class="la la-trash"></i> حذف</button></td>
                                                         </tr>
@@ -74,12 +85,36 @@
             for(i=0 ; i<eleLength ; i++){
                 document.getElementsByClassName("penaltyClass2")[i].parentElement.classList.remove("not-active")
                 let valueEle = document.getElementsByClassName("penaltyClass2")[i].innerText;
-                if(valueEle === selectEle){
+                if(valueEle != selectEle){
                     document.getElementsByClassName("penaltyClass2")[i].parentElement.classList.add("not-active");
                 }
             }
-                
-            
+
+            if(selectEle == "all"){
+                for(i=0 ; i<eleLength ; i++){
+                    document.getElementsByClassName("penaltyClass2")[i].parentElement.classList.remove("not-active")
+                }
+            }
+        }
+
+
+
+        document.getElementById("filterUser").onchange = function(){
+            let selectEle = document.getElementById("filterUser").value;
+            let eleLength = document.getElementsByClassName("penaltyUser").length;
+            for(i=0 ; i<eleLength ; i++){
+                document.getElementsByClassName("penaltyUser")[i].parentElement.classList.remove("not-active")
+                let valueEle = document.getElementsByClassName("penaltyUser")[i].innerText;
+                if(valueEle != selectEle){
+                    document.getElementsByClassName("penaltyUser")[i].parentElement.classList.add("not-active");
+                }
+            }
+
+            if(selectEle == "all"){
+                for(i=0 ; i<eleLength ; i++){
+                    document.getElementsByClassName("penaltyUser")[i].parentElement.classList.remove("not-active")
+                }
+            }
         }
     </script>
 </body>

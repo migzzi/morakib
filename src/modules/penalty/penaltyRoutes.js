@@ -16,5 +16,8 @@ penaltyRouter.get("/add-penalty/penaltyType/:penaltyTerm",penaltyController.getP
 penaltyRouter.get("/penalties",penaltyController.getPenalties);
 
 
+penaltyRouter.get("/test",penaltyController.test);
+
+
 
 module.exports = penaltyRouter;
