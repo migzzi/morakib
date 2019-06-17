@@ -22,11 +22,11 @@
                     <td> <%= gawla.Address%> </td>
                     <td> <%= gawla.pen_class.name%> </td>
                     <td><%= gawla.inspector.first_name%> <%= gawla.inspector.last_name%></td>
-                    <td><a href="/gawla/<%= gawla.id%>" class="btn btn-outline-primary"><i class="la la-info"></i>  التفاصيل</a>
-                        <a href="/gawla/edit/<%= gawla.id%>" class="btn btn-outline-secondary"><i class="la la-info"></i>  تعديل</a>
+                    <td><a href="/gawla/<%= gawla.id%>" class="btn btn-info"><i class="la la-info"></i>  التفاصيل</a>
+                        <a href="/gawla/edit/<%= gawla.id%>" class="btn btn-secondary"><i class="la la-info"></i>  تعديل</a>
 
                     <!-- check if role is manager to show this button-->
-                    <button id="<%=gawla.id%>" class="btn btn-outline-danger"><i class="la la-info"></i>  حذف</button>
+                    <button id="<%=gawla.id%>" class="btn btn-danger"><i class="la la-info"></i>  حذف</button>
 
                 </tr>
                 <div id="flash">

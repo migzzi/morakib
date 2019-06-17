@@ -8,18 +8,23 @@ const router = express.Router();
 
 
 
-router.use(checkRole('manager'));
+// router.use(checkRole('manager'));
 
-router.get('/gawla/edit/:id',gawlaController.getEditGawla);
-router.post('/gawla/edit/:id',gawlaController.postEditGawla);
 
-router.delete('/gawla/delete/:id',gawlaController.postDeleteGawla);
+router.get('/gawla/edit/:id',checkRole('manager'),gawlaController.getEditGawla);
+router.post('/gawla/edit/:id',checkRole('manager'),gawlaController.postEditGawla);
 
-router.get('/gawla/add',gawlaController.getAddGawla);
-router.post('/gawla/add',gawlaController.postAddGawla);
+router.delete('/gawla/delete/:id',checkRole('manager'),gawlaController.postDeleteGawla);
 
-router.get('/gawla/:id',gawlaController.getGawla);
-router.get('/gawlat',gawlaController.getGawlat);
+router.get('/gawla/add',checkRole('manager'),gawlaController.getAddGawla);
+router.post('/gawla/add',checkRole('manager'),gawlaController.postAddGawla);
+router.get('/manager/inspectors',checkRole('manager'),gawlaController.getInspectors);
+
+
+router.get('/gawla/:id',checkRole(['manager','inspector']),gawlaController.getGawla);
+router.get('/gawlat',checkRole(['manager','inspector']),gawlaController.getGawlat);
+
+
 
 
 

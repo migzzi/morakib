@@ -1,6 +1,7 @@
 
 const Gawla = require("./models").Gawla,
         Class = require('./models').PenaltyClass,
+        Penalty = require('./models').Penalty,
         User = require('../auth/models').User,
         Role = require('../auth/models').Role;
 
@@ -36,8 +37,7 @@ exports.postAddGawla = (req,res)=>{
     const liscene_num = req.body.liscene_num;
     const target_ = req.body.target;
     const inspector_id = req.body.inspector_id;
-    // console.log("class",class_id);
-    // console.log("inspector",inspector_id);
+   
 
 
 
@@ -55,9 +55,10 @@ exports.postAddGawla = (req,res)=>{
       pen_class_id: class_id,
 
     }).then((result)=>{
-        // console.log(result);
+        // console.log("added gawla",result);
         res.json({
             success: true,
+            id: result.id,
             
         })
     }).catch((err)=>{
@@ -71,21 +72,17 @@ exports.postAddGawla = (req,res)=>{
 };
 
 exports.getGawlat = (req, res)=>{
-    // let userRole = req.user.getRole();
-    // let filter = userRole == "admin" ? {} : (userRole == "manager" ? {manager_id: req.user.id} : {inspector_id: req.user.id});
-    // Gawla.findAll({where: filter})
-    // .then((gawlat) => {
-    //     res.render("gawlat", {gawlat: gawlat});
-    // })
-    // .catch((err) => {
-    //     console.log(err);
-    //     res.render("error", {error: err});
-    // })
-    Gawla.findAll({include: [{model: Class, as: "pen_class"},{model: User,as:'inspector'}]}).then((gawlat)=>{
-        console.log(gawlat);
-        res.render('gawla/gawlat',{gawlat : gawlat});
-    }).catch((err)=>{
-        console.log("gawlat"+err);
+     req.user.getRole()
+    .then(userRole => {
+        let filter = userRole.role == 'manager' ? {manager_id: req.user.id} : {inspector_id: req.user.id};
+        Gawla.findAll({where: filter,include: [{model: Class, as: "pen_class"},{model: User,as:'inspector'}]})
+        .then((gawlat)=>{
+            console.log(gawlat);
+            res.render('gawla/gawlat',{gawlat : gawlat});
+        }).catch((err)=>{
+            console.log("gawlat"+err);
+        })
+
     })
 };
 
@@ -98,6 +95,24 @@ exports.getGawla = (req,res)=>{
         console.log("gawla"+err);
         res.render('error');
     })
+};
+
+
+exports.getInspectors = (req,res) => {
+    managerId = req.user.id;
+    User.findAll({where:{manager_id: req.user.id},
+     include: [{model: Penalty, as: "penalties"},
+     {model: Gawla, as: "inspector_gawlas"},
+]})
+    .then(inspectors =>{
+        console.log(inspectors)
+       res.render('list-managers-inspectors',{users: inspectors});
+    })
+    .catch(err=> console.log(err));
+};
+
+exports.getInspectorsList = (req,res) => {
+   res.render('list_inspectors');
 };
 
 exports.getlocationApi = (req,res)=>{

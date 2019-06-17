@@ -54,13 +54,13 @@ adminRouter.get("/pen_types/", getPenalty("type", true));
 adminRouter.get("/pen_types/list", getPenalty("type", false, "admin/list_pen_types"));
 adminRouter.post("/pen_types", addPenalty("type", true));
 adminRouter.delete("/pen_type/:id", deletePenalty("type", true));
-adminRouter.put("pen_type/:id", updatePenalty("type", true));
+adminRouter.put("/pen_type/:id", updatePenalty("type", true));
 
 adminRouter.get("/pen_terms/", getPenalty("term", true));
 adminRouter.get("/pen_terms/list", getPenalty("term", false, "admin/list_pen_terms"));
 adminRouter.post("/pen_terms", addPenalty("term", true));
 adminRouter.delete("/pen_term/:id", deletePenalty("term", true));
-adminRouter.put("pen_term/:id", updatePenalty("term", true));
+adminRouter.put("/pen_term/:id", updatePenalty("term", true));
 
 adminRouter.get("/pen_class/:pen_class_id/pen_types", getPenalty("type", true));
 adminRouter.get("/pen_type/:pen_type_id/pen_terms", getPenalty("term", true));

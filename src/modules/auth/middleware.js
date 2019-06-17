@@ -67,7 +67,7 @@ function checkRole(roles, api=false, reponse_page="auth/not_authorized"){
             });
             return res.render(reponse_page);
         }
-        if(roles.constructor.name == "Array" && roles.indexOf(req.decodedToken.role.role)){
+        if(roles.constructor.name == "Array" && roles.indexOf(req.decodedToken.role.role) != -1){
             next();
         } else if(roles.constructor.name == "String" && req.decodedToken.role.role === roles){
             next();

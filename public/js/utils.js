@@ -99,7 +99,7 @@
 
     function getEmployees(role = null, options){
         $.ajax({
-            url: "/admin/" + (role ? role : "employee"),
+            url: (options.prefix || "/admin/") + (role ? role : "employee"),
             method: "GET",
             dataType: "json",
             success: options.success,
