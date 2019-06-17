@@ -40,7 +40,7 @@
                                                     <% penalties.forEach(penalty => { %>
                                                         <tr>
                                                             <td><%= penalty.comment%></td>
-                                                            <td class="penaltyClass"><%= penalty.penaltyClassId.name%></td>
+                                                            <td class="penaltyClass2"><%= penalty.penaltyClassId.name%></td>
                                                             <td><%= penalty.value%></td>
                                                             <td><%= penalty.penaltyUserId.username%></td>
                                                             <td><button class="btn btn-primary"><i class="la la-edit"></i> قبول</button></td>
@@ -70,12 +70,12 @@
     <script>
         document.getElementById("filterClass").onchange = function(){
             let selectEle = document.getElementById("filterClass").value;
-            let eleLength = document.getElementsByClassName("penaltyClass").length;
+            let eleLength = document.getElementsByClassName("penaltyClass2").length;
             for(i=0 ; i<eleLength ; i++){
-                document.getElementsByClassName("penaltyClass")[i].parentElement.classList.remove("not-active")
-                let valueEle = document.getElementsByClassName("penaltyClass")[i].innerText;
+                document.getElementsByClassName("penaltyClass2")[i].parentElement.classList.remove("not-active")
+                let valueEle = document.getElementsByClassName("penaltyClass2")[i].innerText;
                 if(valueEle === selectEle){
-                    document.getElementsByClassName("penaltyClass")[i].parentElement.classList.add("not-active");
+                    document.getElementsByClassName("penaltyClass2")[i].parentElement.classList.add("not-active");
                 }
             }
                 
