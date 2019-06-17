@@ -1,6 +1,8 @@
+const penaltyModel = require("../gawla/models").Penalty;
 const penaltyClassModel = require("../gawla/models").PenaltyClass;
 const penaltyTypeModel = require("../gawla/models").PenaltyType;
 const penaltyTermModel = require("../gawla/models").PenaltyTerm;
+const userModel = require("../auth/models").User;
 
 
 
@@ -29,5 +31,50 @@ exports.getPenaltyTerm = (request,response) => {
     })
     .then(result => {
         response.json({penaltyTerms:result});
+    }).catch(error => console.log(error));
+}
+
+exports.getPostPenalty = (request,response) => {
+    let penaltyName = request.body.penaltyName;
+    let penaltyDesc = request.body.penaltyDesc;
+    let penaltyClass = request.body.penaltyClass;
+    let penaltyType = request.body.penaltyType;
+    let penaltyTerm = request.body.penaltyTerm;
+
+    penaltyClassModel.findOne({where:{name:penaltyClass}})
+    .then(PClass => {
+        penaltyTypeModel.findOne({where:{name:penaltyType}})
+        .then(PType => {  
+            penaltyTermModel.findOne({where:{name:penaltyTerm}})
+            .then(PTerm => {
+                if(penaltyName  && PClass.id && PType.id && PTerm.id ){
+                    console.log("yarb");
+                    penaltyModel.create({
+                        value: penaltyName,
+                        comment: penaltyDesc,
+                        state: "pending",
+                        userId: 1,
+                        gawlaId: 1,
+                        penaltyClassId: 1,
+                        penaltyTypeId: 1,
+                        penaltyTermId: 1
+                    });
+                    response.redirect("/penalty/penalties");
+                }else{
+                    console.log("yarb")
+                }
+            })
+        })
+    }).catch(error => console.log("penaltyClassID : ",error));
+}
+
+exports.getPenalties = (request,response) => {
+    penaltyModel.findAll({include: [
+        {model: penaltyClassModel ,as: 'penaltyClassId'},
+        {model: userModel ,as: 'penaltyUserId'},
+    ]})
+    .then(penalties => {
+        console.log(penalties);
+        response.render("supers",{"penalties": penalties});   
     }).catch(error => console.log(error));
 }

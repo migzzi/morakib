@@ -11,80 +11,42 @@
 			<div class="main-panel">
 				<div class="content">
 					<div class="container-fluid">
-						<h4 class="page-title">المراقبين</h4>
+						<h4 class="page-title">المخالفات</h4>
 				
 
 						<div class="row">
 
-							
-
 							<div class="col-md-12">
+                                <select name="" id="filterClass" class="form-control">
+                                    <option value="">الفئه</option>
+                                    <option value="medical">medical</option>
+                                    <option value="electrical">electrical</option>
+                                </select>
 								<div class="card card-tasks">
                
                                     <div class="card-body">
-                                           <table id="table" 
-			 data-toggle="table"
-			 data-search="true"
-			 data-filter-control="true" 
-			 data-show-export="true"
-			 data-click-to-select="true"
-			 data-toolbar="#toolbar">
+                                           <table id="table" data-toggle="table" data-filter-control="true" data-show-export="true" data-click-to-select="true" data-toolbar="#toolbar">
                                                 <thead>
                                                     <tr>
-                                                        <th scope="col">الإسم</th>
-                                                        <th scope="col">عدد الجولات</th>
-                                                        <th scope="col">الفئــة</th>
-                                                        <th scope="col" >إدارة</th>
+                                                        <th scope="col">اسم المخالفه</th>
+                                                        <th scope="col">الفئه</th>
+                                                        <th scope="col">قيمه المخالفه</th>
+                                                        <th scope="col" >المراقب</th>
+                                                        <th scope="col" >قبول المخالفه</th>
+                                                        <th scope="col" >خذف المخالفه</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
+                                                    <% penalties.forEach(penalty => { %>
                                                         <tr>
-                                                                <td>
-                                                                    <img id="superav" src="assets/img/profile.jpg">
-                                                                    <span>فهد المطيري</span>
-                                                                </td>
-                                                                <td ><h6>43</h6></td>
-                                                                <td>صحية</td>
-                                                                <td><button class="btn btn-success"><i class="la la-info"></i> التفاصيل</button>
-                                                                <button class="btn btn-primary"><i class="la la-edit"></i> تعديل</button>
-                                                                <button class="btn btn-danger"><i class="la la-trash"></i> حذف</button>
-                                                            </td>
-                                                            </tr>
-                                                            <tr>
-                                                                    <td>
-                                                                        <img id="superav" src="assets/img/profile.jpg">
-                                                                        <span>فهد المطيري</span>
-                                                                    </td>
-                                                                    <td ><h6>43</h6></td>
-                                                                    <td>صحية</td>
-                                                                    <td><button class="btn btn-success"><i class="la la-info"></i> التفاصيل</button>
-                                                                    <button class="btn btn-primary"><i class="la la-edit"></i> تعديل</button>
-                                                                    <button class="btn btn-danger"><i class="la la-trash"></i> حذف</button>
-                                                                </td>
-                                                                </tr><tr>
-                                                                        <td>
-                                                                            <img id="superav" src="assets/img/profile.jpg">
-                                                                            <span>فهد المطيري</span>
-                                                                        </td>
-                                                                        <td ><h6>43</h6></td>
-                                                                        <td>صحية</td>
-                                                                        <td><button class="btn btn-success"><i class="la la-info"></i> التفاصيل</button>
-                                                                        <button class="btn btn-primary"><i class="la la-edit"></i> تعديل</button>
-                                                                        <button class="btn btn-danger"><i class="la la-trash"></i> حذف</button>
-                                                                    </td>
-                                                                    </tr><tr>
-                                                                            <td>
-                                                                                <img id="superav" src="assets/img/profile.jpg">
-                                                                                <span>فهد المطيري</span>
-                                                                            </td>
-                                                                            <td ><h6>43</h6></td>
-                                                                            <td>صحية</td>
-                                                                            <td><button class="btn btn-success"><i class="la la-info"></i> التفاصيل</button>
-                                                                            <button class="btn btn-primary"><i class="la la-edit"></i> تعديل</button>
-                                                                            <button class="btn btn-danger"><i class="la la-trash"></i> حذف</button>
-                                                                        </td>
-                                                                        </tr>
-                                                               
+                                                            <td><%= penalty.comment%></td>
+                                                            <td class="penaltyClass"><%= penalty.penaltyClassId.name%></td>
+                                                            <td><%= penalty.value%></td>
+                                                            <td><%= penalty.penaltyUserId.username%></td>
+                                                            <td><button class="btn btn-primary"><i class="la la-edit"></i> قبول</button></td>
+                                                            <td><button class="btn btn-danger"><i class="la la-trash"></i> حذف</button></td>
+                                                        </tr>
+                                                    <% })%>
                                                 </tbody>
                                             </table>
                                         </div>
@@ -105,5 +67,20 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/bootstrap-table@1.14.2/dist/bootstrap-table.min.js"></script>
+    <script>
+        document.getElementById("filterClass").onchange = function(){
+            let selectEle = document.getElementById("filterClass").value;
+            let eleLength = document.getElementsByClassName("penaltyClass").length;
+            for(i=0 ; i<eleLength ; i++){
+                document.getElementsByClassName("penaltyClass")[i].parentElement.classList.remove("not-active")
+                let valueEle = document.getElementsByClassName("penaltyClass")[i].innerText;
+                if(valueEle === selectEle){
+                    document.getElementsByClassName("penaltyClass")[i].parentElement.classList.add("not-active");
+                }
+            }
+                
+            
+        }
+    </script>
 </body>
 <%- include('./includes/footer.ejs')%>

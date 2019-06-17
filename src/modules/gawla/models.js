@@ -71,7 +71,10 @@ const PenaltyClass = db.define("penalty_class", penalty_attrs, {sequelize: db});
 
 const PenaltyType = db.define("penalty_type", penalty_attrs, {sequelize: db});
 
-const PenaltyTerm = db.define("penalty_term", penalty_attrs, {sequelize: db});
+const PenaltyTerm = db.define("penalty_term", Object.assign(penalty_attrs, {addons: {
+    type: Sequelize.TEXT,
+    allowNull: true
+}}), {sequelize: db});
 
 PenaltyClass.hasMany(PenaltyType);
 PenaltyType.belongsTo(PenaltyClass);
@@ -91,22 +94,20 @@ const Penalty = db.define("penalty", {
     state: {
         type: Sequelize.ENUM(["pending", "approved"]),
         allowNull: false
-    },
-    addons: {
-        type: Sequelize.TEXT,
-        allowNull: true
     }
+    
 });
 
 Penalty.belongsTo(User);
 Penalty.belongsTo(Gawla);
-Penalty.belongsTo(PenaltyClass);
-Penalty.belongsTo(PenaltyType);
-Penalty.belongsTo(PenaltyTerm);
-User.hasMany(Penalty);
-PenaltyClass.hasMany(Penalty);
-PenaltyType.hasMany(Penalty);
-PenaltyTerm.hasMany(Penalty);
+Penalty.belongsTo(PenaltyClass,{as: "penaltyClassId"});
+Penalty.belongsTo(PenaltyType,{as: "penaltyTypeId"});
+Penalty.belongsTo(PenaltyTerm,{as: "penaltyTermId"});
+// User.hasMany(Penalty,{as: "penaltyUserId"});
+Penalty.belongsTo(User,{as: "penaltyUserId"})
+// PenaltyClass.hasMany(Penalty,{as: "penaltyClassId"});
+// PenaltyType.hasMany(Penalty,{as: "penaltyTypeId"});
+// PenaltyTerm.hasMany(Penalty,{as: "penaltyTermId"});
 Gawla.belongsTo(User, {foreignKey: "inspector_id"});
 Gawla.belongsTo(User, {foreignKey: "manager_id"});
 Gawla.belongsTo(PenaltyClass, {foreignKey: "class_id"});

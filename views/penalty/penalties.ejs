@@ -1,0 +1,139 @@
+<%- include('../includes/head')%>
+
+
+<body>
+    <div class="wrapper">
+        <%- include("../includes/header") %>
+
+        <%- include("../includes/sidebar") %>
+
+        <table id="table" 
+        data-toggle="table"
+        data-search="true"
+        data-filter-control="true" 
+        data-show-export="true"
+        data-click-to-select="true"
+        data-toolbar="#toolbar">
+            <thead>
+                <tr>
+                    <th scope="col">الإسم</th>
+                    <th scope="col">العنوان</th>
+                    <th scope="col">نوع المخالفة</th>
+                    <th scope="col">المراقب</th>
+                    <th scope="col" >إدارة</th>
+                </tr>
+            </thead>
+            <tbody>
+            <!-- iterate over gawlat -->
+                <tr>
+                    <!-- <% penalties.forEach(penalty => { %>
+                        <td><%= penalty.penaltyClassId.name%></td>
+                    <% })%> -->
+                    <td></td>
+                    <td></td>
+                    <td>أحمد محمد</td>
+                    <td><a href="/gawla/edit/" class="btn btn-success"><i class="la la-info"></i>  التفاصيل</a>
+                    <!-- check if role is manager to show this button-->
+                    <button class="btn btn-danger"><i class="la la-trash"></i> حذف</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+<script>
+$(document).ready(function() {
+    $("#add_row").on("click", function() {
+        // Dynamic Rows Code
+        
+        // Get max row id and set new id
+        var newid = 0;
+        $.each($("#tab_logic tr"), function() {
+            if (parseInt($(this).data("id")) > newid) {
+                newid = parseInt($(this).data("id"));
+            }
+        });
+        newid++;
+        
+        var tr = $("<tr></tr>", {
+            id: "addr"+newid,
+            "data-id": newid
+        });
+        
+        // loop through each td and create new elements with name of newid
+        $.each($("#tab_logic tbody tr:nth(0) td"), function() {
+            var td;
+            var cur_td = $(this);
+            
+            var children = cur_td.children();
+            
+            // add new td and element if it has a nane
+            if ($(this).data("name") !== undefined) {
+                td = $("<td></td>", {
+                    "data-name": $(cur_td).data("name")
+                });
+                
+                var c = $(cur_td).find($(children[0]).prop('tagName')).clone().val("");
+                c.attr("name", $(cur_td).data("name") + newid);
+                c.appendTo($(td));
+                td.appendTo($(tr));
+            } else {
+                td = $("<td></td>", {
+                    'text': $('#tab_logic tr').length
+                }).appendTo($(tr));
+            }
+        });
+        
+        // add delete button and td
+        /*
+        $("<td></td>").append(
+            $("<button class='btn btn-danger glyphicon glyphicon-remove row-remove'></button>")
+                .click(function() {
+                    $(this).closest("tr").remove();
+                })
+        ).appendTo($(tr));
+        */
+        
+        // add the new row
+        $(tr).appendTo($('#tab_logic'));
+        
+        $(tr).find("td button.row-remove").on("click", function() {
+             $(this).closest("tr").remove();
+        });
+});
+
+
+
+
+    // Sortable Code
+    var fixHelperModified = function(e, tr) {
+        var $originals = tr.children();
+        var $helper = tr.clone();
+    
+        $helper.children().each(function(index) {
+            $(this).width($originals.eq(index).width())
+        });
+        
+        return $helper;
+    };
+  
+    $(".table-sortable tbody").sortable({
+        helper: fixHelperModified      
+    }).disableSelection();
+
+    $(".table-sortable thead").disableSelection();
+
+
+
+    $("#add_row").trigger("click");
+});
+</script>
+
+</body>
+
+<script src="/js/add-gawla.js"></script>
+<script src="/js/penalty/penalty.js"></script>
+<%- include('../includes/footer.ejs')%>
