@@ -63,7 +63,7 @@ const penalty_attrs = {
             notEmpty: true
         }
     },
-    descrition: {
+    description: {
         type: Sequelize.TEXT,
         allowNull: true
     }

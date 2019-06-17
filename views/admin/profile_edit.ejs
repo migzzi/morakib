@@ -17,10 +17,14 @@
     $(document).ready(function(){
         submitForm("PUT", "/admin/employee/<%= targetUser.id %>", $("#profile_form"), {
             success: (data) => {
-                let resFlash = $("#result_flash");
-                resFlash.empty();
-                let context = data.success ? "success" : "danger";
-                resFlash.append($("<div class='alert alert-" + context + "'>" + data.msg + "</div>"));
+                if(data.success){
+                    location.reload();
+                } else{
+                    let resFlash = $("#result_flash");
+                    resFlash.empty();
+                    resFlash.append($("<div class='alert alert-danger'>" + data.msg + "</div>"));
+
+                }
             },
             error: (err) => {
                 console.log(err)

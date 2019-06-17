@@ -108,9 +108,9 @@ function displayUser(role=null, edit=false, param="id"){
     };
 }
 
-function updateUser(api=true, success_page="/admin/profile"){
+function updateUser(api=true, success_page="/admin/profile", param="id"){
     return function(req, res){
-        if(edit && req.user[param] != req.params[param] && req.decodedToken.role.role != "admin") //check if the current user is the resource owner or is admin
+        if(req.user[param] != req.params[param] && req.decodedToken.role.role != "admin") //check if the current user is the resource owner or is admin
             return res.render("auth/not_authorized");
         let user = {
             first_name: req.body.first_name,
@@ -155,13 +155,14 @@ function updateUser(api=true, success_page="/admin/profile"){
 
 function getUsers(role_ = null){
     return (req, res) => {
-        let filter = {} , role = role_ || req.query.role;
+        let roleFilter = {} , role = role_ || req.query.role, userFilter = req.params;
         if(role){
             //Get users of specific role.
-            filter = {where: {role: role}};
-            Role.findOne(filter)
+            roleFilter = {where: {role: role}};
+            Role.findOne(roleFilter)
             .then((role) => {
                 return User.findAll({
+                    where: userFilter,
                     include: [{model: Role, as: "role", where: {id: role.id}}, {model: Penalty, as: "penalties"}]
                 });
             }).then((users) => {
@@ -179,6 +180,7 @@ function getUsers(role_ = null){
         } else {
             //Get all users whatever there role is.
             User.findAll({
+                where: userFilter,
                 include: [{model: Role, as: "role"}, {model: Penalty, as: "penalties"}]
             })
             .then((users) => {
@@ -207,7 +209,7 @@ function checkPenRole(role){
     let model;
     if(role == "class") model = {model: PenaltyClass, include: [{model: PenaltyType, as: "pen_types"}]};
     else if(role == "type") model = {model: PenaltyType, include: [{model: PenaltyClass, as: "pen_class"}, {model: PenaltyTerm, as: "pen_terms"}]};
-    else if(role == "term") model = {model: PenaltyTerm, include: [{model: PenaltyType, as: "pen_type"}]};
+    else if(role == "term") model = {model: PenaltyTerm, include: [{model: PenaltyType, as: "pen_type", include: [{model: PenaltyClass, as: "pen_class"}]}]};
     else model = {model: Penalty, include: [{model: PenaltyClass, as: "pen_class"}, {model: PenaltyType, as: "pen_type"}, {model: PenaltyTerm, as: "pen_term"}]};
     return model;
 }
@@ -218,6 +220,7 @@ function getPenalty(role = null, api=false, page_name="list_pen_" + role + "s"){
         let filter = req.params || {};
         model.findAll({where: filter, include: include})
         .then(results => {
+            console.log(results[0].pen_type)
             if(api) return res.json({success: true, results: results});
             return res.render(page_name, {data: results});
         }).catch(err => {
@@ -251,12 +254,9 @@ function addPenalty(role, api=false, success_redirect_url="/penalty_" + role + "
     let {model} = checkPenRole(role);
     return (req, res) => {
         console.log(req.body)
-        let modelObj = {
-            name: req.body.name,
-            description: req.body.description
-        };
-        let addons = req.body.addons;
-        if(addons) modelObj[addons] = addons;
+        let modelObj = req.body;
+        // let addons = req.body.addons;
+        // if(addons) modelObj[addons] = addons;
         model.create(modelObj)
         .then(result => {
             if(result){

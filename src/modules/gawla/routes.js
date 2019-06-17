@@ -1,6 +1,6 @@
 const express = require('express');
 const gawlaController = require('../gawla/controllers');
-
+const checkRole = require("../auth/middleware").checkRole;
 const router = express.Router();
 
 router.get('/',gawlaController.getHome);
@@ -14,8 +14,8 @@ router.post('/gawla/edit/:id',gawlaController.postEditGawla);
 router.get('/gawla/:id',gawlaController.getGawla);
 
 
-router.delete('/gawla/delete/:id',gawlaController.postDeleteGawla);
-router.get('/gawlat',gawlaController.getGawlat);
+router.delete('/gawla/delete/:id',checkRole("manager"), gawlaController.postDeleteGawla);
+router.get('/gawlat',checkRole("manager"), gawlaController.getGawlat);
 
 const NodeGeocoder = require('node-geocoder');
 

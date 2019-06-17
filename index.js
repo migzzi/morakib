@@ -24,7 +24,6 @@ app.use(bodyParser.json());
 app.use(morgan("short"));
 
 
-app.use(gawlaRouter);
 
 //authentication middleware assign logged in user to the request.
 app.use(authMiddlewares.authenticateToken);
@@ -38,13 +37,18 @@ app.get("/", (req, res) => res.render("index"));
 const {displayUser, updateUser, getUsers} = require("./src/modules/admin/helpers");
 app.get("/profile/:username", displayUser(null, false, "username"));
 app.get("/profile/:username/edit", displayUser(null, true, "username"));
-app.put("/profile/:username", updateUser());
+app.put("/profile/:username", updateUser(true, null, "username"));
 
+//some APIs endpoints
 app.get("/managers", getUsers("manager")); //api json response
+app.get("/manager/:manager_id/employees", getUsers()); //api json response
+app.get("/manager/:manager_id/inspectors", getUsers("inspector")); //api json response
 app.get("/inspectors", getUsers("inspector")); //api json response
 app.get("/employees", getUsers()); //api json response
+//===================
 
-app.use("/admin", authMiddlewares.checkRole("admin"),adminRouter);
+app.use("/admin", authMiddlewares.checkRole("admin"), adminRouter);
+app.use(gawlaRouter);
 //Object.entries(routers).map(router => app.use(router[0], router[1]));
 
 //handle 404 not found routes.
@@ -102,9 +106,9 @@ db.authenticate()
         }).then(() => {
             return createSuperUser({first_name: "maged", last_name: "magdy", username: "amr", password: "0000", email: "magedmagdy105@gmail.com", avatar: "default.png", roleId: 2})
         }).then(() => {
-            return createSuperUser({first_name: "ahmed", last_name: "magdy", username: "ahmed", password: "34234", email: "ahmed@gmail.com", avatar: "default.png", roleId: 3})
+            return createSuperUser({first_name: "ahmed", last_name: "magdy", username: "ahmed", password: "34234", email: "ahmed@gmail.com", avatar: "default.png", roleId: 3, managerId: 2})
         }).then(() => {
-            return createSuperUser({first_name: "marwa", last_name: "magdy", username: "mero", password: "34234", email: "marwa@gmail.com", avatar: "default.png", roleId: 3})
+            return createSuperUser({first_name: "marwa", last_name: "magdy", username: "mero", password: "34234", email: "marwa@gmail.com", avatar: "default.png", roleId: 3, managerId: 2})
         })
        
     })
