@@ -34,12 +34,12 @@
                                     <div class="card-body">
 											<div class="form-group">
 												<label for="squareInput">اسم الشخص / الشركة</label>
-                                                <p class="form-control input-square" id="squareInput" > <%= gawla.name%> </p>
+                                                <p class="form-control-plaintext" id="squareInput" > <%= gawla.name%> </p>
                                             </div>
 
                                             <div class="form-group">
                                                     <label for="squareInput">جهة الإتصال</label>
-                                                    <p class="form-control input-square" id="squareInput" > <%= gawla.phone_no%> </p>
+                                                    <p class="form-control-plaintext" id="squareInput" > <%= gawla.phone_no%> </p>
                                                 </div>
 											<div class="form-group">
 												<label for="squareSelect">هدف الجولة</label>
@@ -51,21 +51,21 @@
                                             </div>
                                             <div class="form-group">
                                                     <label for="squareInput">العنوان</label>
-                                                    <p class="form-control input-square" id="squareInput" > <%= gawla.Address%> </p>
+                                                    <p class="form-control-plaintext" id="squareInput" > <%= gawla.Address%> </p>
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="squareInput">نوع الجولة </label>
-                                                    <p class="form-control input-square" id="squareInput" > <%= gawla.penalty_class.name%> </p>
+                                                    <p class="form-control-plaintext" id="squareInput" > <%= gawla.pen_class.name%> </p>
                                                 </div>
                                                 <div class="form-group">
                                                         <label for="squareInput">رقم الرخصة</label>
-                                                        <p class="form-control input-square" id="squareInput" > <%= gawla.licesnce_no%> </p>
+                                                        <p class="form-control-plaintext" id="squareInput" > <%= gawla.licesnce_no%> </p>
                                                     </div>
                                                     
 
 											<div class="form-group">
 												<label for="pillSelect">المراقب المكلف بالجولة </label>
-                                                <p class="form-control input-square"  > <%=gawla.inspector.first_name%> <%= gawla.inspector.last_name%> </p>
+                                                <p class="form-control-plaintext"  > <%=gawla.inspector.first_name%> <%= gawla.inspector.last_name%> </p>
 
 											</div>
 														

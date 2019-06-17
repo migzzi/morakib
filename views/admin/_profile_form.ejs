@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-md-4">
                 <img class="avatar_profile mb-3" id="avatar_pic" src="/img/avatars/<%= targetUser.avatar %>">
-                <input type="file" class="btn btn-success form-control" name="avatar" value="اختر صورة" id="avatar_input" required value="<%= targetUser.avatar %>">
+                <input type="file" class="btn btn-success form-control" name="avatar" value="اختر صورة" id="avatar_input"  value="<%= targetUser.avatar %>">
             </div>
             <div class="mb-4 col-md-8 profile_data">
                 <label>اسم المستخدم</label>
@@ -12,16 +12,21 @@
                     <label>كلمة المرور</label>
                     <input class="form-control head_name mb-4" name="password" type="password" required value="">
                 <% } %>
-                <label>الرتبة</label>
-                <select class="form-control mb-4" name="role" id="role_selector" required>
-                    <% for(role of roles){  %>
-                        <% if(targetUser.role && targetUser.role.id == role.id){ %>
-                            <option selected value="<%= role.id %>" data-value="<%= role.role %>"><%= role.role %></option>
-                        <% } else {%>
-                            <option value="<%= role.id %>" data-value="<%= role.role %>"><%= role.role %></option>
+                <% if(decodedToken.role.role == "admin"){ %>
+                    <label>الرتبة</label>
+                    <select class="form-control mb-4" name="role" id="role_selector" required>
+                        <% for(role of roles){  %>
+                            <% if(targetUser.role && targetUser.role.id == role.id){ %>
+                                <option selected value="<%= role.id %>" data-value="<%= role.role %>"><%= role.role %></option>
+                            <% } else {%>
+                                <option value="<%= role.id %>" data-value="<%= role.role %>"><%= role.role %></option>
+                            <% } %>
                         <% } %>
-                    <% } %>
-                </select>
+                    </select>
+                <% } else {%>
+                    <label>الرتبة</label>
+                    <p class="font-weight-bold">مدير</p>
+                    <% }%>
                 <hr>
                 <div class="row mb-4">
                     <div class="col-md-6">

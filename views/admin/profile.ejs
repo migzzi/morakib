@@ -10,23 +10,23 @@
 						
                         <div class="row">
                             <div class="col-md-4">
-                                <img class="avatar_profile" src="/public/img/avatars/<%= targetUser.avatar %>">
+                                <img class="avatar_profile" src="/img/avatars/<%= targetUser.avatar %>">
                             </div>
-                            <div class="mb-4 col-md-8 profile_data">
+                            <div class="mb-4 col-md-8 profile_data" dir="rtl">
                                 <h3 class="head_name"><%= targetUser.username %></h3>
                                 <h6 class="sub_role"><%= targetUser.role.role %></h6>
                                 <hr>
                                 <div class="row mb-4">
                                     <div class="col-md-6">
-                                        الأسم الأول: <%= targetUser.first_name %>
+                                        الأسم الأول:&nbsp;&nbsp; <%= targetUser.first_name %>
                                     </div>
                                     <div class="col-md-6">
-                                        أسم العائلة: <%= targetUser.last_name %>
+                                        أسم العائلة:&nbsp;&nbsp; <%= targetUser.last_name %>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6">
-                                        البريد الاليكترونى: <%= targetUser.email %>
+                                        البريد الاليكترونى:&nbsp;&nbsp; <%= targetUser.email %>
                                     </div>
                                 </div>
                             </div>

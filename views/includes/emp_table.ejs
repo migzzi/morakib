@@ -1,0 +1,49 @@
+
+<table id="table" 
+			 data-toggle="table"
+			 data-search="true"
+			 data-filter-control="true" 
+			 data-show-export="true"
+			 data-click-to-select="true"
+			 data-toolbar="#toolbar">
+    <thead>
+        <tr>
+            <th scope="col">الإسم</th>
+            <th scope="col">عدد الجولات</th>
+            <th scope="col">الفئــة</th>
+            <th scope="col" >إدارة</th>
+        </tr>
+    </thead>
+    <tbody>
+            <tr>
+                    <td>
+                        <img id="superav" src="assets/img/profile.jpg">
+                        <span>فهد المطيري</span>
+                    </td>
+                    <td ><h6>43</h6></td>
+                    <td>صحية</td>
+                    <td><button class="btn btn-success"><i class="la la-info"></i> التفاصيل</button>
+                    <button class="btn btn-primary"><i class="la la-edit"></i> تعديل</button>
+                    <button class="btn btn-danger"><i class="la la-trash"></i> حذف</button>
+                </td>
+                </tr>
+                
+    </tbody>
+</table>
+<script>
+
+
+    $(document).ready(function(){
+        function getEmployees(role = null, options){
+            $.ajax({
+                url: "/admin/" + (role ? role : "employee"),
+                method: "GET",
+                dataType: "json",
+                success: options.success,
+                error: options.error
+            })
+        }
+
+        get
+    })
+</script>

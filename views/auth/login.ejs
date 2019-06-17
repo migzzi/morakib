@@ -1,0 +1,138 @@
+<%- include("../includes/head") %>
+
+</head>
+<body >
+    
+	<div class="wrapper">
+		<div class="main-header">
+			<div class="logo-header">
+				<a href="index.html" class="logo">
+					نظـــام المخالفـــات  
+				</a>	<i class="la la-2x la-map-marker"></i>
+				<button class="navbar-toggler sidenav-toggler ml-auto" type="button" data-toggle="collapse" data-target="collapse" aria-controls="sidebar" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<button class="topbar-toggler more"><i class="la la-ellipsis-v"></i></button>
+			</div>
+		
+			</div>
+		
+			<div class="main-panel" style="    width: 100%;">
+				<div class="content">
+					<div class="container-fluid">
+                        <form id="login-form" class="form-horizontal" role="form" method="POST" action="/login">
+                            <div class="row">
+                                <div class="col-md-3"></div>
+                                <div class="col-md-6" style="text-align: center">
+                                        <h4><i class="la la-unlock la-5x" style="color: #008000c9"></i></h4>
+                                    <h4>تسجيل الدخول</h4>
+                                    <hr>
+                                    <div id="flash">
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" style="font-family: 'Cairo'">
+                                <div class="col-md-3"></div>
+                                <div class="col-md-6">
+                                    <div class="form-group has-danger">
+                                        <label class="sr-only" for="email">اسم المستحدم</label>
+                                        <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                                            <div class="input-group-addon" style="width: 2.6rem"></div>
+                                            <input type="text" name="username" class="form-control" id="username"
+                                                   placeholder="اسم المستخدم" required autofocus><i class="la la-user la-3x"></i>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row" style="font-family: 'Cairo'">
+                                <div class="col-md-3"></div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="sr-only" for="password">كلمة المرور</label>
+                                        <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                                            <div class="input-group-addon" style="width: 2.6rem"></div>
+                                            <input id="password" type="password" name="password" class="form-control" id="password"
+                                                   placeholder="كلمة المرور" required><i class="la la-key la-3x"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-control-feedback">
+                                        <span class="text-danger align-middle">
+                                        <!-- Put password error message here -->    
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3"></div>
+                                <div class="col-md-6" style="padding-top: .35rem">
+   
+                                </div>
+                            </div>
+                            <div class="row" style="padding-top: 1rem">
+                                <div class="col-md-3"></div>
+                                <div class="col-md-6" style="text-align: center">
+                                    <button id="sign-in-btn" type="submit" class="btn btn-success btn-lg" style="font-family: 'Cairo'">دخـــول <i class="la la-sign-in la"></i></button>
+                                </div>
+                            </div>
+                        </form>					</div>
+				</div>
+
+
+			</div>
+		</div>
+	</div>
+
+    <%- include("../includes/footer") %>
+    <script>
+        $(document).ready(function(){
+            $("#login-form").on("submit", function(e){
+                e.preventDefault();
+                let username = $("#username").val(), password = $("#password").val()
+                $.ajax({
+                    url: "/auth/login",
+                    method: "POST",
+                    contentType: "application/json",
+                    processData: false,
+                    data: JSON.stringify({username, password}),
+                    dataType: "json",
+                    success: (data) => {
+                        if(data.success){
+                            if(data.redirect){
+                                location.href = "/";
+                                console.log("1")
+                            }
+                            console.log("21")
+
+                            let date = new Date();
+                            date.setTime(date.getTime() + (1*24*60*60*1000));
+                            let expires = "; expires=" + date.toUTCString();
+                            document.cookie = "auth_token=" + data.token + expires;
+                            location.href = "/";
+                        } else {
+                            let flash = $("#flash");
+                            flash.empty();
+                            flash.append($(`<div class="alert alert-danger" style="text-align: right;    font-family: 'Cairo', sans-serif;" role="alert">
+                                        <strong>البريد الإلكتروني او كلمة المرور غير صحيحان ، برجاء التأكد و المحاولة مرة أخري </strong><i class="la la-warning la-2x"></i>
+                                    </div>`));
+                        }
+                    },
+                    error: (err) => {
+                        console.log(err);
+                        let flash = $("#flash");
+                        flash.empty();
+                        flash.append($(`<div class="alert alert-danger" style="text-align: right;    font-family: 'Cairo', sans-serif;" role="alert">
+                                    <strong>البريد الإلكتروني او كلمة المرور غير صحيحان ، برجاء التأكد و المحاولة مرة أخري </strong><i class="la la-warning la-2x"></i>
+                                </div>`));
+                    }
+                })
+            })
+        })
+    
+    </script>
+</body>
+<!-- <script src="assets/js/demo.js"></script> -->
+</html>

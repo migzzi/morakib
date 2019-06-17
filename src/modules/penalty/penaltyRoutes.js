@@ -14,9 +14,16 @@ penaltyRouter.get("/add-penalty/penaltyType/:penaltyTerm",penaltyController.getP
 
 // get the penalties 
 penaltyRouter.get("/penalties",penaltyController.getPenalties);
+penaltyRouter.get("/approvedPenalty",penaltyController.getPenaltyApproved);
+
 
 
 penaltyRouter.get("/test",penaltyController.test);
+
+
+penaltyRouter.delete("/delete/:id",penaltyController.postDeletePenalty);
+
+penaltyRouter.get("/update/:id",penaltyController.getPenaltyUpdate);
 
 
 

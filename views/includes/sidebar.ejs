@@ -15,7 +15,7 @@
                         <span class="caret"></span>
                         <br/>
                         <br/>
-                        <a class="btn btn-danger">	<i class="la  la-sign-out"></i>خــروج</a>
+                        <a class="btn btn-danger logout-btn">	<i class="la  la-sign-out"></i>خــروج</a>
                     </span>
                 </a>
                 <div class="clearfix"></div>
@@ -24,15 +24,11 @@
                     <ul class="nav">
 
                         <li>
-                            <a href="#info">
+                            <a href="/profile/<%= user.username%>">
                                 <span class="link-collapse">البيانات الشخصية</span>
                             </a>
                         </li>
-                        <li>
-                            <a href="#logout">
-                                <span class="link-collapse">تسجيل خروج</span>
-                            </a>
-                        </li>
+    
                     </ul>
                 </div>
             </div>
@@ -81,7 +77,7 @@
                             <p>اضافة جولة</p>
                     </a>
                 </li>
-            }
+            
         </ul>
     </div>
 </div>
