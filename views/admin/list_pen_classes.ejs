@@ -1,0 +1,173 @@
+<%- include('../includes/head.ejs')%>
+
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.14.2/dist/bootstrap-table.min.css">
+</head>
+<body >
+	<div class="wrapper">
+            <%- include("../includes/header") %>
+
+			<%- include("../includes/sidebar")%>
+			<div class="main-panel">
+				<div class="content">
+					<div class="container-fluid">
+                    <div class="row" id="error_msg"></div>
+
+						<h4 class="page-title">الفئات</h4>
+						<div class="row">
+							<div class="col-md-12">
+								<div class="card card-tasks">
+                                    <div class="card-body"> 
+                                        <div class="row pr-3"><button data-toggle="modal" data-target="#myModal" class="btn btn-success"><i class="la la-plus-sign"></i>اضافة فئة</button></div>                      
+                                        <table id="table" 
+                                            data-toggle="table"
+                                            data-search="true"
+                                            data-filter-control="true" 
+                                            data-show-export="true"
+                                            data-click-to-select="true"
+                                            data-toolbar="#toolbar">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">الإسم</th>
+                                                    <th scope="col">الوصف</th>
+                                                    <th scope="col">عدد الأنواع</th>
+                                                    <th scope="col" >إدارة</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="tbody">
+                                                <% for(pen_class of data){ %>
+                                                    <tr id='pen-<%= pen_class.id %>'>
+                                                        <td>
+                                                            <span class="text-bold"><%= pen_class.name%></span>
+                                                        </td>
+                                                        <td ><p><%= pen_class.description %></p></td>
+                                                        <td ><h6><%= pen_class.pen_types.length %></h6></td>
+                                                        <td>
+                                                            <a class="text-light btn btn-primary"><i class="la la-edit"></i> تعديل</a>
+                                                            <button id='<%= pen_class.id%>' class="btn btn-danger"><i class="la la-trash"></i> حذف</button>
+                                                        </td>
+                                                    </tr>
+                                                <% }%>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                        <div class="card-action">
+
+                                            </div>
+								</div>
+							</div>
+						</div>
+					</div>
+                </div>
+                
+
+
+			</div>
+		</div>
+    </div>
+    
+    <!-- MODAL-->
+    <div class="modal fade" id="myModal">
+            <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                  <h4 class="modal-title">الفئة</h4>
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+          
+                <!-- Modal body -->
+                <div class="modal-body">
+                        <div class="row clearfix">
+                                <div class="col-md-12 table-responsive">
+                                    <table class="table table-bordered table-hover table-sortable" id="tab_logic">
+                                        <thead>
+                                            <tr >
+                                                <th class="text-center">
+                                                    الأسم
+                                                </th>
+        
+                                                <th class="text-center">
+                                                    الوصف
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tbody">
+                                            <tr id='addr0' data-id="0" class="hidden">
+                                                <td data-name="name">
+                                                    <input id="pen_name" type="text" name='name'  placeholder='اسم الفئة' class="form-control"/>
+                                                </td>
+        
+                                                <td data-name="desc">
+                                                    <textarea id="pen_desc" name="descrition" placeholder="وصف مختصر للفئة" class="form-control"></textarea>
+                                                </td>
+                                        
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>        
+                </div>
+          
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" id="submit_add" data-dismiss="modal">حفظ</button>
+                  <button type="button" class="btn btn-danger" data-dismiss="modal">إغلاق</button>
+                </div>
+          
+              </div>
+            </div>
+          </div>
+          <!-- MODAL END-->
+    <%- include('../includes/footer.ejs')%>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/bootstrap-table@1.14.2/dist/bootstrap-table.min.js"></script>
+</body>
+
+<script>
+    $(document).ready(()=>{
+     
+       
+        $("#submit_add").on("click", function(e){
+            let name = $("#pen_name").val(), description = $("#pen_desc").val();
+            $.ajax({
+                url: "/admin/pen_classes",
+                method: "POST",
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                processData: false,
+                data: JSON.stringify({name, description}),
+                success: (data) => {
+                    if(data.success){
+                        let tr = $(`<tr id='pen-<%= pen_class.id %>'>
+                                                        <td>
+                                                            <span class="text-bold">${name}</span>
+                                                        </td>
+                                                        <td ><h6>${description}</h6></td>
+                                                        <td>
+                                                            <a class="text-light btn btn-primary"><i class="la la-edit"></i> تعديل</a>
+                                                            <button id='${data.result.id}' class="btn btn-danger"><i class="la la-trash"></i> حذف</button>
+                                                        </td>
+                                                    </tr>`);
+                        $("#tbody").append(tr);
+                        $("#myModal").modal("hide");
+                    } else {
+                        let flash = $("#error_msg");
+                        flash.empty();
+                        flash.append($("<div class='w-100 alert alert-danger'>حدث خطأ ماز رجاء حاول مرة اخرى </div>"));
+                    }
+                }, 
+                error: (err) => {
+                    let flash = $("#error_msg");
+                        flash.empty();
+                        flash.append($("<div class='w-100 alert alert-danger'>حدث خطأ ماز رجاء حاول مرة اخرى </div>"));
+                }
+            })
+        })
+        let table = $("#tbody");
+        deleteRow(table, "/admin/pen_class/")
+        
+    })
+
+</script>
+</html>

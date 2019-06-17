@@ -4,7 +4,8 @@ const   adminRouter = require("express").Router(),
         bcrypt = require("bcrypt"),
         isAdmin = require("../auth/middleware").checkRole("admin"),
         config = require("../../../config/config.json")[process.env.APP_ENV || "development"],
-        {User, Role} = require("../auth/models");
+        {User, Role} = require("../auth/models"),
+        {Penalty, Gawla, PenaltyClass, PenaltyTerm, PenaltyType} = require("../gawla/models");
 
 const saltRoundsCount = process.env.APP_SALT_ROUNDS_COUNT || config.salt_rounds_count;
 
@@ -28,7 +29,7 @@ function addUserPost(){
                 username: req.body.username,
                 email: req.body.email,
                 password: hashedPassword,
-                avatar: req.file.filename,
+                avatar: req.file.filename || "default.png",
                 roleId: req.body.role,
             };
             if(req.body.manager){
@@ -59,18 +60,18 @@ function addUserPost(){
     };
 }
 
-function deleteUser(){
+function deleteUser(model){
     return (req, res) => {
-        User.destroy({where: {id: req.params.id}})
+        model.destroy({where: {id: req.params.id}})
         .then(affectedRows => {
             if(affectedRows > 0)
                 return res.json({
                     success: true,
-                    msg: "user deleted succeessfully"
+                    msg: "deleted succeessfully"
                 });
             return res.json({
                 error: true,
-                msg: "no such user with specified ID"
+                msg: "no such resource with specified ID"
             });
         })
         .catch(err => {
@@ -85,9 +86,9 @@ function deleteUser(){
 
 function displayUser(role=null, edit=false, param="id"){
     return (req, res) => {
-    
+        if(edit && req.user[param] != req.params[param] && req.decodedToken.role.role != "admin") //check if the current user is the resource owner or is admin
+            return res.render("auth/not_authorized");
         let filter = role ? {role: role} : {};
-        console.log({[param]: req.params[param]}, filter)
         User.findOne({
             include: [{model: Role, as: "role", where: filter}],
             where: {[param]: req.params[param]}
@@ -107,21 +108,25 @@ function displayUser(role=null, edit=false, param="id"){
     };
 }
 
-function updateUser(){
+function updateUser(api=true, success_page="/admin/profile"){
     return function(req, res){
+        if(edit && req.user[param] != req.params[param] && req.decodedToken.role.role != "admin") //check if the current user is the resource owner or is admin
+            return res.render("auth/not_authorized");
         let user = {
             first_name: req.body.first_name,
             last_name: req.body.last_name,
             username: req.body.username,
             email: req.body.email,
-            avatar: req.file.filename,
-            roleId: req.body.role,
+            avatar: req.file.filename || "default.png",
         };
+        let userRole = req.decodedToken.role.role;
+        if(userRole == "admin")
+            user["roleId"] ; req.body.role;
         let updateProm = null;
 
         // return Role.findOne({where: {role: req.body.role}})
         // .then((role) => {
-        if(req.body.manager){
+        if(req.body.manager && userRole == "admin"){
             updateProm =  User.findOne({where: {id: req.body.manager}, include: [{model: Role, as: "role", where: {role: "manager"}}]})
             .then(manager => {
                 if(!manager)
@@ -132,17 +137,18 @@ function updateUser(){
         }
         else updateProm = User.update(user, {where: {id: req.params.id}});
         updateProm.then(user => {
-            return res.json({
+            if(api) return res.json({
                 success: true,
                 msg: "employee updated successfully!"
             });
-        })
-        .catch(err => {
+            return res.render(success_page);
+        }).catch(err => {
             console.log(err);
-            return res.json({
+            if(api) return res.json({
                 error: true,
                 msg: "something went wrong"
             });
+            return res.render(success_page);
         });
     };
 }
@@ -156,16 +162,14 @@ function getUsers(role_ = null){
             Role.findOne(filter)
             .then((role) => {
                 return User.findAll({
-                    include: [{model: Role, as: "role", where: {id: role.id}}]
+                    include: [{model: Role, as: "role", where: {id: role.id}}, {model: Penalty, as: "penalties"}]
                 });
-            })
-            .then((users) => {
+            }).then((users) => {
                 return res.json({
                     success: true,
                     users: users
                 });
-            })
-            .catch((err) => {
+            }).catch((err) => {
                 console.log(err);
                 return res.json({
                     error: true,
@@ -175,15 +179,14 @@ function getUsers(role_ = null){
         } else {
             //Get all users whatever there role is.
             User.findAll({
-                include: [{model: Role, as: "role"}]
+                include: [{model: Role, as: "role"}, {model: Penalty, as: "penalties"}]
             })
             .then((users) => {
                 return res.json({
                     success: true,
                     users: users
                 });
-            })
-            .catch((err) => {
+            }).catch((err) => {
                 console.log(err);
                 return res.json({
                     error: true,
@@ -194,10 +197,117 @@ function getUsers(role_ = null){
     };
 }
 
+function listEmployees(role, page_prefix = "list_"){
+    return (req, res) => {
+        return res.render(page_prefix + (role ? role : "employees"));
+      }
+}
 
+function checkPenRole(role){
+    let model;
+    if(role == "class") model = {model: PenaltyClass, include: [{model: PenaltyType, as: "pen_types"}]};
+    else if(role == "type") model = {model: PenaltyType, include: [{model: PenaltyClass, as: "pen_class"}, {model: PenaltyTerm, as: "pen_terms"}]};
+    else if(role == "term") model = {model: PenaltyTerm, include: [{model: PenaltyType, as: "pen_type"}]};
+    else model = {model: Penalty, include: [{model: PenaltyClass, as: "pen_class"}, {model: PenaltyType, as: "pen_type"}, {model: PenaltyTerm, as: "pen_term"}]};
+    return model;
+}
+
+function getPenalty(role = null, api=false, page_name="list_pen_" + role + "s"){
+    let {model, include} = checkPenRole(role);
+    return (req, res) => {
+        let filter = req.params || {};
+        model.findAll({where: filter, include: include})
+        .then(results => {
+            if(api) return res.json({success: true, results: results});
+            return res.render(page_name, {data: results});
+        }).catch(err => {
+            console.log(err)
+            if(api) return res.json({error: true, msg: "something wrong is happened!" + err});
+            return res.render("error");
+        });
+    };
+}
+
+function deletePenalty(role, api=false, success_redirect_url="/penalty_" + role + "s", error_redirect_url="/penalty_" + role + "s"){
+    let {model} = checkPenRole(role);
+    return (req, res) => {
+        model.destroy({where: {id: req.params.id}})
+        .then((rowsAffected) => {
+            if(rowsAffected > 0){
+                if(api) return res.json({success: true, msg: "row deleted successfully!"});
+                return res.redirect(success_redirect_url);
+            } else {
+                if(api) return res.json({error: true, msg: "can't delete this resource!"});
+                return res.redirect(error_redirect_url);                
+            }
+        }).catch(err => {
+            if(api) return res.json({error: true, msg: "can't delete this resource!"});
+            return res.redirect(error_redirect_url); 
+        });
+    };
+} 
+
+function addPenalty(role, api=false, success_redirect_url="/penalty_" + role + "s", error_redirect_url="/penalty_" + role + "s"){
+    let {model} = checkPenRole(role);
+    return (req, res) => {
+        console.log(req.body)
+        let modelObj = {
+            name: req.body.name,
+            description: req.body.description
+        };
+        let addons = req.body.addons;
+        if(addons) modelObj[addons] = addons;
+        model.create(modelObj)
+        .then(result => {
+            if(result){
+                if(api) return res.json({success: true, msg: "resource created successfully!", result: result});
+                return res.redirect(success_redirect_url);
+            } else {
+                if(api) return res.json({error: true, msg: "can't create resource!"});
+                return res.redirect(error_redirect_url);
+            }
+        }).catch(err => {
+            console.log(err);
+            if(api) return res.json({error: true, msg: "can't create resource!"});
+            return res.redirect(error_redirect_url);
+        });
+    };
+}
+
+function updatePenalty(role, api=false, success_redirect_url="/penalty_" + role + "s", error_redirect_url="/penalty_" + role + "s"){
+    let {model} = checkPenRole(role);
+    return (req, res) => {
+        let modelObj = {
+            name: req.body.name,
+            desc: req.body.desc,
+            addons: req.body.addons,
+
+        };
+        let addons = req.body.addons;
+        if(addons) modelObj[addons] = addons;
+        model.update(modelObj, {where: {id: req.params.id}})
+        .then(results => {
+            if(results.length > 0){
+                if(api) return res.json({success: true, msg: "updated successfully!"});
+                return res.redirect(success_redirect_url);
+            } else {
+                if(api) return res.json({error: true, msg: "can't updated resource!"});
+                return res.redirect(error_redirect_url);
+            }
+        }).catch(err => {
+            if(api) return res.json({error: true, msg: "can't updated resource!"});
+            return res.redirect(error_redirect_url);
+        });
+    };
+}
 module.exports.addUserGet = addUserGet;
 module.exports.addUserPost = addUserPost;
 module.exports.deleteUser = deleteUser;
 module.exports.displayUser = displayUser;
 module.exports.getUsers = getUsers;
 module.exports.updateUser = updateUser;
+module.exports.listEmployees = listEmployees;
+module.exports.getPenalty = getPenalty;
+module.exports.deletePenalty = deletePenalty;
+module.exports.addPenalty = addPenalty;
+module.exports.updatePenalty = updatePenalty;

@@ -2,9 +2,9 @@ const express = require("express"),
       cors = require("cors"),
       bodyParser = require("body-parser"),
       morgan = require("morgan"),
-      authRouter = require("./src/modules/auth/routes"),
+      authRouter = require("./src/modules/auth/routes").authRouter,
       authMiddlewares = require("./src/modules/auth/middleware"),
-      gawlaRouter = require('./src/modules/gawla/routes');
+      gawlaRouter = require('./src/modules/gawla/routes'),
       path = require("path"),
       routers = require("./config/routers").routers,
       gawlaModels = require("./src/modules/gawla/models"),
@@ -12,6 +12,7 @@ const express = require("express"),
       adminRouter = require("./src/modules/admin/routes").adminRouter;
 
 const {User, Role} = require("./src/modules/auth/models");
+const {Gawla, Penalty, PenaltyClass, PenaltyType, PenaltyTerm} = require("./src/modules/gawla/models");
 const app = express();
 
 app.set('view engine', 'ejs');
@@ -26,21 +27,28 @@ app.use(morgan("short"));
 
 app.use(gawlaRouter);
 
-//custom middlewares.
-const forceJSON = (req, res, next)=>{
-    console.log(req.headers);
-    if(req.headers["content-type"] !== "application/json")
-        return res.status(400).send("Server support json only.");
-    next();
-}
+//authentication middleware assign logged in user to the request.
+app.use(authMiddlewares.authenticateToken);
 //register routers.
+app.use(authRouter);
+
+app.use(authMiddlewares.loginRequired());
 //commit
-app.get("/", (req, res) => res.render("index"));
+app.get("/home", (req, res) => res.render("index"));
 app.get("/1", (req, res) => res.render("supers"));
 app.get("/2", (req, res) => res.render("gawlat"));
 app.get("/3", (req, res) => res.render("add-gawla"));
 
-app.use("/admin", adminRouter);
+const {displayUser, updateUser, getUsers} = require("./src/modules/admin/helpers");
+app.get("/profile/:username", displayUser(null, false, "username"));
+app.get("/profile/:username/edit", displayUser(null, true, "username"));
+app.put("/profile/:username", updateUser());
+
+app.get("/managers", getUsers("manager")); //api json response
+app.get("/inspectors", getUsers("inspector")); //api json response
+app.get("/employees", getUsers()); //api json response
+
+app.use("/admin", authMiddlewares.checkRole("admin"),adminRouter);
 //Object.entries(routers).map(router => app.use(router[0], router[1]));
 
 //handle 404 not found routes.
@@ -59,6 +67,21 @@ app.listen(process.env.PORT || 8888, (err) => {
 })
 
 //Testing if the connection is established.
+
+config = require("./config/config.json")[process.env.APP_ENV || "development"];
+
+const saltRoundsCount = process.env.APP_SALT_ROUNDS_COUNT || config.salt_rounds_count;
+let bcrypt = require("bcrypt");
+function createSuperUser(obj){
+    let username = obj.username;
+    return bcrypt.hash(obj.password, saltRoundsCount)
+    .then(hashedPassword => {
+        return User.create(Object.assign(obj, {password: hashedPassword}));
+    })
+     
+}
+
+
 db.authenticate()
     .then(()=> {
         console.log("Connection to the database has been established successfully.");
@@ -72,21 +95,50 @@ db.authenticate()
         ]);
     })
     .then(() => {
-        return User.bulkCreate([
-            {first_name: "maged", last_name: "magdy", username: "mego", password: "34234", email: "magedmagdy105@gmail.com", avatar: "default.png", roleId: 2},
-            {first_name: "ahmed", last_name: "magdy", username: "ahmedm", password: "34234", email: "ahmed@gmail.com", avatar: "default.png", roleId: 3},
-            {first_name: "marwa", last_name: "magdy", username: "mero", password: "34234", email: "marwa@gmail.com", avatar: "default.png", roleId: 3}
-        ])
+        createSuperUser({
+            username: "maged",
+            first_name: "maged",
+            last_name: "magdy",
+            password: "123456",
+            email: "maged@gmail.com",
+            roleId: 1,
+            avatar: "default.png"
+        }).then(() => {
+            return createSuperUser({first_name: "maged", last_name: "magdy", username: "amr", password: "0000", email: "magedmagdy105@gmail.com", avatar: "default.png", roleId: 2})
+        }).then(() => {
+            return createSuperUser({first_name: "ahmed", last_name: "magdy", username: "ahmed", password: "34234", email: "ahmed@gmail.com", avatar: "default.png", roleId: 3})
+        }).then(() => {
+            return createSuperUser({first_name: "marwa", last_name: "magdy", username: "mero", password: "34234", email: "marwa@gmail.com", avatar: "default.png", roleId: 3})
+        })
+       
     })
     .then(() => {
-        return User.findOne({where: {id: 2}}).then((user) => {
-            user.setManager(1).then((user) => {
-                
-                return User.findAll({where: {manager_id: 1}})
-                .then(users => {
-                    users.forEach(u => console.log(u.username));
-                })
+        PenaltyClass.bulkCreate([
+            {name: "صحية"}, {name: "بناء"}, {name: "مرافق"}, {name: "تعامﻻت"}, {name: "مالية"}
+        ]).then((pen_classes) => {
+            return PenaltyType.bulkCreate([
+                {name: "نظافة", pen_class_id: 1}, {name: "اهمال", pen_class_id: 1},
+                {name: "تصريح", pen_class_id: 2}, {name: "طريق", pen_class_id: 2}, {name: "ضوضاء", pen_class_id: 2},
+                {name: "تصريح", pen_class_id: 3}, {name: "طريق", pen_class_id: 3}, {name: "ازعاج", pen_class_id: 3},
+                {name: "شكوى", pen_class_id: 4},
+                {name: "اختﻻس", pen_class_id: 5}, {name: "ضرائب", pen_class_id: 5}, {name: "فواتير", pen_class_id: 5}
+            ]).then((types) => {
+                return PenaltyTerm.bulkCreate([
+                    {name: "القاء قمامة", pen_type_id: 1, addons: "ازالة القمامة فورياً", value: 2000}, 
+                    {name: "معدات غير نظيفة", pen_type_id: 1, value: 3000},
+                    {name: "اهمال مرضى", pen_type_id: 2, value: 5000},
+                    {name: "بدون تصريح", pen_type_id: 3, addons: "اغﻻق فورى للمنشأة", value: 20000},
+                    {name: "تصريح منتهى", pen_type_id: 3, addons: "اغﻻق فورى للمنشأة", value: 15000},
+                    {name: "تصريح مزور", pen_type_id: 3, addons: "اغﻻق فورى للمنشأة", value: 30000},
+                    {name: "تخريب طريق", pen_type_id: 4, value: 10000},
+                    {name: "تعطيل طريق", pen_type_id: 4, value: 5000},
+                    {name: "ازعاج مارة", pen_type_id: 5, value: 1000},
+                    {name: "شكوى زبائن", pen_type_id: 5, value: 2500},
+                    {name: "غسيل اموال", pen_type_id: 6, value: 20000},
+                    {name: "تهرب ضريبى", pen_type_id: 7, value: 50000},
+                    {name: "عدم سداد فواتير", pen_type_id: 8, value: 5000},
+                ])
             })
-        })
+        }).catch(err => console.log(err))
     })
     .catch((err)=> console.log("ERROR! Connection couldn't be established. Check you DB service or your configurations.", err));

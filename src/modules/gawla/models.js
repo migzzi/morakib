@@ -55,7 +55,9 @@ const penalty_attrs = {
     name: {
         type: Sequelize.STRING(50),
         allowNull: false,
-        unique: true
+        validate: {
+            notEmpty: true
+        }
     },
     descrition: {
         type: Sequelize.TEXT,
@@ -67,19 +69,18 @@ const PenaltyClass = db.define("penalty_class", penalty_attrs, {sequelize: db});
 
 const PenaltyType = db.define("penalty_type", penalty_attrs, {sequelize: db});
 
-const PenaltyTerm = db.define("penalty_term", penalty_attrs, {sequelize: db});
-
-PenaltyClass.hasMany(PenaltyType);
-PenaltyType.belongsTo(PenaltyClass);
-
-PenaltyType.hasMany(PenaltyTerm);
-PenaltyTerm.belongsTo(PenaltyType);
-
-const Penalty = db.define("penalty", {
+const PenaltyTerm = db.define("penalty_term", Object.assign(penalty_attrs, {
+    addons: {
+        type: Sequelize.TEXT,
+        allowNull: true
+    },
     value: {
         type: Sequelize.INTEGER,
         allowNull: false
-    },
+    }
+}), {sequelize: db});
+
+const Penalty = db.define("penalty", {
     comment: {
         type: Sequelize.TEXT,
         allowNull: true
@@ -88,31 +89,28 @@ const Penalty = db.define("penalty", {
         type: Sequelize.ENUM(["pending", "approved"]),
         allowNull: false
     },
-    addons: {
-        type: Sequelize.TEXT,
-        allowNull: true
-    }
 });
 
-Penalty.belongsTo(User);
-Penalty.belongsTo(Gawla);
-Penalty.belongsTo(PenaltyClass);
-Penalty.belongsTo(PenaltyType);
-Penalty.belongsTo(PenaltyTerm);
-User.hasMany(Penalty);
-PenaltyClass.hasMany(Penalty);
-PenaltyType.hasMany(Penalty);
-PenaltyTerm.hasMany(Penalty);
-Gawla.belongsTo(User, {foreignKey: "inspector_id"});
-Gawla.belongsTo(User, {foreignKey: "manager_id"});
-Gawla.belongsTo(PenaltyClass);
-Gawla.belongsTo(PenaltyType);
-Gawla.belongsTo(PenaltyTerm);
-PenaltyClass.hasMany(Gawla);
-PenaltyType.hasMany(Gawla);
-PenaltyTerm.hasMany(Gawla);
-User.hasMany(Gawla, {foreignKey: "inspector_id"});
-User.hasMany(Gawla, {foreignKey: "manager_id"});
+Penalty.belongsTo(User, {foreignKey: "inspector_id", as: "inspector"});
+User.hasMany(Penalty, {foreignKey: "inspector_id", as: "penalties"});
+Penalty.belongsTo(Gawla, {foreignKey: "gawla_id", as: "gawla"});
+Gawla.hasMany(Penalty, {foreignKey: "gawla_id", as: "penalties"});
+Penalty.belongsTo(PenaltyClass, {foreignKey: "pen_class_id", as: "pen_class"});
+PenaltyClass.hasMany(Penalty, {foreignKey: "pen_class_id", as: "penalties"});
+Penalty.belongsTo(PenaltyType, {foreignKey: "pen_type_id", as: "pen_type"});
+PenaltyType.hasMany(Penalty, {foreignKey: "pen_type_id", as: "penalties"});
+Penalty.belongsTo(PenaltyTerm, {foreignKey: "pen_term_id", as: "pen_term"});
+PenaltyTerm.hasMany(Penalty, {foreignKey: "pen_term_id", as: "penalties"});
+PenaltyTerm.belongsTo(PenaltyType, {foreignKey: "pen_type_id", as: "pen_type"});
+PenaltyType.hasMany(PenaltyTerm, {foreignKey: "pen_type_id", as: "pen_terms"});
+PenaltyType.belongsTo(PenaltyClass, {foreignKey: "pen_class_id", as: "pen_class"});
+PenaltyClass.hasMany(PenaltyType, {foreignKey: "pen_class_id", as: "pen_types"});
+Gawla.belongsTo(User, {foreignKey: "inspector_id", as: "inspector"});
+User.hasMany(Gawla, {foreignKey: "inspector_id", as: "inspector_gawlas"});
+Gawla.belongsTo(User, {foreignKey: "manager_id", as: "manager"});
+User.hasMany(Gawla, {foreignKey: "manager_id", as: "manager_gawlas"});
+Gawla.belongsTo(PenaltyClass, {foreignKey: "pen_class_id", as: "pen_class"});
+PenaltyClass.hasMany(Gawla, {foreignKey: "pen_class_id", as: "gawlas"});
 
 
 module.exports.Penalty = Penalty;

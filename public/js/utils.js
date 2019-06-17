@@ -1,4 +1,3 @@
-<script>
     function submitForm(method, url, form, options = {}){
         /**
          * This function send ajax request to submit form data.
@@ -44,7 +43,7 @@
             if(managers.length == 0){
                 $.ajax({
                     method: "GET",
-                    url: "/admin/managers",
+                    url: "/managers",
                     dataType: "json",
                     success: function(data){
                         //if server sent data. and succeeded to get users.
@@ -108,7 +107,7 @@
         })
     }
 
-    function deleteRow(table, url, options){
+    function deleteRow(table, url){
             table.on("click", "button", function(e){
                 let tr = $(this).parent().parent();
                 $.ajax({
@@ -135,4 +134,3 @@
             deleteCookie("auth_token");
         }
         
-</script>

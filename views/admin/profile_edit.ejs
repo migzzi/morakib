@@ -23,14 +23,16 @@
                 resFlash.append($("<div class='alert alert-" + context + "'>" + data.msg + "</div>"));
             },
             error: (err) => {
+                console.log(err)
                 let resFlash = $("#result_flash");
                 resFlash.empty();
                 resFlash.append("<div class='alert alert-danger'>Couldn't perform your action, Please try again.</div>")
             }
         });
         readImgURL($("#avatar_input"), $("#avatar_pic"));
-        initForm();
-
+        <% if(decodedToken.role.role == "admin"){ %>
+            initForm();
+        <% }%>
     })
 
 </script>

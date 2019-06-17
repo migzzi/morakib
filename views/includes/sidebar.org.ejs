@@ -7,7 +7,7 @@
                 <div class="info">
                     <a class="" data-toggle="collapse" href="#collapseExample" aria-expanded="true">
                         <span>
-                            أحمد محمد
+                            <%=user.first_name %> <%= user.last_name %> 
                             <span class="user-level"><strong>
                                 <% if(decodedToken.role == 'manager'){ %>
                                     مديــر
@@ -20,7 +20,7 @@
                             <span class="caret"></span>
                             <br/>
                             <br/>
-                            <a class="btn btn-danger">	<i class="la  la-sign-out"></i>خــروج</a>
+                            <a class="btn btn-danger logout-btn"><i class="la  la-sign-out"></i>خــروج</a>
                         </span>
                     </a>
                     <div class="clearfix"></div>
@@ -29,69 +29,91 @@
                         <ul class="nav">
     
                             <li>
-                                <a href="#info">
+                                <a href="/profile/<%= user.username %>">
                                     <span class="link-collapse">البيانات الشخصية</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="#logout">
-                                    <span class="link-collapse">تسجيل خروج</span>
+                                <a href="/profile/<%= user.username %>/edit">
+                                    <span class="link-collapse">تعديل البيانات الشخصية</span>
                                 </a>
                             </li>
+                            
                         </ul>
                     </div>
                 </div>
             </div>
             <ul class="nav">
                 <li class="nav-item active">
-                    <% if(decodedToken.role === 'admin'){ %>
-                        <a href="/admin">
-                    <% } else if(decodedTokem === 'manager'){ %>
-                        <a href="/manager">
-                    <% } else if(decodedTokem === 'inspector'){ %>
-                        <a href="/inspector">
-                    <% } %>
+                    <a href="/home"> <!-- content depends on the role-->
                         <i class="la la-home"></i>
                         <p>الرئيسية</p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="/gawlat">
+                    <a href="/gawlat/list"> <!-- content depends on the role-->
                         <i class="la la-street-view"></i>
                         <p>الجولات</p>
                         <span class="badge badge-count badge-success"><%= gawlatCount %></span>
                     </a>
                 </li>
+                <% if(decodedToken.role.role !== 'admin'){ %>
                 <li class="nav-item">
-                    <a href="mokhlfat.html">
+                    <a href="gawlat/list?done=false">  <!-- content depends on the role-->
                         <i class="la la-hourglass-start"></i>
-                        <% if(decodedToken.role !== 'inspector'){ %>
+                            <p>جولات قيد الإنتظار</p>
+                            <span class="badge badge-count badge-warning"><%= gawlatPendingCount %></span>
+                        </a>
+                    </li>
+                <% } %>
+                <% if(decodedToken.role.role !== 'admin'){ %>
+                <li class="nav-item">
+                    <a href="penalties/list"> <!-- content depends on the role-->
+                        <i class="la la-hourglass-start"></i>
+                            <p>المخالفات</p>
+                            <span class="badge badge-count badge-warning"><%= penCOunt %></span>
+                        </a>
+                    </li>
+                <% } %>
+                <% if(decodedToken.role.role !== 'admin'){ %>
+                <li class="nav-item">
+                    <a href="penalties/list"> <!-- content depends on the role-->
+                        <i class="la la-hourglass-start"></i>
                             <p>مخالفات قيد الإنتظار</p>
-                            <span class="badge badge-count badge-warning"><%= pendingPenCount %></span>
-                        <% } %>
-    
-                    </a>
-                </li>
+                            <span class="badge badge-count badge-warning"><%= penPendingCount %></span>
+                        </a>
+                    </li>
+                <% } %>
+                <% if(decodedToken.role.role !== 'inspector'){ %>
                 <li class="nav-item">
                     <a href="supers.html">
                         <i class="la la-users"></i>
-                        <% if(decodedToken.role !== 'inspector'){ %>
                             <p>المراقبين</p>
                             <span class="badge badge-count"><%= inspectorsCount %></span>
-                        <% } %>
-                    </a>
-                </li>
+                        </a>
+                    </li>
+                <% } %>
+                <% if(decodedToken.role.role === 'manager'){ %>
                     <li class="nav-item update-pro">
                         <a href="add-gawla.html" class="btn btn-default">
                             <i class="la la-street-view"></i>
-                            <% if(decodedToken.role == 'manager'){ %>
                                 <p>اضافة جولة</p>
-                            <% } else if(decodedToken.role == 'admin'){ %>
-                                <p>اضافة موظف</p>
-                            <% } %>  
                         </a>
                     </li>
-                }
+                <% } else if(decodedToken.role.role == 'admin'){ %>
+                    <li class="nav-item update-pro">
+                        <a href="/admin/employee/add" class="btn btn-default">
+                            <i class="la la-street-view"></i>
+                                <p>اضافة موظف</p>
+                        </a>
+                    </li>
+                    <li class="nav-item update-pro">
+                        <a href="/admin/pen_class/add" class="btn btn-default">
+                            <i class="la la-street-view"></i>
+                            <p>اضافة جولة</p>
+                        </a>
+                    </li>
+                <% } %>  
             </ul>
         </div>
     </div>
