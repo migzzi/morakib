@@ -53,11 +53,11 @@ exports.getPostPenalty = (request,response) => {
                         value: penaltyName,
                         comment: penaltyDesc,
                         state: "pending",
-                        userId: 1,
+                        penaltyUserIdId: 1,
                         gawlaId: 1,
-                        penaltyClassId: 1,
-                        penaltyTypeId: 1,
-                        penaltyTermId: 1
+                        penaltyClassIdId: 1,
+                        penaltyTypeIdId: 1,
+                        penaltyTermIdId: 1
                     });
                     response.redirect("/penalty/penalties");
                 }else{

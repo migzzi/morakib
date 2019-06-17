@@ -1,56 +1,20 @@
 
-const Gawla = require("./models").Gawla,
-        Class = require('./models').PenaltyClass,
-        User = require('../auth/models').User;
+const Gawla = require("./models").Gawla;
+const penaltyClass = require("./models").PenaltyClass;
+const penalty = require("./models").Penalty;
+
 
 exports.getHome = (req,res)=>{
     res.render('index')
 };
 
 exports.getAddGawla = (req,res)=>{
-    Class.findAll().then((classes)=>{
-        User.findAll({where:{id:3}}).then((inspectors)=>{
-            console.log(inspectors);
-            res.render('gawla/add-gawla',{'classes' : classes, inspectors: inspectors}); 
-        })
-        }).catch((err)=>{
-            console.log("classes"+err);
-
-        })
-};
-
-exports.postAddGawla = (req,res)=>{
-    // console.log(req.body);
-    const name_ = req.body.name;
-    const phone = req.body.phone;
-    const class_id = parseInt(req.body.type);
-    const address = req.body.address;
-    const liscene_num = req.body.liscene_num;
-    const target_ = req.body.target;
-    const inspector_id = parseInt(req.body.inspector);
-    // console.log(parseInt(class_id));
-
-
-  Gawla.create({
-      name : name_,
-      Address : address,
-      done : false,
-      target : target_,
-      licesnce_no: liscene_num,
-      phone_no : phone,
-      long : 44.5,
-      lat : 55.7,
-      manager_id: 2,
-      inspector_id: inspector_id,
-      class_id: class_id,
-
-    }).then((result)=>{
-        // console.log(result);
-        res.redirect("/gawlat");
-    }).catch((err)=>{
-        console.log(err);
-    })
-
+    
+    penaltyClass.findAll()
+    .then(result => {
+        console.log(result[0]);
+    }).catch(err => console.log(error));
+    res.render('add-gawla')
 };
 
 exports.getGawlat = (req, res)=>{

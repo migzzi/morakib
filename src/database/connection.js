@@ -1,5 +1,5 @@
 const config = require("../../config/config.json"),
-      Sequelize = require("sequelize")
+      Sequelize = require("sequelize");
 
 //Selecting the active environment database configs.
 const env = process.env.APP_ENV || "development"; //default environment

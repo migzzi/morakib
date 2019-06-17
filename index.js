@@ -81,6 +81,5 @@ db.authenticate()
     //         {name: 'صحية' , descrition: 'لجولات الخاصة بالصحية'},
     //         {name: 'بناء' , descrition: 'لجولات الخاصةبالبناء'}
 
-    //     ])
-    // })
+
     .catch((err)=> console.log("ERROR! Connection couldn't be established. Check you DB service or your configurations.", err));
