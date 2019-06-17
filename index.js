@@ -33,10 +33,13 @@ app.use(authRouter);
 
 app.use(authMiddlewares.loginRequired());
 //commit
-app.get("/", (req, res) => res.render("index"));
+// app.get("/", (req, res) => res.render("index"));
 
-const {displayUser, updateUser, getUsers} = require("./src/modules/admin/helpers");
+const {displayUser, updateUser, getUsers, deleteUser} = require("./src/modules/admin/helpers");
 
+app.use(gawlaRouter);
+app.use(inspectorRouter);
+app.use("/admin", authMiddlewares.checkRole("admin"),adminRouter);
 app.get("/profile/:username", displayUser(null, false, "username"));
 app.get("/profile/:username/edit", displayUser(null, true, "username"));
 app.put("/profile/:username", updateUser());
@@ -44,9 +47,6 @@ app.put("/profile/:username", updateUser());
 app.get("/managers", getUsers("manager")); //api json response
 app.get("/inspectors", getUsers("inspector")); //api json response
 app.get("/employees", getUsers()); //api json response
-app.use("/admin", authMiddlewares.checkRole("admin"),adminRouter);
-app.use(gawlaRouter);
-app.use(inspectorRouter);
 
 //Object.entries(routers).map(router => app.use(router[0], router[1]));
 

@@ -30,7 +30,7 @@ submit.onclick = function(){
         if (ajax.readyState === 4 && ajax.status === 200){
             let data = JSON.parse(ajax.responseText);
             if(data.success){
-                window.location.replace('/gawlat');
+                window.location.replace(`/gawla/${data.id}`);
             }else{
                 let inputs = document.getElementsByTagName('input');
                 for (let input of inputs){

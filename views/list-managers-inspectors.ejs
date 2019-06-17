@@ -29,14 +29,24 @@
                                                 <tr>
                                                     <th scope="col">الإسم</th>
                                                     <th scope="col">عدد الجولات</th>
-                                                    <th scope="col">الفئــة</th>
+                                                    <th scope="col">عدد المخالفات</th>
                                                     <th scope="col" >إدارة</th>
                                                 </tr>
                                             </thead>
                                             <tbody id="tbody">
-                                                <tr>
-                                                    <td colspan="4" class="bg-secondry" style="text-align: center"> جارى تحميل البيانات.... </td>
-                                                </tr>
+                                                <% users.forEach((user)=>{%>
+                                                    <tr id='user-<%=user.id%>'/>
+                                                            <td>
+                                                                <img id="superav" src="/img/avatars/<%=user.avatar%>">
+                                                                <span><%=user.username%></span>
+                                                            </td>
+                                                            <td><h6><%=user.inspector_gawlas.length%></h6></td>
+                                                            <td ><h6><%=user.penalties.length%></h6></td>
+                                                            <td><a href='/admin/employee/<%=user.username%>' class="btn btn-success"><i class="la la-info"></i> التفاصيل</a>
+                                                         
+                                                            </td>
+                                                        </tr>;
+                                               <%})%>
                                             </tbody>
                                         </table>
                                     </div>
@@ -60,49 +70,4 @@
     <script src="https://unpkg.com/bootstrap-table@1.14.2/dist/bootstrap-table.min.js"></script>
 </body>
 
-<script>
-    $(document).ready(()=>{
-        getEmployees("inspectors", {
-            prefix: "/" + location.pathname.split("/")[1] + "/",
-            success: (data) => {
-                let table = $("#tbody");
-                table.empty();
-                if(data.success){
-                    console.log(data.users);
-                    data.users.forEach(user => {
-                        let userElement = $(`<tr id='user-${user.id}'>
-                                                <td>
-                                                    <img id="superav" src="/img/avatars/${user.avatar}">
-                                                    <span>${user.username}</span>
-                                                </td>
-                                                <td ><h6>${user.penalties.length}</h6></td>
-                                                <td>صحية</td>
-                                                <td><a href='/admin/employee/${user.username}' class="btn btn-success"><i class="la la-info"></i> التفاصيل</a>
-                                                    <a href='/admin/employee/${user.username}/edit' class="btn btn-primary"><i class="la la-edit"></i> تعديل</a>
-                                                    <button id='${user.id}' class="btn btn-danger"><i class="la la-trash"></i> حذف</button>
-                                                </td>
-                                            </tr>`);
-
-                        
-                        table.append(userElement);
-                    });
-                } else {
-                    table.append(`<td colspan="4" style="text-align: center" class='bg-alert'> خطأ فى تحميل البيانات </td>`);
-                }
-            },
-            error: (err) => {
-                let table = $("tbody");
-                table.empty();
-                table.append(`<td colspan="4" style="text-align: center" class='bg-alert'> خطأ فى تحميل البيانات </td>`);
-            }
-        });
-
-       
-
-        let table = $("#tbody");
-        deleteRow(table, "/admin/employee/")
-        
-    })
-
-</script>
 </html>

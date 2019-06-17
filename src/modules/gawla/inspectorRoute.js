@@ -6,10 +6,9 @@ const router = express.Router()
 
 
 
-router.use(checkRole('inspector'));
 
-router.get('/gawla/:id',gawlaController.getGawla);
-router.get('/gawlat',gawlaController.getGawlat);
+router.get('/gawla/:id',checkRole('inspector'), gawlaController.getGawla);
+router.get('/gawlat',checkRole('inspector'), gawlaController.getGawlat);
 
 
 
