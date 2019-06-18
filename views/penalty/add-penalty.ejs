@@ -1,0 +1,216 @@
+<%- include('../includes/head')%>
+
+
+<body >
+    
+	<div class="wrapper">
+        <%- include("../includes/header") %>
+
+        <%- include("../includes/sidebar") %>
+        <div class="main-panel">
+            <div class="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-7">
+                            <div class="card card-tasks">
+                                <div class="card-body">
+                                    <div class="card-action">
+                                        <button class="btn btn-default" data-toggle="modal" data-target="#myModal">تحرير مخالفة</button>
+                                    </div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+<form action="/penalty/add-penalty" method="POST">
+    <!-- The Modal -->
+    <div class="modal fade" id="myModal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+
+
+          
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">المخالفات</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+  
+                <!-- Modal body -->
+                <div class="modal-body">
+		  
+				    <div class="row clearfix">
+                        <div class="col-md-12 table-responsive">
+                            <table class="table table-bordered table-hover table-sortable" id="tab_logic">
+                                <thead>
+                                    <tr >
+                                        <th class="text-center">
+                                            الفئات
+                                        </th>
+
+                                        <th class="text-center">
+                                            الانواع
+                                        </th>
+                                        <th class="text-center">
+                                            البنود
+                                        </th>
+                                        <th class="text-center">
+                                            وصف المخالفه
+                                        </th>
+                                        
+                                        <th class="text-center">
+                                            مسح          
+                                        </th>   
+                                    </tr>
+							    </thead>
+							    <tbody>
+                                    <tr id='addr0' data-id="0" class="hidden">
+                                            <td data-name="sel">
+                                                    <select name="penaltyClass" class="form-control" id="penaltyClasses">
+                                                        <option value="">الفئه</option>
+                                                        <% penaltyClasses.forEach((penalty) => { %>
+                                                            <option value="<%=penalty.name%>"><%=penalty.name%></option>
+                                                        <% }) %>
+                                                    </select>
+                                                </td>
+        
+                                                <td data-name="sel">
+                                                    <select name="penaltyType" class="form-control" id="penaltyTypes">
+                                                        <option value="">النوع</option>
+                                                    </select>
+                                                </td>
+        
+                                                <td data-name="sel">
+                                                    <select name="penaltyTerm" class="form-control" id="penaltyTerms">
+                                                        <option value="">البند</option>
+                                                    </select>
+                                                </td>
+
+                                        <td data-name="desc">
+                                            <textarea name="penaltyDesc" placeholder="وصف مختصر للمخالفة" class="form-control"></textarea>
+                                        </td>
+
+                                        
+
+                                        <td data-name="del">
+                                            <button name="delete" class='btn btn-danger glyphicon glyphicon-remove row-remove'><span aria-hidden="true">×</span></button>
+                                        </td>
+                                    </tr>
+							    </tbody>
+						    </table>
+					    </div>
+				    </div>
+				    <a id="add_row" class="btn btn-success float-right">إضافة مخالفة</a>
+		        </div>
+  
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-danger">حفظ</button>
+                </div>
+            </form>
+  
+	    </div>
+	</div>
+</div>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+<script>
+$(document).ready(function() {
+    $("#add_row").on("click", function() {
+        // Dynamic Rows Code
+        
+        // Get max row id and set new id
+        var newid = 0;
+        $.each($("#tab_logic tr"), function() {
+            if (parseInt($(this).data("id")) > newid) {
+                newid = parseInt($(this).data("id"));
+            }
+        });
+        newid++;
+        
+        var tr = $("<tr></tr>", {
+            id: "addr"+newid,
+            "data-id": newid
+        });
+        
+        // loop through each td and create new elements with name of newid
+        $.each($("#tab_logic tbody tr:nth(0) td"), function() {
+            var td;
+            var cur_td = $(this);
+            
+            var children = cur_td.children();
+            
+            // add new td and element if it has a nane
+            if ($(this).data("name") !== undefined) {
+                td = $("<td></td>", {
+                    "data-name": $(cur_td).data("name")
+                });
+                
+                var c = $(cur_td).find($(children[0]).prop('tagName')).clone().val("");
+                c.attr("name", $(cur_td).data("name") + newid);
+                c.appendTo($(td));
+                td.appendTo($(tr));
+            } else {
+                td = $("<td></td>", {
+                    'text': $('#tab_logic tr').length
+                }).appendTo($(tr));
+            }
+        });
+        
+        // add delete button and td
+        /*
+        $("<td></td>").append(
+            $("<button class='btn btn-danger glyphicon glyphicon-remove row-remove'></button>")
+                .click(function() {
+                    $(this).closest("tr").remove();
+                })
+        ).appendTo($(tr));
+        */
+        
+        // add the new row
+        $(tr).appendTo($('#tab_logic'));
+        
+        $(tr).find("td button.row-remove").on("click", function() {
+             $(this).closest("tr").remove();
+        });
+});
+
+
+
+
+    // Sortable Code
+    var fixHelperModified = function(e, tr) {
+        var $originals = tr.children();
+        var $helper = tr.clone();
+    
+        $helper.children().each(function(index) {
+            $(this).width($originals.eq(index).width())
+        });
+        
+        return $helper;
+    };
+  
+    $(".table-sortable tbody").sortable({
+        helper: fixHelperModified      
+    }).disableSelection();
+
+    $(".table-sortable thead").disableSelection();
+
+
+
+    $("#add_row").trigger("click");
+});
+</script>
+
+</body>
+
+<script src="/js/add-gawla.js"></script>
+<script src="/js/penalty/penalty.js"></script>
+<%- include('../includes/footer.ejs')%>

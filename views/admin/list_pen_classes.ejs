@@ -39,7 +39,7 @@
                                                         <td>
                                                             <span class="text-bold"><%= pen_class.name%></span>
                                                         </td>
-                                                        <td ><p><%= pen_class.description %></p></td>
+                                                        <td ><p><%= (pen_class.description ? pen_class.description : "ﻻ يوجد") %></p></td>
                                                         <td ><h6><%= pen_class.pen_types.length %></h6></td>
                                                         <td>
                                                             <a class="text-light btn btn-primary"><i class="la la-edit"></i> تعديل</a>
@@ -143,7 +143,8 @@
                                                         <td>
                                                             <span class="text-bold">${name}</span>
                                                         </td>
-                                                        <td ><h6>${description}</h6></td>
+                                                        <td ><h6>${(description ? description : "ﻻ يوجد")}</h6></td>
+                                                        <td ><p>0</p></td>
                                                         <td>
                                                             <a class="text-light btn btn-primary"><i class="la la-edit"></i> تعديل</a>
                                                             <button id='${data.result.id}' class="btn btn-danger"><i class="la la-trash"></i> حذف</button>

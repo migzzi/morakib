@@ -4,11 +4,14 @@ const express = require("express"),
       morgan = require("morgan"),
       authRouter = require("./src/modules/auth/routes").authRouter,
       authMiddlewares = require("./src/modules/auth/middleware"),
-      gawlaRouter = require('./src/modules/gawla/routes'),
+      gawlaRouter = require('./src/modules/gawla/managerRouter'),
       path = require("path"),
       gawlaModels = require("./src/modules/gawla/models"),
       db = require("./src/database/connection"),
-      adminRouter = require("./src/modules/admin/routes").adminRouter;
+      adminRouter = require("./src/modules/admin/routes").adminRouter,
+      inspectorRouter = require('./src/modules/gawla/inspectorRoute'),
+      penaltyRouter = require("./src/modules/penalty/penaltyRoutes"),
+      homeController = require('./src/modules/gawla/controllers').getHome;
 
 const {User, Role} = require("./src/modules/auth/models");
 const {Gawla, Penalty, PenaltyClass, PenaltyType, PenaltyTerm} = require("./src/modules/gawla/models");
@@ -32,9 +35,14 @@ app.use(authRouter);
 
 app.use(authMiddlewares.loginRequired());
 //commit
-app.get("/", (req, res) => res.render("index"));
+app.get("/",homeController);
 
-const {displayUser, updateUser, getUsers} = require("./src/modules/admin/helpers");
+const {displayUser, updateUser, getUsers, deleteUser} = require("./src/modules/admin/helpers");
+
+app.use(gawlaRouter);
+app.use(inspectorRouter);
+app.use('/penalty',penaltyRouter);
+app.use("/admin", authMiddlewares.checkRole("admin"),adminRouter);
 app.get("/profile/:username", displayUser(null, false, "username"));
 app.get("/profile/:username/edit", displayUser(null, true, "username"));
 app.put("/profile/:username", updateUser(true, null, "username"));
@@ -47,11 +55,10 @@ app.get("/inspectors", getUsers("inspector")); //api json response
 app.get("/employees", getUsers()); //api json response
 //===================
 
-app.use("/admin", authMiddlewares.checkRole("admin"), adminRouter);
-app.use(gawlaRouter);
 //Object.entries(routers).map(router => app.use(router[0], router[1]));
 
 //handle 404 not found routes.
+// app.use("/penalty",penaltyRouter);
 app.use((req, res, next) => {
     return res.status(404).json({error: true, msg: "Resource not found."});
 })
@@ -97,18 +104,18 @@ db.authenticate()
     .then(() => {
         createSuperUser({
             username: "maged",
-            first_name: "maged",
-            last_name: "magdy",
+            first_name: "ماجد",
+            last_name: "مجدى",
             password: "123456",
             email: "maged@gmail.com",
             roleId: 1,
             avatar: "default.png"
         }).then(() => {
-            return createSuperUser({first_name: "maged", last_name: "magdy", username: "amr", password: "0000", email: "magedmagdy105@gmail.com", avatar: "default.png", roleId: 2})
+            return createSuperUser({first_name: "عمرو", last_name: "والى", username: "amr", password: "0000", email: "magedmagdy105@gmail.com", avatar: "default.png", roleId: 2})
         }).then(() => {
-            return createSuperUser({first_name: "ahmed", last_name: "magdy", username: "ahmed", password: "34234", email: "ahmed@gmail.com", avatar: "default.png", roleId: 3, managerId: 2})
+            return createSuperUser({first_name: "احمد", last_name: "وفيق", username: "wafik", password: "0000", email: "ahmed@gmail.com", avatar: "default.png", roleId: 3, managerId: 2})
         }).then(() => {
-            return createSuperUser({first_name: "marwa", last_name: "magdy", username: "mero", password: "34234", email: "marwa@gmail.com", avatar: "default.png", roleId: 3, managerId: 2})
+            return createSuperUser({first_name: "احمد", last_name: "نجيب", username: "nagiub", password: "0000", email: "marwa@gmail.com", avatar: "default.png", roleId: 3, managerId: 2})
         })
        
     })
@@ -148,22 +155,52 @@ db.authenticate()
     //         {role: "inspector", desc: "the big boss"},
     //     ]);
     // })
-  
     // .then(() => {
-    //     return Penalty_class.bulkCreate([
-    //         {name: 'صحية' , descrition: 'لجولات الخاصة بالصحية'},
-    //         {name: 'بناء' , descrition: 'لجولات الخاصةبالبناء'}
-
-    //     ])
+    //     createSuperUser({
+    //         username: "maged",
+    //         first_name: "maged",
+    //         last_name: "magdy",
+    //         password: "123456",
+    //         email: "maged@gmail.com",
+    //         roleId: 1,
+    //         avatar: "default.png"
+    //     }).then(() => {
+    //         return createSuperUser({first_name: "maged", last_name: "magdy", username: "amr", password: "0000", email: "magedmagdy105@gmail.com", avatar: "default.png", roleId: 2})
+    //     }).then(() => {
+    //         return createSuperUser({first_name: "ahmed", last_name: "magdy", username: "ahmed", password: "34234", email: "ahmed@gmail.com", avatar: "default.png", roleId: 3})
+    //     }).then(() => {
+    //         return createSuperUser({first_name: "marwa", last_name: "magdy", username: "mero", password: "34234", email: "marwa@gmail.com", avatar: "default.png", roleId: 3})
+    //     })
+       
     // })
     // .then(() => {
-    //     return User.bulkCreate([
-    //         {first_name: "احمد",last_name:"وفيق",username:'وفيق',email: 'eng@gmail.com',manager_id:'',role_id:2},
-    //         {first_name: "احمد",last_name:"وفيق",username:'نجيب',email: 'eng3@gmail.com',manager_id:1,role_id:3},
-    //         {first_name: "محمد",last_name:"وفيق",username:'ماجد',email: 'eng56@gmail.com',manager_id: 1,role_id:3}
-
-
-
-    //     ])
+    //     PenaltyClass.bulkCreate([
+    //         {name: "صحية"}, {name: "بناء"}, {name: "مرافق"}, {name: "تعامﻻت"}, {name: "مالية"}
+    //     ]).then((pen_classes) => {
+    //         return PenaltyType.bulkCreate([
+    //             {name: "نظافة", pen_class_id: 1}, {name: "اهمال", pen_class_id: 1},
+    //             {name: "تصريح", pen_class_id: 2}, {name: "طريق", pen_class_id: 2}, {name: "ضوضاء", pen_class_id: 2},
+    //             {name: "تصريح", pen_class_id: 3}, {name: "طريق", pen_class_id: 3}, {name: "ازعاج", pen_class_id: 3},
+    //             {name: "شكوى", pen_class_id: 4},
+    //             {name: "اختﻻس", pen_class_id: 5}, {name: "ضرائب", pen_class_id: 5}, {name: "فواتير", pen_class_id: 5}
+    //         ]).then((types) => {
+    //             return PenaltyTerm.bulkCreate([
+    //                 {name: "القاء قمامة", pen_type_id: 1, addons: "ازالة القمامة فورياً", value: 2000}, 
+    //                 {name: "معدات غير نظيفة", pen_type_id: 1, value: 3000},
+    //                 {name: "اهمال مرضى", pen_type_id: 2, value: 5000},
+    //                 {name: "بدون تصريح", pen_type_id: 3, addons: "اغﻻق فورى للمنشأة", value: 20000},
+    //                 {name: "تصريح منتهى", pen_type_id: 3, addons: "اغﻻق فورى للمنشأة", value: 15000},
+    //                 {name: "تصريح مزور", pen_type_id: 3, addons: "اغﻻق فورى للمنشأة", value: 30000},
+    //                 {name: "تخريب طريق", pen_type_id: 4, value: 10000},
+    //                 {name: "تعطيل طريق", pen_type_id: 4, value: 5000},
+    //                 {name: "ازعاج مارة", pen_type_id: 5, value: 1000},
+    //                 {name: "شكوى زبائن", pen_type_id: 5, value: 2500},
+    //                 {name: "غسيل اموال", pen_type_id: 6, value: 20000},
+    //                 {name: "تهرب ضريبى", pen_type_id: 7, value: 50000},
+    //                 {name: "عدم سداد فواتير", pen_type_id: 8, value: 5000},
+    //             ])
+    //         })
+    //     }).catch(err => console.log(err))
     // })
+    
     .catch((err)=> console.log("ERROR! Connection couldn't be established. Check you DB service or your configurations.", err));

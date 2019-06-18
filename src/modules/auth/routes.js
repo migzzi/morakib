@@ -8,7 +8,7 @@ const { User, Role } = require("./models"),
 const {postLogin} = require("./helpers");
 
 authRouter.get("/login", (req, res) => {
-  if(req.decodedToken || req.user) return res.redirect("/home");
+  if(req.decodedToken || req.user) return res.redirect("/");
   return res.render("auth/login");
 });
 authRouter.post("/auth/login", postLogin(true));

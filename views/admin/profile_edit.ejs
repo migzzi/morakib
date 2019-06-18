@@ -18,19 +18,32 @@
         submitForm("PUT", "/admin/employee/<%= targetUser.id %>", $("#profile_form"), {
             success: (data) => {
                 if(data.success){
-                    location.reload();
+                    let currentUsername = location.href.split("/")[-2];
+                    let newUsername = $("#username-field").val();
+                    if(currentUsername == newUsername) location.reload();
+                    else {
+                        let loc = location.href.split("/")
+                        location.href = loc.slice(0, loc.length - 2).join("/") + "/" + newUsername + "/edit" ;
+                    }
                 } else{
                     let resFlash = $("#result_flash");
                     resFlash.empty();
-                    resFlash.append($("<div class='alert alert-danger'>" + data.msg + "</div>"));
-
+                    console.log(data);
+                    if(data.type == "unique violation" && data.path == "username"){
+                        let userInput = $("#username-field");
+                        userInput.data("state", "invalid");
+                        if($("#username-alert").length > 0) return;
+                        userInput.css("border", "2px solid #dc3545");
+                        userInput.after("<p id='username-alert' class='text-muted text-danger'>يوجد مستخدم بهذا الأسم. رجاْ اختر أسم اخر</p>")
+                    }
+                    else resFlash.append($("<div class='alert alert-danger'>حدث خطأ ما, يرجى المحاولة مرة أخرى</div>"));
                 }
             },
             error: (err) => {
                 console.log(err)
                 let resFlash = $("#result_flash");
                 resFlash.empty();
-                resFlash.append("<div class='alert alert-danger'>Couldn't perform your action, Please try again.</div>")
+                resFlash.append("<div class='alert alert-danger'>حدث خطأ ما, يرجى المحاولة مرة أخرى</div>")
             }
         });
         readImgURL($("#avatar_input"), $("#avatar_pic"));

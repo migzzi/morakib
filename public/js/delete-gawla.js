@@ -25,3 +25,9 @@ if(event.target.tagName=="BUTTON"){
     
 }
 }
+
+let set = new Set();
+set.add(1);
+set.add(2);
+
+set.forEach(v=> console.log(v));

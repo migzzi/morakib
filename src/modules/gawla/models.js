@@ -9,13 +9,14 @@ const Gawla = db.define("gawla", {
         type: Sequelize.TEXT,
         allowNull: false
     },
-    Address: {
+    address: {
         type: Sequelize.TEXT,
         allowNull: false
     },
     done: {
         type: Sequelize.BOOLEAN,
-        allowNull: false
+        allowNull: false,
+        default: false
     },
     target: {
         type: Sequelize.ENUM(["organizaiton", "individual"]),
@@ -24,7 +25,6 @@ const Gawla = db.define("gawla", {
     licesnce_no: {
         type: Sequelize.STRING(50),
         allowNull: false,
-        unique: true
     },
     phone_no: {
         type: Sequelize.STRING(100),

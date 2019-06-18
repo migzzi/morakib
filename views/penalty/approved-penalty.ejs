@@ -1,13 +1,13 @@
-<%- include('./includes/head.ejs')%>
+<%- include('../includes/head.ejs')%>
 
     <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.14.2/dist/bootstrap-table.min.css">
     <script src="https://unpkg.com/bootstrap-table@1.14.2/dist/bootstrap-table.min.js"></script>
 </head>
 <body >
 	<div class="wrapper">
-            <%- include("./includes/header") %>
+            <%- include("../includes/header") %>
 
-			<%- include("./includes/sidebar")%>
+			<%- include("../includes/sidebar")%>
 			<div class="main-panel">
 				<div class="content">
 					<div class="container-fluid">
@@ -17,7 +17,7 @@
 						<div class="row">
 
 							<div class="col-md-12">
-                                <div class="row pl-3 align-items-center justify-content-center">
+                                <div class="row pl-3">
                                     <select name="" id="filterClass" class="form-control col-sm-3">
                                         <option value="all">كل الفئات</option>
                                         <%classes.forEach(penaltyClass => {%>
@@ -25,12 +25,12 @@
                                         <% }) %>
                                     </select>
     
-                                    <!-- <select name="" id="filterUser" class="form-control col-sm-3">
+                                    <select name="" id="filterUser" class="form-control col-sm-3">
                                         <option value="all">كل المراقبين</option>
                                         <%users.forEach(user => {%>
                                             <option value="<%= user.username%>"><%= user.username%></option>
                                         <% }) %>
-                                    </select>  -->
+                                    </select> 
                                 </div>
 
 								<div class="card card-tasks">
@@ -43,11 +43,6 @@
                                                         <th scope="col">الفئه</th>
                                                         <th scope="col">قيمه المخالفه</th>
                                                         <th scope="col" >المراقب</th>
-                                                        <% if (decodedToken.role.role == 'manager'){%>
-
-                                                        <th scope="col" >قبول المخالفه</th>
-                                                        <th scope="col" >رفض المخالفه</th>
-                                                        <%}%>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -57,12 +52,7 @@
                                                             <td class="penaltyClass2"><%= penalty.pen_class.name%></td>
                                                             <td><%= penalty.pen_term.value%></td>
                                                             <td class="penaltyUser"><%= penalty.inspector.username%></td>
-                                                            <% if (decodedToken.role.role == 'manager'){%>
-                                                            <td><button class="btn btn-primary" name="penaltyApproved" value="<%=penalty.id%>"><i class="la la-edit"></i>قبول</button></td>
-                                                            <td><button class="btn btn-danger" name="penaltyDeleted" value="<%=penalty.id%>"><i class="la la-trash"></i>رفض</button></td>
-                                                            <%}%>
                                                         </tr>
-
                                                     <% })%>
                                                 </tbody>
                                             </table>
@@ -85,7 +75,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/bootstrap-table@1.14.2/dist/bootstrap-table.min.js"></script>
     
-<%- include('./includes/footer.ejs')%>
+<%- include('../includes/footer.ejs')%>
 
 </body>
 </html>

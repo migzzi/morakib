@@ -13,6 +13,7 @@ let ajax = new XMLHttpRequest();
 submit.onclick = function(){
     ajax.open("POST","http://localhost:8888/gawla/add");
     ajax.setRequestHeader('content-type','application/json');
+    console.log(address.value)
     let newGawla = {
         name : name.value,
         phone : phone.value,
@@ -30,7 +31,7 @@ submit.onclick = function(){
         if (ajax.readyState === 4 && ajax.status === 200){
             let data = JSON.parse(ajax.responseText);
             if(data.success){
-                window.location.replace('/gawlat');
+                window.location.replace(`/gawla/${data.id}`);
             }else{
                 let inputs = document.getElementsByTagName('input');
                 for (let input of inputs){

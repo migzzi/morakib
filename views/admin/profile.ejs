@@ -24,11 +24,18 @@
                                         أسم العائلة:&nbsp;&nbsp; <%= targetUser.last_name %>
                                     </div>
                                 </div>
-                                <div class="row">
+                                <div class="row mb-4">
                                     <div class="col-md-6">
                                         البريد الاليكترونى:&nbsp;&nbsp; <%= targetUser.email %>
                                     </div>
                                 </div>
+                                <% if(targetUser.role.role != "admin"){ %>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        مدير:&nbsp;&nbsp; <%= targetUser.manager.first_name %> <%= targetUser.manager.last_name %>
+                                    </div>
+                                </div>
+                                <% }%>
                             </div>
                         </div>
 					</div>

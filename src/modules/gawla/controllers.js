@@ -1,6 +1,7 @@
 
 const Gawla = require("./models").Gawla,
         Class = require('./models').PenaltyClass,
+        Penalty = require('./models').Penalty,
         User = require('../auth/models').User,
         Role = require('../auth/models').Role;
 
@@ -8,7 +9,17 @@ const NodeGeocoder = require('node-geocoder');
 
 
 exports.getHome = (req,res)=>{
-    res.render('index')
+    User.findAll()
+    .then(users => {
+        Penalty.findAll()
+        .then(penalties =>{
+            Gawla.findAll()
+            .then(gawlat=>{
+
+                res.render('index',{users: users,penalties: penalties,gawlat: gawlat});
+            });
+        })
+    }).catch(err => console.log(err));
 };
 
 exports.getAddGawla = (req,res)=>{
@@ -24,15 +35,7 @@ exports.getAddGawla = (req,res)=>{
     }).catch(err =>{
         console.log(err);
     })
-    // Class.findAll().then((classes)=>{
-    //     User.findAll({where:{id:3}}).then((inspectors)=>{
-    //         console.log(inspectors);
-    //         res.render('gawla/add-gawla',{'classes' : classes, inspectors: inspectors}); 
-    //     })
-    //     }).catch((err)=>{
-    //         console.log("classes"+err);
-
-    //     })
+   
 };
 
 exports.postAddGawla = (req,res)=>{
@@ -44,28 +47,28 @@ exports.postAddGawla = (req,res)=>{
     const liscene_num = req.body.liscene_num;
     const target_ = req.body.target;
     const inspector_id = req.body.inspector_id;
-    // console.log("class",class_id);
-    // console.log("inspector",inspector_id);
+   
 
 
 
   Gawla.create({
       name : name_,
-      Address : address,
+      address : address,
       done : false,
       target : target_,
       licesnce_no: liscene_num,
       phone_no : phone,
       long : 44.5,
       lat : 55.7,
-      manager_id: 1,
+      manager_id: req.user.id,
       inspector_id: inspector_id,
-      class_id: class_id,
+      pen_class_id: class_id,
 
     }).then((result)=>{
-        // console.log(result);
+        // console.log("added gawla",result);
         res.json({
             success: true,
+            id: result.id,
             
         })
     }).catch((err)=>{
@@ -79,33 +82,47 @@ exports.postAddGawla = (req,res)=>{
 };
 
 exports.getGawlat = (req, res)=>{
-    // let userRole = req.user.getRole();
-    // let filter = userRole == "admin" ? {} : (userRole == "manager" ? {manager_id: req.user.id} : {inspector_id: req.user.id});
-    // Gawla.findAll({where: filter})
-    // .then((gawlat) => {
-    //     res.render("gawlat", {gawlat: gawlat});
-    // })
-    // .catch((err) => {
-    //     console.log(err);
-    //     res.render("error", {error: err});
-    // })
-    Gawla.findAll({include: [{model: Class, as: "penalty_class"},{model: User,as:'inspector'}]}).then((gawlat)=>{
-        console.log(gawlat);
-        res.render('gawla/gawlat',{gawlat : gawlat});
-    }).catch((err)=>{
-        console.log("gawlat"+err);
+     req.user.getRole()
+    .then(userRole => {
+        let filter = userRole.role == 'manager' ? {manager_id: req.user.id} : {inspector_id: req.user.id};
+        Gawla.findAll({where: filter,include: [{model: Class, as: "pen_class"},{model: User,as:'inspector'}]})
+        .then((gawlat)=>{
+            console.log(gawlat);
+            res.render('gawla/gawlat',{gawlat : gawlat});
+        }).catch((err)=>{
+            console.log("gawlat"+err);
+        })
+
     })
 };
 
 
 exports.getGawla = (req,res)=>{
-    Gawla.findOne({where: {id: req.params.id}, include: [{model: Class, as: "penalty_class"},
+    Gawla.findOne({where: {id: req.params.id}, include: [{model: Class, as: "pen_class"},
     {model: User,as:'inspector'}]}).then((gawla)=>{
         res.render('gawla/gawla',{gawla: gawla});
     }).catch((err)=>{
         console.log("gawla"+err);
-        res.render('admin/error');
+        res.render('error');
     })
+};
+
+
+exports.getInspectors = (req,res) => {
+    managerId = req.user.id;
+    User.findAll({where:{manager_id: req.user.id},
+     include: [{model: Penalty, as: "penalties"},
+     {model: Gawla, as: "inspector_gawlas"},
+]})
+    .then(inspectors =>{
+        console.log(inspectors)
+       res.render('list-managers-inspectors',{users: inspectors});
+    })
+    .catch(err=> console.log(err));
+};
+
+exports.getInspectorsList = (req,res) => {
+   res.render('list_inspectors');
 };
 
 exports.getlocationApi = (req,res)=>{
@@ -152,14 +169,14 @@ exports.postEditGawla = (req,res)=>{
    
     let editedGawla = {
         name : req.body.name,
-      Address : req.body.address,
+      address : req.body.address,
       done : false,
       target : req.body.target,
       licesnce_no: req.body.liscene_num,
       phone_no : req.body.phone,
       long : 44.5,
       lat : 55.7,
-      manager_id: 1,
+      manager_id: req.user.id,
       inspector_id: req.body.inspector,
       class_id: req.body.type,
     }
@@ -186,7 +203,7 @@ exports.postDeleteGawla = (req,res)=>{
         console.log(err);
         return res.json({
             error: true,
-            msg: "something went wrong"
+            msg: "حدث خطأ ما "
         });
     });
 }

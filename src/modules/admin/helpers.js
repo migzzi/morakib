@@ -90,11 +90,11 @@ function displayUser(role=null, edit=false, param="id"){
             return res.render("auth/not_authorized");
         let filter = role ? {role: role} : {};
         User.findOne({
-            include: [{model: Role, as: "role", where: filter}],
+            include: [{model: Role, as: "role", where: filter}, {model: User, as: "manager"}],
             where: {[param]: req.params[param]}
         }).then(user => {
             if(!user)
-              return res.render("admin/resource_not_found");
+              return res.render("resource_not_found");
             if(!edit)
                 return res.render("admin/profile", {targetUser: user});
             return Role.findAll().then((roles) => {
@@ -117,8 +117,8 @@ function updateUser(api=true, success_page="/admin/profile", param="id"){
             last_name: req.body.last_name,
             username: req.body.username,
             email: req.body.email,
-            avatar: req.file.filename || "default.png",
         };
+        if(req.file) user.avatar = req.file.filename;
         let userRole = req.decodedToken.role.role;
         if(userRole == "admin")
             user["roleId"] ; req.body.role;
@@ -139,6 +139,7 @@ function updateUser(api=true, success_page="/admin/profile", param="id"){
         updateProm.then(user => {
             if(api) return res.json({
                 success: true,
+                username: user.username,
                 msg: "employee updated successfully!"
             });
             return res.render(success_page);
@@ -146,6 +147,8 @@ function updateUser(api=true, success_page="/admin/profile", param="id"){
             console.log(err);
             if(api) return res.json({
                 error: true,
+                type: err.errors[0].type,
+                path: err.errors[0].path,
                 msg: "something went wrong"
             });
             return res.render(success_page);
