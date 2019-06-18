@@ -60,7 +60,7 @@ exports.getPostPenalty = (request,response) => {
                     });
                     response.redirect("/penalty/penalties");
                 }else{
-                    console.log("yarb")
+                    response.redirect("/penalty/penalties/")
                 }
             })
         })

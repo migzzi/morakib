@@ -1,0 +1,21 @@
+.head_name{
+    color:#080;
+    font-size:48px;
+    font-weight:bold
+}
+.sub_role{
+    font-weight:bold;
+    color:#090088
+}
+.avatar_profile{
+    border-radius:50%;
+    -webkit-border-radius:50%;
+    -moz-border-radius:50%;
+    -ms-border-radius:50%;
+    -o-border-radius:50%;
+}
+.profileInfo{
+    font-weight:bold;
+    font-size:21px;
+    color:#293462
+}

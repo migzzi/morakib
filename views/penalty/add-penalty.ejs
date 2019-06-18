@@ -26,7 +26,7 @@
 		</div>
 	</div>
 
-<form action="/penalty/add-penalty" method="POST">
+<form class="addPenaltyForm" action="/penalty/add-penalty" method="POST">
     <!-- The Modal -->
     <div class="modal fade" id="myModal">
         <div class="modal-dialog modal-lg">
@@ -43,7 +43,6 @@
   
                 <!-- Modal body -->
                 <div class="modal-body">
-		  
 				    <div class="row clearfix">
                         <div class="col-md-12 table-responsive">
                             <table class="table table-bordered table-hover table-sortable" id="tab_logic">
@@ -71,7 +70,7 @@
 							    <tbody>
                                     <tr id='addr0' data-id="0" class="hidden">
                                             <td data-name="sel">
-                                                    <select name="penaltyClass" class="form-control" id="penaltyClasses">
+                                                    <select name="penaltyClass" class="form-control" id="penaltyClasses" required>
                                                         <option value="">الفئه</option>
                                                         <% penaltyClasses.forEach((penalty) => { %>
                                                             <option value="<%=penalty.name%>"><%=penalty.name%></option>
@@ -80,19 +79,19 @@
                                                 </td>
         
                                                 <td data-name="sel">
-                                                    <select name="penaltyType" class="form-control" id="penaltyTypes">
+                                                    <select name="penaltyType" class="form-control" id="penaltyTypes" required>
                                                         <option value="">النوع</option>
                                                     </select>
                                                 </td>
         
                                                 <td data-name="sel">
-                                                    <select name="penaltyTerm" class="form-control" id="penaltyTerms">
+                                                    <select name="penaltyTerm" class="form-control" id="penaltyTerms" required>
                                                         <option value="">البند</option>
                                                     </select>
                                                 </td>
 
                                         <td data-name="desc">
-                                            <textarea name="penaltyDesc" placeholder="وصف مختصر للمخالفة" class="form-control"></textarea>
+                                            <textarea name="penaltyDesc" placeholder="وصف مختصر للمخالفة" class="form-control" required></textarea>
                                         </td>
 
                                         
@@ -121,7 +120,17 @@
 
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+
 <script>
+    document.getElementsByTagName("form")[0].onsubmit = function(event){
+    alert("yarb3")
+    if(document.getElementById("penaltyClasses").value == ""){
+        event.preventDefault();
+        alert("yarb2")
+    }else{
+        alert("yarb")
+    }
+}
 $(document).ready(function() {
     $("#add_row").on("click", function() {
         // Dynamic Rows Code
@@ -207,10 +216,19 @@ $(document).ready(function() {
 
     $("#add_row").trigger("click");
 });
+
+
+
+
+
+</script>
+<script>
+
+
 </script>
 
-</body>
 
 <script src="/js/add-gawla.js"></script>
 <script src="/js/penalty/penalty.js"></script>
 <%- include('../includes/footer.ejs')%>
+</body>

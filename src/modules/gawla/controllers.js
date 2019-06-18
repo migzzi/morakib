@@ -88,7 +88,10 @@ exports.getGawlat = (req, res)=>{
         Gawla.findAll({where: filter,include: [{model: Class, as: "pen_class"},{model: User,as:'inspector'}]})
         .then((gawlat)=>{
             console.log(gawlat);
-            res.render('gawla/gawlat',{gawlat : gawlat});
+            Class.findAll()
+            .then(classes => {
+            res.render('gawla/gawlat',{gawlat : gawlat,classes:classes});
+            })
         }).catch((err)=>{
             console.log("gawlat"+err);
         })

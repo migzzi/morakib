@@ -1,0 +1,9 @@
+.gawlaDetail label{
+    font-weight:bold;
+    border-bottom:1px solid #080;
+    width:30%;
+    padding-bottom:10px
+}
+.gawlaDetail p{
+    color:#c36a2d
+}

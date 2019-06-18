@@ -37,6 +37,10 @@ document.getElementById("filterUser").onchange = function(){
 }
 
 
+
+
+
+
 //delete
 ajax = new XMLHttpRequest();
 table.onclick = function(event){
