@@ -67,7 +67,7 @@
                         </a>
                     </li>
                 <% } %>
-                <% if(decodedToken.role.role !== 'admin'){ %>
+                <% if(decodedToken.role.role == 'manager'){ %>
                 <li class="nav-item">
                     <a href="/penalty/approvedPenalty"> <!-- content depends on the role-->
                         <i class="la la-hourglass-start"></i>

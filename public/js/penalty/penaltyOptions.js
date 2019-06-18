@@ -63,7 +63,8 @@ table.onclick = function(event){
                 response = JSON.parse(ajax.responseText);
                 console.log(response);
                 if(response.success){
-                    row.remove();
+                    row.style.backgrounColor = '#000';
+                    setTimeout(()=> row.remove(),1000);
                 }else{
                     // flash.innerHTML= "<p class='alert alert-danger'>"+ data.msg + "</p>";
                 }

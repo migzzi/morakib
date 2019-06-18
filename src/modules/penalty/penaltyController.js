@@ -140,7 +140,8 @@ exports.getPenaltyUpdate = (request,response) => {
     console.log(request.decodedToken.role);
     penaltyModel.update({state:"approved"},{where:{id:penaltyId}})
     .then(result => {
-        if(affectedRows > 0)
+        console.log(result);
+        if(result > 0)
             return response.json({
                 success: true,
                 msg: "تم تحديث الجولة بنجاح"
