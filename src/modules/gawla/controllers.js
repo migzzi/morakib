@@ -84,7 +84,7 @@ exports.postAddGawla = (req,res)=>{
 exports.getGawlat = (req, res)=>{
      req.user.getRole()
     .then(userRole => {
-        let filter = userRole.role == 'manager' ? {manager_id: req.user.id} : {inspector_id: req.user.id};
+        let filter = userRole.role == 'manager' ? {manager_id: req.user.id,done: false} : {inspector_id: req.user.id,done: false};
         Gawla.findAll({where: filter,include: [{model: Class, as: "pen_class"},{model: User,as:'inspector'}]})
         .then((gawlat)=>{
             console.log(gawlat);
@@ -97,6 +97,23 @@ exports.getGawlat = (req, res)=>{
 };
 
 
+exports.getFinishGawla = (req, res)=>{
+    req.user.getRole()
+   .then(userRole => {
+       let filter = userRole.role == 'manager' ? {manager_id: req.user.id,done: true} 
+       : {inspector_id: req.user.id,done: true};
+       Gawla.findAll({where: filter,include: [{model: Class, as: "pen_class"},{model: User,as:'inspector'}]})
+       .then((gawlat)=>{
+           console.log(gawlat);
+           res.render('gawla/gawlat',{gawlat : gawlat});
+       }).catch((err)=>{
+           console.log("gawlat"+err);
+       })
+
+   })
+};
+
+
 exports.getGawla = (req,res)=>{
     Gawla.findOne({where: {id: req.params.id}, include: [{model: Class, as: "pen_class"},
     {model: User,as:'inspector'}]}).then((gawla)=>{
@@ -106,6 +123,9 @@ exports.getGawla = (req,res)=>{
         res.render('error');
     })
 };
+
+
+
 
 
 exports.getInspectors = (req,res) => {
@@ -208,3 +228,26 @@ exports.postDeleteGawla = (req,res)=>{
     });
 }
 
+exports.postFinishGawla = (req,res)=>{
+    Gawla.update({done: true},{where: {id: req.params.id}})
+    .then(result => {
+        console.log(result);
+        if(result > 0)
+            return res.json({
+                success: true,
+                msg: "تم تحديث الجولة بنجاح"
+            });
+
+        return res.json({
+            error: true,
+            msg: "لايوجد جولة بهذه المواصفات"
+        });
+    })
+    .catch(err => {
+        console.log(err);
+        return res.json({
+            error: true,
+            msg: "حدث خطأ ما "
+        });
+    });
+}
