@@ -9,17 +9,37 @@ const NodeGeocoder = require('node-geocoder');
 
 
 exports.getHome = (req,res)=>{
-    User.findAll()
-    .then(users => {
-        Penalty.findAll()
-        .then(penalties =>{
-            Gawla.findAll()
-            .then(gawlat=>{
+    req.user.getRole()
+    .then(userRole => {
+        if (userRole.role == 'inspector'){
+            res.redirect('/gawlat');
+        }
+        else {
+            let filter = userRole.role == 'manager' ? {manager_id: req.user.id} : {} ;
+            User.count({where: filter})
+            .then(users => {
+                   Gawla.count({where: filter})
+                  .then(gawlat =>{
+                      User.findAll({where: filter , limit:5})
+                      .then(lastUsers => {
+                          Gawla.findAll({where: filter , order: ['createdAt'], limit: 5 ,
+                          include: [{model: Class, as: "pen_class"}]
+                        })
+                          .then(lastGawlat => {
+                              Penalty.count()
+                              .then(penalty => {
 
-                res.render('index',{users: users,penalties: penalties,gawlat: gawlat});
-            });
+                                  res.render('index',{users: users,gawlat: gawlat , lastUsers: lastUsers ,
+                                     lastGawlat: lastGawlat , penalty: penalty});   
+
+                              })
+                          })
+                      })
         })
     }).catch(err => console.log(err));
+        }
+    })
+    
 };
 
 exports.getAddGawla = (req,res)=>{

@@ -19,7 +19,7 @@
 											</div>
 											<div class="col-7 d-flex align-items-center">
 												<div class="numbers">
-														<h4 class="card-title"><%=gawlat.length%></h4>
+														<h4 class="card-title"><%=gawlat%></h4>
 													<p class="card-category"> الجولات</p>
 													
 												</div>
@@ -39,7 +39,7 @@
 											</div>
 											<div class="col-7 d-flex align-items-center">
 												<div class="numbers">
-														<h4 class="card-title"><%= users.length%></h4>
+														<h4 class="card-title"><%= users%></h4>
 													<p class="card-category">مراقب</p>
 													
 												</div>
@@ -60,8 +60,10 @@
 											</div>
 											<div class="col-7 d-flex align-items-center">
 												<div class="numbers">
-														<h1 class="card-title"><%=penalties.length%></h1>
-													<p class="card-category">مخالفات قيد الإنتظار</p>
+													
+															<h1 class="card-title"> <%= penalty%> </h1>
+
+													<p class="card-category">مخالفات  </p>
 													
 												</div>
 											</div>
@@ -78,7 +80,7 @@
 							<div class="col-md-6">
 								<div class="card">
 									<div class="card-header ">
-										<h4 class="card-title">أعلي المراقبين نشاطاً</h4>
+										<h4 class="card-title">أعلي  المراقبين نشاطاً</h4>
 									</div>
 									<div class="card-body">
 										
@@ -86,20 +88,22 @@
 											<thead>
 												<tr>
 													<th scope="col">الإسم</th>
-													<th scope="col">عدد المخالفات</th>
-													<th scope="col">التفاصيل</th>
+													<th scope="col"> البريد الاكترونى</th>
+													<th scope="col">البيانات الشخصية </th>
 												</tr>
 											</thead>
 											<tbody>
+												<% for (let user of lastUsers){%>
 												<tr>
-													<td>محمد محمود</td>
-													<td>44</td>
+													<td> <%= user.first_name%> </td>
+													<td><%= user.email%></td>
 													<td>
-														<button class="btn btn-xs btn-dark align">
+														<a  href="/profile/<%=user.username%>" class="btn btn-xs btn-dark align">
 															التفاصيل
-														</button>	
+														</a>	
 													</td>
 												</tr>
+												<%}%>
 
 											</tbody>
 										</table>
@@ -109,12 +113,13 @@
 							<div class="col-md-6">
 								<div class="card card-tasks">
 									<div class="card-header ">
-										<h4 class="card-title">اخر 5 مخالفات قيد الإنتظار</h4>
-									</div>
+											<h4 class="card-title">اخر 5 جولات    </h4>
+										</div>
 									<div class="card-body ">
 										<div class="table-full-width">
 											<table class="table">
 												<thead>
+
 													<tr>
 														
 														<th>الإسم</th>
@@ -122,23 +127,26 @@
 														<th>التفاصيل</th>
 														
 													</tr>
+													
 												</thead>
 												<tbody>
 
 													
-													
+											<% for (let gawla of lastGawlat){%>
+
 													<tr>
 														
-														<td>محمد أحمد محمود</td>
+														<td> <%= gawla.name%> </td>
 														<td class="td-actions text-right">
-															مخالفة صحية
+															<%= gawla.pen_class.name%>
 														</td>
 														<td>
-																<button class="btn btn-xs btn-dark align">
-																		التفاصيل
-																	</button>	
+																<a  href="/gawla/<%= gawla.id%>" class="btn btn-xs btn-dark align">
+																	التفاصيل
+																</a>	
 															</td>
 													</tr>
+													<%}%>
 												</tbody>
 											</table>
 										</div>
