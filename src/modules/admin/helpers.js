@@ -257,7 +257,7 @@ function addPenalty(role, api=false, success_redirect_url="/penalty_" + role + "
     let {model} = checkPenRole(role);
     return (req, res) => {
         let modelObj = req.body;
-        console.log(req.body);
+        // console.log(req.body);
         // let addons = req.body.addons;
         // if(addons) modelObj[addons] = addons;
         model.create(modelObj)
