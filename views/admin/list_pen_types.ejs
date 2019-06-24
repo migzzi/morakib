@@ -152,7 +152,9 @@
        
         $("#submit_add").on("click", function(e){
             let name = $("#pen_name").val(), description = $("#pen_desc").val(), penSelector = $("#pen_class_select"), pen_class_id = penSelector.children("option:selected").val(), penClassName = penSelector.children("option:selected").html();
-            console.log(penClassName)
+            console.log(penClassName);
+            $("#tbody input, #tbody textarea").val("");
+
             $.ajax({
                 url: "/admin/pen_types",
                 method: "POST",

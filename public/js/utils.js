@@ -127,7 +127,7 @@
         }
 
         function deleteCookie(name){
-            document.cookie = name + '="";expires=1970-06-19T07:20:41.000Z;';
+            document.cookie = name + '=;expires=1970-06-19T07:20:41.000Z;';
         }
 
         function logOut(){

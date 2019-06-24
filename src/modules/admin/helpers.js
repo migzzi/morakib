@@ -86,8 +86,8 @@ function deleteUser(model){
 
 function displayUser(role=null, edit=false, param="id"){
     return (req, res) => {
-        if(edit && req.user[param] != req.params[param] && req.decodedToken.role.role != "admin") //check if the current user is the resource owner or is admin
-            return res.render("auth/not_authorized");
+        // if(edit && req.user[param] != req.params[param] && req.decodedToken.role.role != "admin") //check if the current user is the resource owner or is admin
+        //     return res.render("auth/not_authorized");
         let filter = role ? {role: role} : {};
         User.findOne({
             include: [{model: Role, as: "role", where: filter}, {model: User, as: "manager"}],
@@ -110,8 +110,8 @@ function displayUser(role=null, edit=false, param="id"){
 
 function updateUser(api=true, success_page="/admin/profile", param="id"){
     return function(req, res){
-        if(req.user[param] != req.params[param] && req.decodedToken.role.role != "admin") //check if the current user is the resource owner or is admin
-            return res.render("auth/not_authorized");
+        // if(req.user[param] != req.params[param] && req.decodedToken.role.role != "admin") //check if the current user is the resource owner or is admin
+        //     return res.render("auth/not_authorized");
         let user = {
             first_name: req.body.first_name,
             last_name: req.body.last_name,
@@ -223,7 +223,7 @@ function getPenalty(role = null, api=false, page_name="list_pen_" + role + "s"){
         let filter = req.params || {};
         model.findAll({where: filter, include: include})
         .then(results => {
-            console.log(results[0].pen_type)
+            // console.log(results[0].pen_type)
             if(api) return res.json({success: true, results: results});
             return res.render(page_name, {data: results});
         }).catch(err => {
@@ -256,8 +256,8 @@ function deletePenalty(role, api=false, success_redirect_url="/penalty_" + role 
 function addPenalty(role, api=false, success_redirect_url="/penalty_" + role + "s", error_redirect_url="/penalty_" + role + "s"){
     let {model} = checkPenRole(role);
     return (req, res) => {
-        console.log(req.body)
         let modelObj = req.body;
+        console.log(req.body);
         // let addons = req.body.addons;
         // if(addons) modelObj[addons] = addons;
         model.create(modelObj)
@@ -284,7 +284,6 @@ function updatePenalty(role, api=false, success_redirect_url="/penalty_" + role 
             name: req.body.name,
             desc: req.body.desc,
             addons: req.body.addons,
-
         };
         let addons = req.body.addons;
         if(addons) modelObj[addons] = addons;

@@ -30,8 +30,8 @@ app.use(morgan("short"));
 
 //authentication middleware assign logged in user to the request.
 app.use(authMiddlewares.authenticateToken);
-//register routers.
 app.use(authRouter);
+//register routers.
 
 app.use(authMiddlewares.loginRequired());
 //commit
@@ -42,10 +42,10 @@ const {displayUser, updateUser, getUsers, deleteUser} = require("./src/modules/a
 app.use(gawlaRouter);
 app.use(inspectorRouter);
 app.use('/penalty',penaltyRouter);
-app.use("/admin", authMiddlewares.checkRole("admin"),adminRouter);
 app.get("/profile/:username", displayUser(null, false, "username"));
-app.get("/profile/:username/edit", displayUser(null, true, "username"));
-app.put("/profile/:username", updateUser(true, null, "username"));
+app.get("/profile/:username/edit", authMiddlewares.isOwner(false, true, "username"), displayUser(null, true, "username"));
+app.put("/profile/:username", authMiddlewares.isOwner(false, true, "username"), updateUser(true, null, "username"));
+app.use("/admin", authMiddlewares.checkRole("admin"), adminRouter);
 
 //some APIs endpoints
 app.get("/managers", getUsers("manager")); //api json response
@@ -204,3 +204,5 @@ db.authenticate()
     // })
     
     .catch((err)=> console.log("ERROR! Connection couldn't be established. Check you DB service or your configurations.", err));
+
+

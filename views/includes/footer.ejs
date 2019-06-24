@@ -14,14 +14,16 @@
 <script src="/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
 <script src="/js/ready.min.js"></script>
 <script src="/js/utils.js"></script>
-<script src="/js/penalty/penaltyOptions.js"></script>
 <script>
+    $(document).ready(function(){
         $(".logout-btn").on("click", function(e){
             console.log("logout")
             e.preventDefault();
             logOut();
+            logOut();
             location.href = "/login";
-        })
+        });
+    })
 </script>
 
 <!-- <script src="assets/js/demo.js"></script> -->

@@ -195,6 +195,8 @@
                 description = $("#pen_desc").val(), penSelector = $("#pen_class_select"),  penClassName = penSelector.children("option:selected").html();
             let typeSelector = $("#pen_type_select"), penTypeName = typeSelector.children("option:selected").html(),
             pen_type_id = penSelector.children("option:selected").val();
+            console.log(pen_type_id);
+            $("#tbody input, #tbody textarea").val("");
             $.ajax({
                 url: "/admin/pen_terms",
                 method: "POST",

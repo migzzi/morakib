@@ -94,7 +94,7 @@
                                         <tbody id="tbody">
                                             <tr id='addr0' data-id="0" class="hidden">
                                                 <td data-name="name">
-                                                    <input id="pen_name" type="text" name='name'  placeholder='اسم الفئة' class="form-control"/>
+                                                    <input id="pen_name" type="text" required name='name'  placeholder='اسم الفئة' class="form-control"/>
                                                 </td>
         
                                                 <td data-name="desc">
@@ -130,6 +130,7 @@
        
         $("#submit_add").on("click", function(e){
             let name = $("#pen_name").val(), description = $("#pen_desc").val();
+            $("#pen_name").val(""); $("#pen_desc").val("");
             $.ajax({
                 url: "/admin/pen_classes",
                 method: "POST",
@@ -157,6 +158,7 @@
                         flash.empty();
                         flash.append($("<div class='w-100 alert alert-danger'>حدث خطأ ماز رجاء حاول مرة اخرى </div>"));
                     }
+
                 }, 
                 error: (err) => {
                     let flash = $("#error_msg");
