@@ -54,9 +54,18 @@
                 <li class="nav-item">
                     <a href="/gawlat"> <!-- content depends on the role-->
                         <i class="la la-street-view"></i>
-                        <p>الجولات</p>
+                        <p>الجولات غير المنتهية  </p>
                     </a>
                 </li>
+                <%if(decodedToken.role.role == 'manager'){%>
+                <li class="nav-item">
+                    <a href="/gawlat/finish"> <!-- content depends on the role-->
+                        <i class="la la-street-view"></i>
+                        <p>الجولات المنتهية </p>
+                    </a>
+                </li>
+                <%}%>
+                
                 <%}%>
                 
                 <% if(decodedToken.role.role !== 'admin'){ %>

@@ -3,6 +3,7 @@ const penaltyClassModel = require("../gawla/models").PenaltyClass;
 const penaltyTypeModel = require("../gawla/models").PenaltyType;
 const penaltyTermModel = require("../gawla/models").PenaltyTerm;
 const userModel = require("../auth/models").User;
+const Gawla = require('../gawla/models').Gawla;
 
 
 
@@ -81,7 +82,7 @@ exports.getPenalties = (request,response) => {
         .then(penaltyClasses => {
             userModel.findAll()
             .then(users => {
-                response.render("supers",{"penalties": penalties,"classes":penaltyClasses,"users":users});   
+                response.render("penalty/penalties",{"penalties": penalties,"classes":penaltyClasses,"users":users});   
             })
         })
     }).catch(error => console.log(error));
@@ -139,24 +140,32 @@ exports.getPenaltyUpdate = (request,response) => {
     let penaltyId = request.params.id;
     console.log(request.decodedToken.role);
     penaltyModel.update({state:"approved"},{where:{id:penaltyId}})
-    .then(result => {
-        console.log(result);
-        if(result > 0)
-            return response.json({
-                success: true,
-                msg: "تم تحديث الجولة بنجاح"
+    .then(result =>{
+        penaltyModel.findOne({where:{id: penaltyId}})
+        .then(penalty =>{
+            Gawla.update({done: true},{where:{id: penalty.gawla_id}})
+            .then(result => {
+                console.log(result);
+                if(result > 0)
+                    return response.json({
+                        success: true,
+                        msg: "تم تحديث الجولة بنجاح"
+                    });
+        
+                return response.json({
+                    error: true,
+                    msg: "لايوجد جولة بهذه المواصفات"
+                });
+            })
+            .catch(err => {
+                console.log(err);
+                return response.json({
+                    error: true,
+                    msg: "حدث خطأ ما "
+                });
             });
 
-        return response.json({
-            error: true,
-            msg: "لايوجد جولة بهذه المواصفات"
-        });
+        })
     })
-    .catch(err => {
-        console.log(err);
-        return response.json({
-            error: true,
-            msg: "حدث خطأ ما "
-        });
-    });
+   
 }

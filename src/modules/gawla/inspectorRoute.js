@@ -10,6 +10,10 @@ const router = express.Router()
 router.get('/gawla/:id',checkRole('inspector'), gawlaController.getGawla);
 router.get('/gawlat',checkRole('inspector'), gawlaController.getGawlat);
 
+router.post('/gawla/finish/:id',gawlaController.postFinishGawla);
+router.get('/gawlat/finish',gawlaController.getFinishGawla);
+
+
 
 
 
