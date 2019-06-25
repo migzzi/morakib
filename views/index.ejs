@@ -124,8 +124,10 @@
 														
 														<th>الإسم</th>
 														<th>النوع</th>
+														<% if(decodedToken.role.role == 'manager'){%>
+
 														<th>التفاصيل</th>
-														
+														<%}%>
 													</tr>
 													
 												</thead>
@@ -140,11 +142,13 @@
 														<td class="td-actions text-right">
 															<%= gawla.pen_class.name%>
 														</td>
+														<% if(decodedToken.role.role == 'manager'){%>
 														<td>
 																<a  href="/gawla/<%= gawla.id%>" class="btn btn-xs btn-dark align">
 																	التفاصيل
 																</a>	
 															</td>
+														<%}%>
 													</tr>
 													<%}%>
 												</tbody>
