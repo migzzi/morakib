@@ -17,7 +17,7 @@
 							<div class="col-md-12">
 								<div class="card card-tasks">
                                     <div class="card-body"> 
-                                        <div class="row pr-3"><button data-toggle="modal" data-target="#myModal" class="btn btn-success"><i class="la la-plus-sign"></i>اضافة فئة</button></div>                      
+                                        <div class="row pr-3"><button data-toggle="modal" data-target="#myModal" class="btn btn-success"><i class="la la-plus-sign"></i>اضافة نوع</button></div>                      
                                         <table id="table" 
                                             data-toggle="table"
                                             data-search="true"
@@ -40,7 +40,7 @@
                                                         <td>
                                                             <span class="text-bold"><%= pen_type.name%></span>
                                                         </td>
-                                                        <td ><p><%= pen_type.description %></p></td>
+                                                        <td ><p><%= (pen_type.description ? pen_type.description : "ﻻ يوجد") %></p></td>
                                                         <td ><h6><%= pen_type.pen_terms.length %></h6></td>
                                                         <td ><p><%= pen_type.pen_class.name %></p></td>
                                                         <td>
@@ -151,7 +151,10 @@
         });
        
         $("#submit_add").on("click", function(e){
-            let name = $("#pen_name").val(), description = $("#pen_desc").val(), pen_class_id = $("#pen_class").children("option:selected").val();
+            let name = $("#pen_name").val(), description = $("#pen_desc").val(), penSelector = $("#pen_class_select"), pen_class_id = penSelector.children("option:selected").val(), penClassName = penSelector.children("option:selected").html();
+            console.log(penClassName);
+            $("#tbody input, #tbody textarea").val("");
+
             $.ajax({
                 url: "/admin/pen_types",
                 method: "POST",
@@ -161,13 +164,14 @@
                 data: JSON.stringify({name, description, pen_class_id}),
                 success: (data) => {
                     if(data.success){
+                        console.log(data);
                         let tr = $(`<tr id='pen-${data.result.id}'>
                                                         <td>
-                                                            <span class="text-bold">${data.result.name}</span>
+                                                            <span class="text-bold">${name}</span>
                                                         </td>
-                                                        <td ><p>${data.result.description}</p></td>
-                                                        <td ><h6>${data.result.pen_terms.length}</h6></td>
-                                                        <td ><p>${data.result.pen_class.name}</p></td>
+                                                        <td ><p>${(description ? description : "ﻻ يوجد")}</p></td>
+                                                        <td ><h6>0</h6></td>
+                                                        <td ><p>${penClassName}</p></td>
                                                         <td>
                                                             <a class="text-light btn btn-primary"><i class="la la-edit"></i> تعديل</a>
                                                             <button id='${data.result.id}' class="btn btn-danger"><i class="la la-trash"></i> حذف</button>

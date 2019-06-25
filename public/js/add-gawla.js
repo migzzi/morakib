@@ -13,6 +13,7 @@ let ajax = new XMLHttpRequest();
 submit.onclick = function(){
     ajax.open("POST","http://localhost:8888/gawla/add");
     ajax.setRequestHeader('content-type','application/json');
+    console.log(address.value)
     let newGawla = {
         name : name.value,
         phone : phone.value,

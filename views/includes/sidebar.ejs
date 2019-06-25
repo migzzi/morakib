@@ -2,7 +2,7 @@
         <div class="scrollbar-inner sidebar-wrapper">
             <div class="user">
                 <div class="photo">
-                    <img src="assets/img/profile.jpg">
+                    <img src="/img/avatars/<%= user.avatar %>">
                 </div>
                 <div class="info">
                     <a class="" data-toggle="collapse" href="#collapseExample" aria-expanded="true">
@@ -96,6 +96,35 @@
                         </a>
                     </li>
                 <% } %>
+
+                <% if(decodedToken.role.role == "admin") { %>
+                    <li class="nav-item">
+                        <a href="/admin/managers/list"> <!-- content depends on the role-->
+                            <i class="la la-user-secret"></i>
+                            <p>المديرين</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/admin/pen_classes/list"> <!-- content depends on the role-->
+                            <i class="la la-sliders"></i>
+                            <p>الفئات</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/admin/pen_types/list"> <!-- content depends on the role-->
+                            <i class="la la-sitemap"></i>
+                            <p>الأنواع</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/admin/pen_terms/list"> <!-- content depends on the role-->
+                            <i class="la la-bars"></i>
+                            <p>البنود</p>
+                        </a>
+                    </li>
+                <% } %>
+
+
                 <% if(decodedToken.role.role === 'manager'){ %>
                     <li class="nav-item update-pro">
                         <a href="/gawla/add" class="btn btn-default">
@@ -104,10 +133,11 @@
                         </a>
                     </li>
                 <% } else if(decodedToken.role.role == 'admin'){ %>
+                    
                     <li class="nav-item update-pro">
                         <a href="/admin/employee/add" class="btn btn-default">
                             <i class="la la-street-view"></i>
-                                <p>اضافة موظف</p>
+                            <p>اضافة موظف</p>
                         </a>
                     </li>
                 <% } %>  

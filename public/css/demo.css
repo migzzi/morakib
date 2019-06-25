@@ -221,3 +221,9 @@ p , a ,h5 {
 .profile_data {
 	text-align: right;
 }
+
+@media (min-width: 992px) {
+    .modal-lg {
+        width: 75vw !important;
+    }
+}

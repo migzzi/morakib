@@ -7,7 +7,7 @@
             </div>
             <div class="mb-4 col-md-8 profile_data">
                 <label>اسم المستخدم</label>
-                <input class="form-control head_name mb-4" name="username" type="text" required value="<%= targetUser.username %>">
+                <input id="username-field" class="form-control head_name mb-4" name="username" type="text" required value="<%= targetUser.username %>">
                 <% if(!edit) { %>
                     <label>كلمة المرور</label>
                     <input class="form-control head_name mb-4" name="password" type="password" required value="">

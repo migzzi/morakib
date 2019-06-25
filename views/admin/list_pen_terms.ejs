@@ -11,13 +11,12 @@
 				<div class="content">
 					<div class="container-fluid">
                     <div class="row" id="error_msg"></div>
-
-						<h4 class="page-title">انواع الفئات</h4>
+						<h4 class="page-title">بنود</h4>
 						<div class="row">
 							<div class="col-md-12">
 								<div class="card card-tasks">
                                     <div class="card-body"> 
-                                        <div class="row pr-3"><button data-toggle="modal" data-target="#myModal" class="btn btn-success"><i class="la la-plus-sign"></i>اضافة فئة</button></div>                      
+                                        <div class="row pr-3"><button data-toggle="modal" data-target="#myModal" class="btn btn-success"><i class="la la-plus-sign"></i>اضافة بند</button></div>                      
                                         <table id="table" 
                                             data-toggle="table"
                                             data-search="true"
@@ -31,6 +30,8 @@
                                                     <th scope="col">الوصف</th>
                                                     <th scope="col">النوع</th>
                                                     <th scope="col">الفئة</th>
+                                                    <th scope="col">قيمة المخالفة</th>
+                                                    <th scope="col">جزاءات</th>
                                                     <th scope="col" >إدارة</th>
                                                 </tr>
                                             </thead>
@@ -40,9 +41,11 @@
                                                         <td>
                                                             <span class="text-bold"><%= pen_term.name%></span>
                                                         </td>
-                                                        <td ><p><%= pen_term.description %></p></td>
+                                                        <td ><p><%= (pen_term.description ? pen_term.description : "ﻻ يوجد") %></p></td>
                                                         <td ><p><%= pen_term.pen_type.name %></p></td>
-                                                        <td ><p><%= pen_term.pen_class.name %></p></td>
+                                                        <td ><p><%= pen_term.pen_type.pen_class.name %></p></td>
+                                                        <td ><p><%= pen_term.value %></p></td>
+                                                        <td ><p><%= (pen_term.addons ? pen_term.addons : "ﻻ يوجد") %></p></td>
                                                         <td>
                                                             <a class="text-light btn btn-primary"><i class="la la-edit"></i> تعديل</a>
                                                             <button id='<%= pen_term.id%>' class="btn btn-danger"><i class="la la-trash"></i> حذف</button>
@@ -65,8 +68,8 @@
     </div>
     
     <!-- MODAL-->
-    <div class="modal fade" id="myModal">
-            <div class="modal-dialog modal-lg">
+    <div class="modal fade w-70" id="myModal">
+            <div class="modal-dialog w-75 mw-100">
               <div class="modal-content">
                 <!-- Modal Header -->
                 <div class="modal-header">
@@ -82,32 +85,50 @@
                                         <thead>
                                             <tr >
                                                 <th class="text-center">
-                                                    الأسم
+                                                    *الأسم
                                                 </th>
         
                                                 <th class="text-center">
                                                     الوصف
                                                 </th>
                                                 <th class="text-center">
-                                                        الفئة
-                                                </th><th class="text-center">
-                                                        النوع
+                                                        *الفئة
+                                                </th>
+                                                <th class="text-center">
+                                                        *النوع
+                                                </th>
+                                                <th class="text-center">
+                                                        *قيمة المخالفة
+                                                </th>
+                                                <th class="text-center">
+                                                    جزاءات
                                                 </th>
                                             </tr>
+
                                         </thead>
                                         <tbody id="tbody">
                                             <tr id='addr0' data-id="0" class="hidden">
                                                 <td data-name="name">
-                                                    <input id="pen_name" type="text" name='name'  placeholder='اسم الفئة' class="form-control"/>
+                                                    <input id="pen_name" type="text" name='name'  placeholder='اسم البند' class="form-control"/>
                                                 </td>
         
                                                 <td data-name="desc">
-                                                    <textarea id="pen_desc" name="descrition" placeholder="وصف مختصر للفئة" class="form-control"></textarea>
+                                                    <textarea id="pen_desc" name="descrition" placeholder="وصف مختصر للبند" class="form-control"></textarea>
                                                 </td>
                                                 <td data-name="pen_class">
-                                                    <select class="form-control" name="pen_class_id" id="pen_class_select"></select>
+                                                    <select class="form-control" name="pen_class_id" id="pen_class_select">
+                                                        <option value="" selected disabled>اختر فئة</option>
+                                                    </select>
                                                 </td>
-                                        
+                                                <td data-name="pen_type">
+                                                        <select class="form-control" name="pen_class_id" id="pen_type_select"></select>
+                                                </td>
+                                                <td data-name="pen_value">
+                                                        <input id="pen_value" type="number" name='value'  placeholder='قيمة المخالفة' class="form-control"/>
+                                                </td>
+                                                <td data-name="addons">
+                                                    <textarea id="pen_addons" name="addons" placeholder="جزاءات فورية" class="form-control"></textarea>
+                                                </td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -132,14 +153,16 @@
 </body>
 
 <script>
+    let penClasses = [];
     $(document).ready(()=>{
         let classSelector = $("#pen_class_select");
         $.ajax({
-            url: "/admin/pen_types",
+            url: "/admin/pen_classes",
             method: "GET",
             dataType: "json",
             success: (data) => {
                 if(data.success){
+                    penClasses = data.results;
                     data.results.forEach((pen_class) => {
                         let opt = $("<option value='" + pen_class.id + "'>" + pen_class.name + "</option>");
                         classSelector.append(opt);
@@ -148,25 +171,51 @@
             },
             error: (err) => console.log(err)
         });
-       
+
+        //fill penalty type selector once penalty class is chosen
+        $("#pen_class_select").on("change", function(e){
+            let val =  $(this).children("option:selected").val();
+            for(penClass of penClasses) {
+                if(penClass.id == val){
+                    let penTypes = penClass.pen_types;
+                    let typeSelector = $("#pen_type_select");
+                    typeSelector.empty();
+                    penTypes.forEach(pen_type => {
+                        typeSelector.append($("<option value='" + pen_type.id + "'>" + pen_type.name + "</option>"))
+                    })
+                }
+            }
+        });
+
+
         $("#submit_add").on("click", function(e){
-            let name = $("#pen_name").val(), description = $("#pen_desc").val(), pen_class_id = $("#pen_class").children("option:selected").val();
+            let name = $("#pen_name").val(), 
+                value = $("#pen_value").val(),
+                addons = $("#pen_addons").val(),
+                description = $("#pen_desc").val(), penSelector = $("#pen_class_select"),  penClassName = penSelector.children("option:selected").html();
+            let typeSelector = $("#pen_type_select"), penTypeName = typeSelector.children("option:selected").html(),
+            pen_type_id = penSelector.children("option:selected").val();
+            console.log(pen_type_id);
+            $("#tbody input, #tbody textarea").val("");
             $.ajax({
-                url: "/admin/pen_types",
+                url: "/admin/pen_terms",
                 method: "POST",
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
                 processData: false,
-                data: JSON.stringify({name, description, pen_class_id}),
+                data: JSON.stringify({name, description, pen_type_id, value, addons}),
                 success: (data) => {
                     if(data.success){
                         let tr = $(`<tr id='pen-${data.result.id}'>
                                                         <td>
-                                                            <span class="text-bold">${data.result.name}</span>
+                                                            <span class="text-bold">${name}</span>
                                                         </td>
-                                                        <td ><p>${data.result.description}</p></td>
-                                                        <td ><h6>${data.result.pen_terms.length}</h6></td>
-                                                        <td ><p>${data.result.pen_class.name}</p></td>
+                                                        <td ><p>${(description ? description : "ﻻ يوجد")}</p></td>
+                                                        <td ><p>${penTypeName}</p></td>
+                                                        <td ><p>${penClassName}</p></td>
+                                                        <td ><p>${value}</p></td>
+                                                        <td ><p>${(addons ? addons : "ﻻ يوجد")}</p></td>
+
                                                         <td>
                                                             <a class="text-light btn btn-primary"><i class="la la-edit"></i> تعديل</a>
                                                             <button id='${data.result.id}' class="btn btn-danger"><i class="la la-trash"></i> حذف</button>
@@ -177,13 +226,13 @@
                     } else {
                         let flash = $("#error_msg");
                         flash.empty();
-                        flash.append($("<div class='w-100 alert alert-danger'>حدث خطأ ماز رجاء حاول مرة اخرى </div>"));
+                        flash.append($("<div class='w-100 alert alert-danger'>حدث خطأ ما رجاء حاول مرة اخرى </div>"));
                     }
                 }, 
                 error: (err) => {
                     let flash = $("#error_msg");
                         flash.empty();
-                        flash.append($("<div class='w-100 alert alert-danger'>حدث خطأ ماز رجاء حاول مرة اخرى </div>"));
+                        flash.append($("<div class='w-100 alert alert-danger'>حدث خطأ ما رجاء حاول مرة اخرى </div>"));
                 }
             })
         })

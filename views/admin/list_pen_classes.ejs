@@ -39,7 +39,7 @@
                                                         <td>
                                                             <span class="text-bold"><%= pen_class.name%></span>
                                                         </td>
-                                                        <td ><p><%= pen_class.description %></p></td>
+                                                        <td ><p><%= (pen_class.description ? pen_class.description : "ﻻ يوجد") %></p></td>
                                                         <td ><h6><%= pen_class.pen_types.length %></h6></td>
                                                         <td>
                                                             <a class="text-light btn btn-primary"><i class="la la-edit"></i> تعديل</a>
@@ -94,7 +94,7 @@
                                         <tbody id="tbody">
                                             <tr id='addr0' data-id="0" class="hidden">
                                                 <td data-name="name">
-                                                    <input id="pen_name" type="text" name='name'  placeholder='اسم الفئة' class="form-control"/>
+                                                    <input id="pen_name" type="text" required name='name'  placeholder='اسم الفئة' class="form-control"/>
                                                 </td>
         
                                                 <td data-name="desc">
@@ -130,6 +130,7 @@
        
         $("#submit_add").on("click", function(e){
             let name = $("#pen_name").val(), description = $("#pen_desc").val();
+            $("#pen_name").val(""); $("#pen_desc").val("");
             $.ajax({
                 url: "/admin/pen_classes",
                 method: "POST",
@@ -143,7 +144,8 @@
                                                         <td>
                                                             <span class="text-bold">${name}</span>
                                                         </td>
-                                                        <td ><h6>${description}</h6></td>
+                                                        <td ><h6>${(description ? description : "ﻻ يوجد")}</h6></td>
+                                                        <td ><p>0</p></td>
                                                         <td>
                                                             <a class="text-light btn btn-primary"><i class="la la-edit"></i> تعديل</a>
                                                             <button id='${data.result.id}' class="btn btn-danger"><i class="la la-trash"></i> حذف</button>
@@ -156,6 +158,7 @@
                         flash.empty();
                         flash.append($("<div class='w-100 alert alert-danger'>حدث خطأ ماز رجاء حاول مرة اخرى </div>"));
                     }
+
                 }, 
                 error: (err) => {
                     let flash = $("#error_msg");

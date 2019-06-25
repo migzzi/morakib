@@ -73,7 +73,7 @@ exports.postAddGawla = (req,res)=>{
 
   Gawla.create({
       name : name_,
-      Address : address,
+      address : address,
       done : false,
       target : target_,
       licesnce_no: liscene_num,
@@ -209,7 +209,7 @@ exports.postEditGawla = (req,res)=>{
    
     let editedGawla = {
         name : req.body.name,
-      Address : req.body.address,
+      address : req.body.address,
       done : false,
       target : req.body.target,
       licesnce_no: req.body.liscene_num,

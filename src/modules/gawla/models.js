@@ -9,13 +9,14 @@ const Gawla = db.define("gawla", {
         type: Sequelize.TEXT,
         allowNull: false
     },
-    Address: {
+    address: {
         type: Sequelize.TEXT,
         allowNull: false
     },
     done: {
         type: Sequelize.BOOLEAN,
-        allowNull: false
+        allowNull: false,
+        default: false
     },
     target: {
         type: Sequelize.ENUM(["organizaiton", "individual"]),
@@ -24,7 +25,6 @@ const Gawla = db.define("gawla", {
     licesnce_no: {
         type: Sequelize.STRING(50),
         allowNull: false,
-        unique: true
     },
     phone_no: {
         type: Sequelize.STRING(100),
@@ -63,7 +63,7 @@ const penalty_attrs = {
             notEmpty: true
         }
     },
-    descrition: {
+    description: {
         type: Sequelize.TEXT,
         allowNull: true
     }
@@ -105,10 +105,10 @@ Penalty.belongsTo(PenaltyType, {foreignKey: "pen_type_id", as: "pen_type"});
 PenaltyType.hasMany(Penalty, {foreignKey: "pen_type_id", as: "penalties"});
 Penalty.belongsTo(PenaltyTerm, {foreignKey: "pen_term_id", as: "pen_term"});
 PenaltyTerm.hasMany(Penalty, {foreignKey: "pen_term_id", as: "penalties"});
-PenaltyTerm.belongsTo(PenaltyType, {foreignKey: "pen_type_id", as: "pen_type"});
-PenaltyType.hasMany(PenaltyTerm, {foreignKey: "pen_type_id", as: "pen_terms"});
-PenaltyType.belongsTo(PenaltyClass, {foreignKey: "pen_class_id", as: "pen_class"});
-PenaltyClass.hasMany(PenaltyType, {foreignKey: "pen_class_id", as: "pen_types"});
+PenaltyTerm.belongsTo(PenaltyType, {foreignKey: "pen_type_id", as: "pen_type", onDelete: "CASCADE"});
+PenaltyType.hasMany(PenaltyTerm, {foreignKey: "pen_type_id", as: "pen_terms", onDelete: "CASCADE"});
+PenaltyType.belongsTo(PenaltyClass, {foreignKey: "pen_class_id", as: "pen_class", onDelete: "CASCADE"});
+PenaltyClass.hasMany(PenaltyType, {foreignKey: "pen_class_id", as: "pen_types", onDelete: "CASCADE"});
 Gawla.belongsTo(User, {foreignKey: "inspector_id", as: "inspector"});
 User.hasMany(Gawla, {foreignKey: "inspector_id", as: "inspector_gawlas"});
 Gawla.belongsTo(User, {foreignKey: "manager_id", as: "manager"});
