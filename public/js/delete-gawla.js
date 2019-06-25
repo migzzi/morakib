@@ -1,5 +1,5 @@
 let flash = document.getElementById('flash');
-let table = document.getElementsByTagName("table")[0],
+// let table = document.getElementsByTagName("table")[0],
 ajax = new XMLHttpRequest();
 
 table.onclick = function(event){

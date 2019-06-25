@@ -92,61 +92,7 @@ function createSuperUser(obj){
 db.authenticate()
     .then(()=> {
         console.log("Connection to the database has been established successfully.");
-        return db.sync({force: true});
-    })
-    .then(() => {
-        return Role.bulkCreate([
-            {role: "admin", desc: "the big boss"},
-            {role: "manager", desc: "the big boss"},
-            {role: "inspector", desc: "the big boss"},
-        ]);
-    })
-    .then(() => {
-        createSuperUser({
-            username: "maged",
-            first_name: "ماجد",
-            last_name: "مجدى",
-            password: "123456",
-            email: "maged@gmail.com",
-            roleId: 1,
-            avatar: "default.png"
-        }).then(() => {
-            return createSuperUser({first_name: "عمرو", last_name: "والى", username: "amr", password: "0000", email: "magedmagdy105@gmail.com", avatar: "default.png", roleId: 2})
-        }).then(() => {
-            return createSuperUser({first_name: "احمد", last_name: "وفيق", username: "wafik", password: "0000", email: "ahmed@gmail.com", avatar: "default.png", roleId: 3, managerId: 2})
-        }).then(() => {
-            return createSuperUser({first_name: "احمد", last_name: "نجيب", username: "nagiub", password: "0000", email: "marwa@gmail.com", avatar: "default.png", roleId: 3, managerId: 2})
-        })
-       
-    })
-    .then(() => {
-        PenaltyClass.bulkCreate([
-            {name: "صحية"}, {name: "بناء"}, {name: "مرافق"}, {name: "تعامﻻت"}, {name: "مالية"}
-        ]).then((pen_classes) => {
-            return PenaltyType.bulkCreate([
-                {name: "نظافة", pen_class_id: 1}, {name: "اهمال", pen_class_id: 1},
-                {name: "تصريح", pen_class_id: 2}, {name: "طريق", pen_class_id: 2}, {name: "ضوضاء", pen_class_id: 2},
-                {name: "تصريح", pen_class_id: 3}, {name: "طريق", pen_class_id: 3}, {name: "ازعاج", pen_class_id: 3},
-                {name: "شكوى", pen_class_id: 4},
-                {name: "اختﻻس", pen_class_id: 5}, {name: "ضرائب", pen_class_id: 5}, {name: "فواتير", pen_class_id: 5}
-            ]).then((types) => {
-                return PenaltyTerm.bulkCreate([
-                    {name: "القاء قمامة", pen_type_id: 1, addons: "ازالة القمامة فورياً", value: 2000}, 
-                    {name: "معدات غير نظيفة", pen_type_id: 1, value: 3000},
-                    {name: "اهمال مرضى", pen_type_id: 2, value: 5000},
-                    {name: "بدون تصريح", pen_type_id: 3, addons: "اغﻻق فورى للمنشأة", value: 20000},
-                    {name: "تصريح منتهى", pen_type_id: 3, addons: "اغﻻق فورى للمنشأة", value: 15000},
-                    {name: "تصريح مزور", pen_type_id: 3, addons: "اغﻻق فورى للمنشأة", value: 30000},
-                    {name: "تخريب طريق", pen_type_id: 4, value: 10000},
-                    {name: "تعطيل طريق", pen_type_id: 4, value: 5000},
-                    {name: "ازعاج مارة", pen_type_id: 5, value: 1000},
-                    {name: "شكوى زبائن", pen_type_id: 5, value: 2500},
-                    {name: "غسيل اموال", pen_type_id: 6, value: 20000},
-                    {name: "تهرب ضريبى", pen_type_id: 7, value: 50000},
-                    {name: "عدم سداد فواتير", pen_type_id: 8, value: 5000},
-                ])
-            })
-        }).catch(err => console.log(err))
+        // return db.sync({force: true});
     })
     // .then(() => {
     //     return Role.bulkCreate([
@@ -158,18 +104,18 @@ db.authenticate()
     // .then(() => {
     //     createSuperUser({
     //         username: "maged",
-    //         first_name: "maged",
-    //         last_name: "magdy",
+    //         first_name: "ماجد",
+    //         last_name: "مجدى",
     //         password: "123456",
     //         email: "maged@gmail.com",
     //         roleId: 1,
     //         avatar: "default.png"
     //     }).then(() => {
-    //         return createSuperUser({first_name: "maged", last_name: "magdy", username: "amr", password: "0000", email: "magedmagdy105@gmail.com", avatar: "default.png", roleId: 2})
+    //         return createSuperUser({first_name: "عمرو", last_name: "والى", username: "amr", password: "0000", email: "magedmagdy105@gmail.com", avatar: "default.png", roleId: 2})
     //     }).then(() => {
-    //         return createSuperUser({first_name: "ahmed", last_name: "magdy", username: "ahmed", password: "34234", email: "ahmed@gmail.com", avatar: "default.png", roleId: 3})
+    //         return createSuperUser({first_name: "احمد", last_name: "وفيق", username: "wafik", password: "0000", email: "ahmed@gmail.com", avatar: "default.png", roleId: 3, managerId: 2})
     //     }).then(() => {
-    //         return createSuperUser({first_name: "marwa", last_name: "magdy", username: "mero", password: "34234", email: "marwa@gmail.com", avatar: "default.png", roleId: 3})
+    //         return createSuperUser({first_name: "احمد", last_name: "نجيب", username: "nagiub", password: "0000", email: "marwa@gmail.com", avatar: "default.png", roleId: 3, managerId: 2})
     //     })
        
     // })
@@ -202,7 +148,6 @@ db.authenticate()
     //         })
     //     }).catch(err => console.log(err))
     // })
-    
     .catch((err)=> console.log("ERROR! Connection couldn't be established. Check you DB service or your configurations.", err));
 
 

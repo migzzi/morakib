@@ -10,7 +10,8 @@ let submit = document.getElementById('submit');
 
 let ajax = new XMLHttpRequest();
 
-submit.onclick = function(){
+submit.onclick = function(e){
+    if(name.value && phone.value){
     ajax.open("POST","http://localhost:8888/gawla/add");
     ajax.setRequestHeader('content-type','application/json');
     console.log(address.value)
@@ -49,3 +50,4 @@ submit.onclick = function(){
     }
 }
 
+}

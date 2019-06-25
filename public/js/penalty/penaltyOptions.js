@@ -29,7 +29,7 @@ table.onclick = function(event){
         }
     }
 }
-      
+ if(btn){     
 btn.onclick = function(){
     ajax.open("DELETE","http://localhost:8888/penalty/delete/"+ value);
         ajax.send();
@@ -43,3 +43,4 @@ btn.onclick = function(){
             }
         }
 }
+ }

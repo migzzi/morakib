@@ -45,7 +45,7 @@
 												<label for="squareSelect">نوع الجولة</label>
 												<select class="form-control input-square" id="squareSelect" name="type">
 													<% for (let obj of classes){ %>
-														<% if(gawla.class_id == obj.id){%>
+														<% if(gawla.pen_class_id == obj.id){%>
 															<option value="<%=obj.id%>" selected > <%= obj.name%> </option>
 														<%}else{%>
 														<option value="<%=obj.id%>"  > <%= obj.name%> </option>
